@@ -1,0 +1,2 @@
+echo -e "User-agent: *\nAllow: /" > 
+public_html/robots.txt

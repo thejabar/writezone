@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Core\Routing;
+
+use Core\Http\Request;
+use Core\Http\Response;
+
+class Router
+{
+    private array $routes = [];
+
+    public function get(string $path, callable $handler): void
+    {
+        $this->routes['GET'][$path] = $handler;
+    }
+
+    public function dispatch(Request $request): void
+    {
+        $method = $request->method();
+        $uri = $request->uri();
+
+        $handler = $this->routes[$method][$uri] ?? null;
+
+        if (! $handler) {
+            Response::send('404 Not Found', 404);
+            return;
+        }
+
+        Response::send($handler());
+    }
+}

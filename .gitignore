@@ -1,3 +1,5 @@
-rm -rf vendor/ .env storage/cache/* storage/logs/* 
-storage/sessions/*rm -rf vendor/ .env 
-storage/cache/* storage/logs/* storage/sessions/*
+/vendor/
+/.env
+/storage/cache/*
+/storage/logs/*
+/storage/sessions/*

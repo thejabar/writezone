@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Middleware\AuthMiddleware;
 use Core\Container\Container;
 use Core\Http\Request;
 use Core\Routing\Router;
@@ -13,6 +14,8 @@ return new class {
         $container = new Container();
 
         $router = new Router($container);
+
+        $router->alias('auth', AuthMiddleware::class);
 
         $routes = require BASE_PATH . '/routes/web.php';
 

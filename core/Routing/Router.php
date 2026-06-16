@@ -7,81 +7,134 @@ namespace Core\Routing;
 use Core\Container\Container;
 use Core\Http\Request;
 use Core\Http\Response;
+use Core\Http\Middleware\MiddlewarePipeline;
 
 class Router
 {
     private array $routes = [];
 
+    private array $middlewareAliases = [];
+
+    private array $pendingMiddleware = [];
+
     public function __construct(
         private Container $container
     ) {}
 
+    public function alias(string $name, string $middleware): void
+    {
+        $this->middlewareAliases[$name] = $middleware;
+    }
+
+    public function middleware(string|array $middleware): self
+    {
+        $this->pendingMiddleware = (array) $middleware;
+
+        return $this;
+    }
+
     public function get(string $path, callable|array $handler): void
     {
-        $this->routes['GET'][$path] = $handler;
+        $this->addRoute('GET', $path, $handler);
     }
+
     public function post(string $path, callable|array $handler): void
-{
-    $this->routes['POST'][$path] = $handler;
-}
+    {
+        $this->addRoute('POST', $path, $handler);
+    }
 
-public function put(string $path, callable|array $handler): void
-{
-    $this->routes['PUT'][$path] = $handler;
-}
+    public function put(string $path, callable|array $handler): void
+    {
+        $this->addRoute('PUT', $path, $handler);
+    }
 
-public function patch(string $path, callable|array $handler): void
-{
-    $this->routes['PATCH'][$path] = $handler;
-}
+    public function patch(string $path, callable|array $handler): void
+    {
+        $this->addRoute('PATCH', $path, $handler);
+    }
 
-public function delete(string $path, callable|array $handler): void
-{
-    $this->routes['DELETE'][$path] = $handler;
-}
+    public function delete(string $path, callable|array $handler): void
+    {
+        $this->addRoute('DELETE', $path, $handler);
+    }
+
+    private function addRoute(
+        string $method,
+        string $path,
+        callable|array $handler
+    ): void {
+        $this->routes[$method][$path] = [
+            'handler' => $handler,
+            'middleware' => $this->pendingMiddleware,
+        ];
+
+        $this->pendingMiddleware = [];
+    }
 
     public function dispatch(Request $request): void
-{
-    $method = $request->method();
-    $uri = trim($request->uri(), '/');
+    {
+        $method = $request->method();
+        $uri = trim($request->uri(), '/');
 
-    $routes = $this->routes[$method] ?? [];
+        $routes = $this->routes[$method] ?? [];
 
-    foreach ($routes as $route => $handler) {
+        foreach ($routes as $route => $config) {
 
-        $pattern = preg_replace(
-            '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
-            '([^/]+)',
-            trim($route, '/')
-        );
+            $pattern = preg_replace(
+                '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
+                '([^/]+)',
+                trim($route, '/')
+            );
 
-        $pattern = "#^{$pattern}$#";
+            $pattern = "#^{$pattern}$#";
 
-        if (! preg_match($pattern, $uri, $matches)) {
-            continue;
+            if (! preg_match($pattern, $uri, $matches)) {
+                continue;
+            }
+
+            array_shift($matches);
+
+            $handler = $config['handler'];
+
+            $middlewares = array_map(
+    function (string $name) {
+
+        if (! isset($this->middlewareAliases[$name])) {
+            throw new \Exception(
+                "Middleware alias '{$name}' is not registered."
+            );
         }
 
-        array_shift($matches);
+        return $this->container->resolve(
+            $this->middlewareAliases[$name]
+        );
+    },
+    $config['middleware']
+);
 
-        if (is_array($handler)) {
-            [$controller, $action] = $handler;
+            $pipeline = new MiddlewarePipeline($middlewares);
 
-            $instance = $this->container->resolve($controller);
+            $response = $pipeline->process(
+                $request,
+                function () use ($handler, $matches) {
 
-            Response::send(
-                $instance->$action(...$matches)
+                    if (is_array($handler)) {
+                        [$controller, $action] = $handler;
+
+                        $instance = $this->container->resolve($controller);
+
+                        return $instance->$action(...$matches);
+                    }
+
+                    return $handler(...$matches);
+                }
             );
+
+            Response::send((string) $response);
 
             return;
         }
 
-        Response::send(
-            $handler(...$matches)
-        );
-
-        return;
+        Response::send('404 Not Found', 404);
     }
-
-    Response::send('404 Not Found', 404);
-}
 }

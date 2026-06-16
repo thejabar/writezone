@@ -11,5 +11,10 @@ return function (Router $router): void {
     $router->get('/', [HomeController::class, 'index']);
     $router->get('/writs/{id}', [WritController::class, 'show']);
     $router->post('/writs', [WritController::class, 'store']);
+    $router
+    ->middleware('auth')
+    ->get('/dashboard', function () {
+        return 'Dashboard';
+    });
 
 };

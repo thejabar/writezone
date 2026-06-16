@@ -4,21 +4,52 @@ declare(strict_types=1);
 
 namespace Core\Container;
 
+use ReflectionClass;
+use ReflectionException;
+
 class Container
 {
-    private array $bindings = [];
+    private array $instances = [];
 
-    public function bind(string $abstract, callable $factory): void
+    /**
+     * @throws ReflectionException
+     */
+    public function resolve(string $class): object
     {
-        $this->bindings[$abstract] = $factory;
-    }
-
-    public function resolve(string $abstract): mixed
-    {
-        if (! isset($this->bindings[$abstract])) {
-            throw new \Exception("Class {$abstract} is not bound.");
+        if (isset($this->instances[$class])) {
+            return $this->instances[$class];
         }
 
-        return $this->bindings[$abstract]($this);
+        $reflection = new ReflectionClass($class);
+
+        if (! $reflection->isInstantiable()) {
+            throw new \Exception("Class {$class} is not instantiable.");
+        }
+
+        $constructor = $reflection->getConstructor();
+
+        if (! $constructor) {
+            return new $class();
+        }
+
+        $dependencies = [];
+
+        foreach ($constructor->getParameters() as $parameter) {
+            $type = $parameter->getType();
+
+            if (! $type || $type->isBuiltin()) {
+                throw new \Exception(
+                    "Cannot resolve parameter \${$parameter->getName()} in {$class}"
+                );
+            }
+
+            $dependencies[] = $this->resolve($type->getName());
+        }
+
+        $instance = $reflection->newInstanceArgs($dependencies);
+
+        $this->instances[$class] = $instance;
+
+        return $instance;
     }
 }

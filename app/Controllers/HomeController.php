@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Services\GreetingService;
+use Core\Http\Request;
 
 class HomeController
 {
@@ -12,7 +13,7 @@ class HomeController
         private GreetingService $greeting
     ) {}
 
-    public function index(): string
+    public function index(Request $request): string
     {
         return $this->greeting->message();
     }

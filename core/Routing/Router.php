@@ -72,69 +72,75 @@ class Router
     }
 
     public function dispatch(Request $request): void
-    {
-        $method = $request->method();
-        $uri = trim($request->uri(), '/');
+{
+    $method = $request->method();
+    $uri = trim($request->uri(), '/');
 
-        $routes = $this->routes[$method] ?? [];
+    $routes = $this->routes[$method] ?? [];
 
-        foreach ($routes as $route => $config) {
+    foreach ($routes as $route => $config) {
 
-            $pattern = preg_replace(
-                '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
-                '([^/]+)',
-                trim($route, '/')
-            );
-
-            $pattern = "#^{$pattern}$#";
-
-            if (! preg_match($pattern, $uri, $matches)) {
-                continue;
-            }
-
-            array_shift($matches);
-
-            $handler = $config['handler'];
-
-            $middlewares = array_map(
-    function (string $name) {
-
-        if (! isset($this->middlewareAliases[$name])) {
-            throw new \Exception(
-                "Middleware alias '{$name}' is not registered."
-            );
-        }
-
-        return $this->container->resolve(
-            $this->middlewareAliases[$name]
+        $pattern = preg_replace(
+            '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
+            '([^/]+)',
+            trim($route, '/')
         );
-    },
-    $config['middleware']
-);
 
-            $pipeline = new MiddlewarePipeline($middlewares);
+        $pattern = "#^{$pattern}$#";
 
-            $response = $pipeline->process(
-                $request,
-                function () use ($handler, $matches) {
-
-                    if (is_array($handler)) {
-                        [$controller, $action] = $handler;
-
-                        $instance = $this->container->resolve($controller);
-
-                        return $instance->$action(...$matches);
-                    }
-
-                    return $handler(...$matches);
-                }
-            );
-
-            Response::send((string) $response);
-
-            return;
+        if (! preg_match($pattern, $uri, $matches)) {
+            continue;
         }
 
-        Response::send('404 Not Found', 404);
+        array_shift($matches);
+
+        $handler = $config['handler'];
+
+        $middlewares = array_map(
+            function (string $name) {
+
+                if (! isset($this->middlewareAliases[$name])) {
+                    throw new \Exception(
+                        "Middleware alias '{$name}' is not registered."
+                    );
+                }
+
+                return $this->container->resolve(
+                    $this->middlewareAliases[$name]
+                );
+            },
+            $config['middleware']
+        );
+
+        $pipeline = new MiddlewarePipeline($middlewares);
+
+        $response = $pipeline->process(
+            $request,
+            function () use ($handler, $matches, $request) {
+
+                if (is_array($handler)) {
+                    [$controller, $action] = $handler;
+
+                    $instance = $this->container->resolve($controller);
+
+                    return $instance->$action(
+                        $request,
+                        ...$matches
+                    );
+                }
+
+                return $handler(
+                    $request,
+                    ...$matches
+                );
+            }
+        );
+
+        Response::send((string) $response);
+
+        return;
     }
+
+    Response::send('404 Not Found', 404);
+}
 }

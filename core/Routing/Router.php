@@ -22,27 +22,47 @@ class Router
     }
 
     public function dispatch(Request $request): void
-    {
-        $method = $request->method();
-        $uri = $request->uri();
+{
+    $method = $request->method();
+    $uri = trim($request->uri(), '/');
 
-        $handler = $this->routes[$method][$uri] ?? null;
+    $routes = $this->routes[$method] ?? [];
 
-        if (! $handler) {
-            Response::send('404 Not Found', 404);
-            return;
+    foreach ($routes as $route => $handler) {
+
+        $pattern = preg_replace(
+            '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
+            '([^/]+)',
+            trim($route, '/')
+        );
+
+        $pattern = "#^{$pattern}$#";
+
+        if (! preg_match($pattern, $uri, $matches)) {
+            continue;
         }
+
+        array_shift($matches);
 
         if (is_array($handler)) {
             [$controller, $action] = $handler;
 
             $instance = $this->container->resolve($controller);
 
-            Response::send($instance->$action());
+            Response::send(
+                $instance->$action(...$matches)
+            );
 
             return;
         }
 
-        Response::send($handler());
+        Response::send(
+            $handler(...$matches)
+        );
+
+        return;
     }
+
+    Response::send('404 Not Found', 404);
+}
 }

@@ -11,7 +11,7 @@ class Router
 {
     private array $routes = [];
 
-    public function get(string $path, callable $handler): void
+    public function get(string $path, callable|array $handler): void
     {
         $this->routes['GET'][$path] = $handler;
     }
@@ -25,6 +25,16 @@ class Router
 
         if (! $handler) {
             Response::send('404 Not Found', 404);
+            return;
+        }
+
+        if (is_array($handler)) {
+            [$controller, $action] = $handler;
+
+            $instance = new $controller();
+
+            Response::send($instance->$action());
+
             return;
         }
 

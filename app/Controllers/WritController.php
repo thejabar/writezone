@@ -10,4 +10,8 @@ class WritController
     {
         return "Viewing Writ #{$id}";
     }
+public function store(): string
+{
+    return 'Writ created successfully.';
+}
 }

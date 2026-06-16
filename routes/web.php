@@ -9,7 +9,7 @@ use Core\Routing\Router;
 return function (Router $router): void {
 
     $router->get('/', [HomeController::class, 'index']);
-
     $router->get('/writs/{id}', [WritController::class, 'show']);
+    $router->post('/writs', [WritController::class, 'store']);
 
 };

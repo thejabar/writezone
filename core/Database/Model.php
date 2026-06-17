@@ -32,4 +32,18 @@ abstract class Model
     {
         return static::query()->create($data);
     }
+    public static function all(): array
+{
+    return static::query()->all();
+}
+
+public static function whereAll(
+    string $column,
+    mixed $value
+): array {
+    return static::query()->whereAll(
+        $column,
+        $value
+    );
+}
 }

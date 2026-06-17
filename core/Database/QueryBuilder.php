@@ -12,6 +12,29 @@ class QueryBuilder
         private PDO $pdo,
         private string $table
     ) {}
+    public function all(): array
+{
+    $stmt = $this->pdo->query(
+        "SELECT * FROM {$this->table} ORDER BY id DESC"
+    );
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+public function whereAll(string $column, mixed $value): array
+{
+    $stmt = $this->pdo->prepare(
+        "SELECT * FROM {$this->table}
+         WHERE {$column} = :value
+         ORDER BY id DESC"
+    );
+
+    $stmt->execute([
+        'value' => $value,
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
 
     public function find(int|string $id): ?object
     {

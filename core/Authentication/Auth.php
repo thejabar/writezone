@@ -27,4 +27,15 @@ class Auth
     {
         return Session::get('user_id');
     }
+    
+    public static function user(): ?object
+{
+    if (! self::check()) {
+        return null;
+    }
+
+    return \App\Models\User::find(
+        self::id()
+    );
+}
 }

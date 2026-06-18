@@ -18,3 +18,9 @@
     >
 </head>
 <body>
+    <?php if ($message = flash('success')): ?>
+    <div class="flash-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <?= htmlspecialchars($message) ?>
+    </div>
+<?php endif; ?>

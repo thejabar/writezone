@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\Writ;
 use Core\Authentication\Auth;
 use Core\Http\Request;
+use Core\Http\Response;
 class WritController
 {
     public function index(Request $request): string
@@ -25,7 +26,11 @@ class WritController
             'user_id' => Auth::id(),
             'content' => $content,
         ]);
-        return "Writ created: /writs/{$id}";
+        flash(
+            'success',
+            'Writ published successfully.'
+        );
+        Response::redirect("/writs/{$id}");
     }
     public function show(
         Request $request,
@@ -79,7 +84,11 @@ class WritController
                 ),
             ]
         );
-        return "Updated: /writs/{$id}";
+        flash(
+            'success',
+            'Writ updated successfully.'
+        );
+        Response::redirect("/writs/{$id}");
     }
     public function delete(
         Request $request,
@@ -96,6 +105,10 @@ class WritController
             return 'Unauthorized';
         }
         Writ::deleteById((int) $id);
-        return 'Writ deleted.';
+        flash(
+            'success',
+            'Writ deleted successfully.'
+        );
+        Response::redirect('/writs');
     }
 }

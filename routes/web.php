@@ -7,12 +7,38 @@ use App\Controllers\WritController;
 use Core\Http\Request;
 use Core\Routing\Router;
 return function (Router $router): void {
-    $router->get('/', [HomeController::class, 'index']);
-    $router->get('/login', [AuthController::class, 'showLogin']);
-    $router->post('/login', [AuthController::class, 'login']);
-    $router->get('/register', [AuthController::class, 'showRegister']);
-    $router->post('/register', [AuthController::class, 'register']);
-    $router->get('/logout', [AuthController::class, 'logout']);
+    $router->get('/', [
+        HomeController::class,
+        'index',
+    ]);
+    $router
+        ->middleware('guest')
+        ->get('/login', [
+            AuthController::class,
+            'showLogin',
+        ]);
+    $router
+        ->middleware('guest')
+        ->post('/login', [
+            AuthController::class,
+            'login',
+        ]);
+    $router
+        ->middleware('guest')
+        ->get('/register', [
+            AuthController::class,
+            'showRegister',
+        ]);
+    $router
+        ->middleware('guest')
+        ->post('/register', [
+            AuthController::class,
+            'register',
+        ]);
+    $router->get('/logout', [
+        AuthController::class,
+        'logout',
+    ]);
     $router
         ->middleware('auth')
         ->get('/dashboard', function (Request $request) {
@@ -60,5 +86,4 @@ return function (Router $router): void {
         ProfileController::class,
         'show',
     ]);
-    
 };

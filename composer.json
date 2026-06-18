@@ -12,7 +12,8 @@
             "Core\\": "core/"
         },
         "files": [
-            "app/Helpers/helpers.php"
-        ]
+    "app/Helpers/helpers.php",
+    "app/Helpers/flash.php"
+]
     }
 }

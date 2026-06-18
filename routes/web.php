@@ -7,6 +7,7 @@ use App\Controllers\HomeController;
 use App\Controllers\WritController;
 use Core\Http\Request;
 use Core\Routing\Router;
+use App\Controllers\ProfileController;
 
 return function (Router $router): void {
 
@@ -49,4 +50,9 @@ return function (Router $router): void {
         WritController::class,
         'show',
     ]);
+    
+    $router->get('/@{handle}', [
+    ProfileController::class,
+    'show'
+]);
 };

@@ -1,25 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>
-        <?= htmlspecialchars(
-            $writ->title ?? 'Writ'
-        ) ?>
-    </title>
+    <title>Writ #<?= $writ->id ?></title>
 </head>
 <body>
-
-<h1>
-    <?= htmlspecialchars(
-        $writ->title ?? 'Untitled'
-    ) ?>
-</h1>
 
 <p>
     <?= nl2br(
         htmlspecialchars($writ->content)
     ) ?>
 </p>
+
+<hr>
+
+<small>
+    Writ #<?= $writ->id ?>
+</small>
 
 </body>
 </html>

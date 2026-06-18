@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create Writ</title>
+    <title>New Writ</title>
 </head>
 <body>
 
-<h1>Create Writ</h1>
+<h1>New Writ</h1>
 
 <form method="POST" action="/writs">
 
-    <input
-        type="text"
-        name="title"
-        placeholder="Title"
-    >
-
-    <br><br>
-
     <textarea
         name="content"
-        rows="8"
-        cols="50"
+        rows="6"
+        cols="60"
+        maxlength="1000"
         placeholder="What's happening?"
         required
     ></textarea>

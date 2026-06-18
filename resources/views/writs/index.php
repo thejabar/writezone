@@ -7,23 +7,27 @@
 
 <h1>Latest Writs</h1>
 
+<p>
+    <a href="/writs/create">
+        Create Writ
+    </a>
+</p>
+
 <?php foreach ($writs as $writ): ?>
 
     <article>
 
-        <h2>
+        <p>
             <a href="/writs/<?= $writ->id ?>">
-                <?= htmlspecialchars(
-                    $writ->title ?? 'Untitled'
+                <?= nl2br(
+                    htmlspecialchars($writ->content)
                 ) ?>
             </a>
-        </h2>
-
-        <p>
-            <?= nl2br(
-                htmlspecialchars($writ->content)
-            ) ?>
         </p>
+
+        <small>
+            #<?= $writ->id ?>
+        </small>
 
         <hr>
 

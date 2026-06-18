@@ -13,7 +13,7 @@ class WritController
     public function index(Request $request): string
     {
         return view('writs.index', [
-            'writs' => Writ::all(),
+            'writs' => Writ::feed(),
         ]);
     }
 
@@ -38,7 +38,7 @@ class WritController
         string $id
     ): string {
 
-        $writ = Writ::find($id);
+        $writ = Writ::findWithAuthor((int) $id);
 
         if (! $writ) {
             return 'Writ not found.';

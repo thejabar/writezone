@@ -1,34 +1,50 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Writs</title>
-</head>
-<body>
-<h1>Latest Writs</h1>
+<h1>
+    <i class="fa-regular fa-comments"></i>
+    Latest Writs
+</h1>
+
 <p>
     <a href="/writs/create">
+        <i class="fa-regular fa-pen-to-square"></i>
         Create Writ
     </a>
 </p>
+
 <?php foreach ($writs as $writ): ?>
+
     <article>
+
         <p>
-            <a href="/@<?= htmlspecialchars($writ->handle ?? 'unknown') ?>">
-                @<?= htmlspecialchars($writ->handle ?? 'unknown') ?>
+
+            <a href="/@<?= htmlspecialchars($writ->handle) ?>">
+                <i class="fa-regular fa-user"></i>
+                @<?= htmlspecialchars($writ->handle) ?>
             </a>
+
         </p>
+
         <p>
+
             <a href="/writs/<?= $writ->id ?>">
+
                 <?= nl2br(
                     htmlspecialchars($writ->content)
                 ) ?>
+
             </a>
+
         </p>
+
         <small>
-            #<?= $writ->id ?>
+
+            <i class="fa-regular fa-hashtag"></i>
+
+            <?= $writ->id ?>
+
         </small>
+
         <hr>
+
     </article>
+
 <?php endforeach; ?>
-</body>
-</html>

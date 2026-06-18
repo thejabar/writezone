@@ -1,20 +1,16 @@
 <?php
-
 declare(strict_types=1);
-
-function view(string $path, array $data = []): string
-{
+function view(
+    string $view,
+    array $data = []
+): string {
     extract($data);
-
-    $path = str_replace('.', '/', $path);
-
+    $view = BASE_PATH
+        . '/resources/views/'
+        . str_replace('.', '/', $view)
+        . '.php';
     ob_start();
-
-    require BASE_PATH . '/resources/views/partials/header.php';
-
-    require BASE_PATH . '/resources/views/' . $path . '.php';
-
-    require BASE_PATH . '/resources/views/partials/footer.php';
-
+    require BASE_PATH
+        . '/resources/views/layouts/app.php';
     return ob_get_clean();
 }

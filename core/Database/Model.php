@@ -46,4 +46,16 @@ public static function whereAll(
         $value
     );
 }
+
+public static function updateById(
+    int $id,
+    array $data
+): bool {
+    return static::query()->update($id, $data);
+}
+
+public static function deleteById(int $id): bool
+{
+    return static::query()->delete($id);
+}
 }

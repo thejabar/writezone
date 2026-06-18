@@ -21,6 +21,40 @@ class QueryBuilder
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
 
+public function update(int $id, array $data): bool
+{
+    $fields = implode(
+        ', ',
+        array_map(
+            fn ($key) => "{$key} = :{$key}",
+            array_keys($data)
+        )
+    );
+
+    $sql = sprintf(
+        'UPDATE %s SET %s WHERE id = :id',
+        $this->table,
+        $fields
+    );
+
+    $data['id'] = $id;
+
+    $stmt = $this->pdo->prepare($sql);
+
+    return $stmt->execute($data);
+}
+
+public function delete(int $id): bool
+{
+    $stmt = $this->pdo->prepare(
+        "DELETE FROM {$this->table} WHERE id = :id"
+    );
+
+    return $stmt->execute([
+        'id' => $id,
+    ]);
+}
+
 public function whereAll(string $column, mixed $value): array
 {
     $stmt = $this->pdo->prepare(

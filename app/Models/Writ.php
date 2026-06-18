@@ -43,4 +43,12 @@ class Writ extends Model
         ]);
         return $stmt->fetchObject() ?: null;
     }
+    public static function belongsToUser(
+    int $writId,
+    int $userId
+): bool {
+    $writ = static::find($writId);
+    return $writ !== null
+        && (int) $writ->user_id === (int) $userId;
+}
 }

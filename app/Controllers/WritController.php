@@ -25,10 +25,11 @@ class WritController
     public function store(Request $request): string
     {
         $id = Writ::create([
-            'user_id' => Auth::id(),
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-        ]);
+    'user_id' => Auth::id(),
+    'content' => trim(
+        $request->input('content')
+    ),
+]);
 
         return "Writ created: /writs/{$id}";
     }
@@ -48,4 +49,63 @@ class WritController
             'writ' => $writ,
         ]);
     }
+    public function edit(
+    Request $request,
+    string $id
+): string {
+
+    if (! Writ::belongsToUser(
+        (int) $id,
+        Auth::id()
+    )) {
+        return 'Unauthorized';
+    }
+
+    $writ = Writ::find((int) $id);
+
+    return view('writs.edit', [
+        'writ' => $writ,
+    ]);
+}
+
+public function update(
+    Request $request,
+    string $id
+): string {
+
+    if (! Writ::belongsToUser(
+        (int) $id,
+        Auth::id()
+    )) {
+        return 'Unauthorized';
+    }
+
+    Writ::updateById(
+        (int) $id,
+        [
+            'content' => trim(
+                $request->input('content')
+            ),
+        ]
+    );
+
+    return "Updated: /writs/{$id}";
+}
+
+public function delete(
+    Request $request,
+    string $id
+): string {
+
+    if (! Writ::belongsToUser(
+        (int) $id,
+        Auth::id()
+    )) {
+        return 'Unauthorized';
+    }
+
+    Writ::deleteById((int) $id);
+
+    return 'Writ deleted.';
+}
 }

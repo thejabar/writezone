@@ -14,9 +14,9 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     >
     <link
-        rel="stylesheet"
-        href="/assets/css/app.css"
-    >
+    rel="stylesheet"
+    href="/assets/css/app.css?v=<?= filemtime(BASE_PATH . '/public_html/assets/css/app.css') ?>"
+>
 </head>
 <body>
     <?php require BASE_PATH . '/resources/views/partials/navbar.php'; ?>

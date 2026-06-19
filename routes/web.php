@@ -94,4 +94,12 @@ return function (Router $router): void {
         ProfileController::class,
         'show',
     ]);
+    
+    $router
+    ->middleware('auth')
+    ->post('/comments/{id}/reply', [
+        CommentController::class,
+        'reply',
+    ]);
+
 };

@@ -182,3 +182,73 @@ button:hover {
 
     color: var(--text-muted);
 }
+
+
+
+.writ-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+
+    box-shadow: var(--shadow);
+}
+
+.writ-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.writ-author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    font-weight: 600;
+}
+
+.writ-meta {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.writ-content {
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.writ-actions {
+    display: flex;
+    gap: 1rem;
+
+    padding-top: 0.75rem;
+
+    border-top: 1px solid var(--border);
+}
+
+.writ-actions a,
+.writ-actions button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    background: none;
+    border: none;
+    padding: 0;
+
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.writ-actions a:hover,
+.writ-actions button:hover {
+    color: var(--primary);
+}

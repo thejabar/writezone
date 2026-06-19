@@ -42,7 +42,7 @@ return function (Router $router): void {
     $router
         ->middleware('auth')
         ->get('/dashboard', function (Request $request) {
-            return 'Dashboard';
+            return view('dashboard.index');
         });
     $router->get('/writs', [
         WritController::class,

@@ -20,7 +20,6 @@
             <a href="/dashboard">
                 <i class="fa-solid fa-chart-line"></i>
                 Dashboard
-            </a>
             <a href="/logout">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Logout

@@ -1,3 +1,8 @@
+html {
+
+    color-scheme: light;
+
+}
 :root {
     --bg: #ffffff;
     --surface: #f8fafc;
@@ -12,6 +17,7 @@
     --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 [data-theme="dark"] {
+    color-scheme: dark;
     --bg: #111827;
     --surface: #1f2937;
     --surface-hover: #374151;
@@ -251,4 +257,79 @@ button:hover {
 .writ-actions a:hover,
 .writ-actions button:hover {
     color: var(--primary);
+}
+
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 0;
+
+    background: var(--surface);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    cursor: pointer;
+}
+
+.theme-toggle:hover {
+    background: var(--surface-hover);
+}
+
+
+
+.theme-toggle-fab {
+    position: fixed;
+
+    right: 1.5rem;
+    bottom: 1.5rem;
+
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: var(--surface);
+    color: var(--text);
+
+    box-shadow: var(--shadow);
+
+    cursor: pointer;
+
+    z-index: 1000;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.theme-toggle-fab:hover {
+    background: var(--surface-hover);
+
+    transform: translateY(-2px);
+}
+
+.theme-toggle-fab i {
+    font-size: 1.1rem;
+}
+
+
+@media (max-width: 640px) {
+
+    .theme-toggle-fab {
+        right: 1rem;
+        bottom: 1rem;
+    }
 }

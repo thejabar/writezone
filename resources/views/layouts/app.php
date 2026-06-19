@@ -30,5 +30,18 @@
         <?php require $view; ?>
     </main>
     <?php require BASE_PATH . '/resources/views/partials/footer.php'; ?>
+    <button
+    id="theme-toggle"
+    type="button"
+    class="theme-toggle-fab"
+    aria-label="Toggle theme"
+>
+    <i class="fa-solid fa-moon"></i>
+</button>
+    <script
+    src="/assets/js/theme.js?v=<?= filemtime(
+        BASE_PATH . '/public_html/assets/js/theme.js'
+    ) ?>"
+></script>
 </body>
 </html>

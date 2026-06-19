@@ -4,6 +4,7 @@ use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\ProfileController;
 use App\Controllers\WritController;
+use App\Controllers\CommentController;
 use Core\Http\Request;
 use Core\Routing\Router;
 return function (Router $router): void {
@@ -81,6 +82,13 @@ return function (Router $router): void {
     $router->get('/writs/{id}', [
         WritController::class,
         'show',
+    ]);
+    
+    $router
+    ->middleware('auth')
+    ->post('/writs/{id}/comments', [
+        CommentController::class,
+        'store',
     ]);
     $router->get('/@{handle}', [
         ProfileController::class,

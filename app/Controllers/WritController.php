@@ -5,6 +5,7 @@ use App\Models\Writ;
 use Core\Authentication\Auth;
 use Core\Http\Request;
 use Core\Http\Response;
+use App\Models\Comment;
 class WritController
 {
     public function index(Request $request): string
@@ -41,8 +42,11 @@ class WritController
             return 'Writ not found.';
         }
         return view('writs.show', [
-            'writ' => $writ,
-        ]);
+    'writ' => $writ,
+    'comments' => Comment::forWrit(
+        (int) $id
+    ),
+]);
     }
     public function edit(
         Request $request,

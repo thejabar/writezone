@@ -16,6 +16,28 @@
 </p>
 
 <hr>
+<h2>
+    <i class="fa-solid fa-comments"></i>
+    Discussion
+</h2>
+<?php require BASE_PATH
+    . '/resources/views/comments/form.php'; ?>
+<br>
+<?php if (empty($comments)): ?>
+    <div class="card">
+        <p>
+            No comments yet.
+        </p>
+    </div>
+<?php else: ?>
+    <?php foreach ($comments as $comment): ?>
+        <?php require BASE_PATH
+            . '/resources/views/comments/item.php'; ?>
+        <br>
+    <?php endforeach; ?>
+<?php endif; ?>
+
+<hr>
 
 <small>
 

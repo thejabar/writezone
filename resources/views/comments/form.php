@@ -1,8 +1,8 @@
 <?php if (\Core\Authentication\Auth::check()): ?>
     <form
         method="POST"
-        action="/writs/<?= $writ->id ?>/comments"
-    >
+        action="/writs/<?= htmlspecialchars($writ->public_id) ?>/comments"
+        >
         <textarea
             name="content"
             placeholder="Join the discussion..."

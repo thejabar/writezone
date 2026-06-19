@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 namespace App\Controllers;
+use App\Models\Comment;
 use App\Models\Writ;
 use Core\Authentication\Auth;
 use Core\Http\Request;
 use Core\Http\Response;
-use App\Models\Comment;
 class WritController
 {
     public function index(Request $request): string
@@ -23,41 +23,44 @@ class WritController
         $content = trim(
             $request->input('content')
         );
-        $id = Writ::create([
-            'user_id' => Auth::id(),
-            'content' => $content,
+        $publicId = Writ::generatePublicId();
+        Writ::create([
+            'public_id' => $publicId,
+            'user_id'   => Auth::id(),
+            'content'   => $content,
         ]);
         flash(
-            'success',
-            'Writ published successfully.'
-        );
-        Response::redirect("/writs/{$id}");
+    'success',
+    'Writ published successfully.'
+);
+
+Response::redirect("/writs/{$publicId}");
     }
     public function show(
-        Request $request,
-        string $id
-    ): string {
-        $writ = Writ::findWithAuthor((int) $id);
-        if (! $writ) {
-            return 'Writ not found.';
-        }
-        return view('writs.show', [
-    'writ' => $writ,
-    'comments' => Comment::forWrit(
-        (int) $id
-    ),
-]);
+    Request $request,
+    string $id
+): string {
+    $writ = Writ::findByPublicId($id);
+    if (! $writ) {
+        return 'Writ not found.';
     }
+    return view('writs.show', [
+        'writ' => $writ,
+        'comments' => Comment::forWrit(
+            (int) $writ->id
+        ),
+    ]);
+}
     public function edit(
         Request $request,
         string $id
     ): string {
-        $writ = Writ::find((int) $id);
+        $writ = Writ::findByPublicId($id);
         if (! $writ) {
             return 'Writ not found.';
         }
-        if (! Writ::belongsToUser(
-            (int) $id,
+        if (! Writ::belongsToUserByPublicId(
+            $id,
             (int) Auth::id()
         )) {
             return 'Unauthorized';
@@ -70,18 +73,18 @@ class WritController
         Request $request,
         string $id
     ): string {
-        $writ = Writ::find((int) $id);
+        $writ = Writ::findByPublicId($id);
         if (! $writ) {
             return 'Writ not found.';
         }
-        if (! Writ::belongsToUser(
-            (int) $id,
+        if (! Writ::belongsToUserByPublicId(
+            $id,
             (int) Auth::id()
         )) {
             return 'Unauthorized';
         }
         Writ::updateById(
-            (int) $id,
+            (int) $writ->id,
             [
                 'content' => trim(
                     $request->input('content')
@@ -92,23 +95,25 @@ class WritController
             'success',
             'Writ updated successfully.'
         );
-        Response::redirect("/writs/{$id}");
+        Response::redirect(
+            "/writs/{$writ->public_id}"
+        );
     }
     public function delete(
         Request $request,
         string $id
     ): string {
-        $writ = Writ::find((int) $id);
+        $writ = Writ::findByPublicId($id);
         if (! $writ) {
             return 'Writ not found.';
         }
-        if (! Writ::belongsToUser(
-            (int) $id,
+        if (! Writ::belongsToUserByPublicId(
+            $id,
             (int) Auth::id()
         )) {
             return 'Unauthorized';
         }
-        Writ::deleteById((int) $id);
+        Writ::deleteById((int) $writ->id);
         flash(
             'success',
             'Writ deleted successfully.'

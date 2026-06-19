@@ -3,7 +3,7 @@
     Edit Writ
 </h1>
 
-<form method="POST" action="/writs/<?= $writ->id ?>/update">
+<form method="POST" action="/writs/<?= htmlspecialchars($writ->public_id) ?>/update">
 
     <textarea
         name="content"

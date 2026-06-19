@@ -37,7 +37,7 @@
                 ) ?>
             </div>
             <div class="writ-actions">
-                <a href="/writs/<?= $writ->id ?>">
+                <a href="/writs/<?= htmlspecialchars($writ->public_id) ?>">
                     <i class="fa-solid fa-eye"></i>
                     View
                 </a>

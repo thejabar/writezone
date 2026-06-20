@@ -47,6 +47,52 @@
                     === (int) $reply->user_id
             ): ?>
                 <div class="comment-actions">
+    <?php if (
+        \Core\Authentication\Auth::check()
+    ): ?>
+        <?php
+        $score = \App\Models\CommentVote::score(
+            (int) $comment->id
+        );
+        $userVote = \App\Models\CommentVote::userVote(
+            (int) $comment->id,
+            (int) \Core\Authentication\Auth::id()
+        );
+        ?>
+        <form
+            method="POST"
+            action="/comments/<?= $comment->id ?>/upvote"
+        >
+            <button
+                type="submit"
+                class="icon-button <?= $userVote === 1
+                    ? 'active'
+                    : '' ?>"
+                title="Upvote"
+                aria-label="Upvote"
+            >
+                <i class="fa-solid fa-thumbs-up"></i>
+            </button>
+        </form>
+        <span class="vote-count">
+            <?= $score ?>
+        </span>
+        <form
+            method="POST"
+            action="/comments/<?= $comment->id ?>/downvote"
+        >
+            <button
+                type="submit"
+                class="icon-button downvote <?= $userVote === -1
+                    ? 'active'
+                    : '' ?>"
+                title="Downvote"
+                aria-label="Downvote"
+            >
+                <i class="fa-solid fa-thumbs-down"></i>
+            </button>
+        </form>
+    <?php endif; ?>
                     <a
                         href="/comments/<?= $reply->id ?>/edit"
                         class="icon-button"

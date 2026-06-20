@@ -322,3 +322,23 @@ button:hover {
         gap: 0.4rem;
     }
 }
+
+
+/* Up Down Vote */
+.vote-count {
+    min-width: 1.5rem;
+
+    text-align: center;
+
+    color: var(--text-muted);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.icon-button.active {
+    color: var(--primary);
+}
+.icon-button.downvote.active {
+    color: #ef4444;
+}

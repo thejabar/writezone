@@ -5,6 +5,7 @@ use App\Controllers\HomeController;
 use App\Controllers\ProfileController;
 use App\Controllers\WritController;
 use App\Controllers\CommentController;
+use App\Controllers\CommentVoteController;
 use Core\Http\Request;
 use Core\Routing\Router;
 return function (Router $router): void {
@@ -139,6 +140,20 @@ $router
     ->post('/comments/{id}/delete', [
         CommentController::class,
         'delete',
+    ]);
+    
+    $router
+    ->middleware('auth')
+    ->post('/comments/{id}/upvote', [
+        CommentVoteController::class,
+        'upvote',
+    ]);
+
+$router
+    ->middleware('auth')
+    ->post('/comments/{id}/downvote', [
+        CommentVoteController::class,
+        'downvote',
     ]);
 
 };

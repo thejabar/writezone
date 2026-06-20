@@ -39,6 +39,7 @@
     <i class="fa-solid fa-moon"></i>
 </button>
     <script
+    defer
     src="/assets/js/theme.js?v=<?= filemtime(
         BASE_PATH . '/public_html/assets/js/theme.js'
     ) ?>"

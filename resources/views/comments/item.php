@@ -16,7 +16,99 @@
             htmlspecialchars($comment->content)
         ) ?>
     </div>
-    <?php if ( \Core\Authentication\Auth::check() ): ?> <form method="POST" action="/comments/<?= $comment->id ?>/reply" > <textarea name="content" placeholder="Write a reply..." required ></textarea> <br><br> <button type="submit"> <i class="fa-solid fa-reply"></i> Reply </button> </form> <?php endif; ?>
-    
-    <?php foreach ( \App\Models\Comment::replies( (int) $comment->id ) as $reply ): ?> <div style=" margin-left: 2rem; margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--border); " > <strong> @<?= htmlspecialchars( $reply->handle ) ?> </strong> <p> <?= nl2br( htmlspecialchars( $reply->content ) ) ?> </p> </div> <?php endforeach; ?>
+    <?php foreach (
+        \App\Models\Comment::replies(
+            (int) $comment->id
+        ) as $reply
+    ): ?>
+        <div class="comment-reply">
+            <div class="writ-header">
+                <strong>
+                    @<?= htmlspecialchars(
+                        $reply->handle
+                    ) ?>
+                </strong>
+                <span class="writ-meta">
+                    <?= htmlspecialchars(
+                        $reply->created_at
+                    ) ?>
+                </span>
+            </div>
+            <div class="writ-content">
+                <?= nl2br(
+                    htmlspecialchars(
+                        $reply->content
+                    )
+                ) ?>
+            </div>
+            <?php if (
+                \Core\Authentication\Auth::check()
+                && \Core\Authentication\Auth::id()
+                    === (int) $reply->user_id
+            ): ?>
+                <div class="comment-actions">
+                    <a
+                        href="/comments/<?= $reply->id ?>/edit"
+                        class="icon-button"
+                        title="Edit reply"
+                    >
+                        <i class="fa-regular fa-pen-to-square"></i>
+                    </a>
+                    <form
+                        method="POST"
+                        action="/comments/<?= $reply->id ?>/delete"
+                    >
+                        <button
+                            type="submit"
+                            class="icon-button danger"
+                            title="Delete reply"
+                        >
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </form>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endforeach; ?>
+    <div class="comment-actions">
+        <?php if (
+            \Core\Authentication\Auth::check()
+        ): ?>
+            <button
+                type="button"
+                class="icon-button reply-toggle"
+                title="Reply"
+                aria-label="Reply"
+            >
+                <i class="fa-solid fa-reply"></i>
+            </button>
+        <?php endif; ?>
+        <?php if (
+            \Core\Authentication\Auth::check()
+            && \Core\Authentication\Auth::id()
+                === (int) $comment->user_id
+        ): ?>
+            <a
+                href="/comments/<?= $comment->id ?>/edit"
+                class="icon-button"
+                title="Edit comment"
+                aria-label="Edit comment"
+            >
+                <i class="fa-regular fa-pen-to-square"></i>
+            </a>
+            <form
+                method="POST"
+                action="/comments/<?= $comment->id ?>/delete"
+            >
+                <button
+                    type="submit"
+                    class="icon-button danger"
+                    title="Delete comment"
+                    aria-label="Delete comment"
+                >
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </form>
+        <?php endif; ?>
+    </div>
 </article>

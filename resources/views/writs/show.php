@@ -43,19 +43,27 @@
         === (int) $writ->user_id
 ): ?>
     <hr>
-    <p>
-        <a href="/writs/<?= htmlspecialchars($writ->public_id) ?>/edit">
-            <i class="fa-regular fa-pen-to-square"></i>
-            Edit
-        </a>
-    </p>
+    <div class="writ-actions">
+    <a
+        href="/writs/<?= htmlspecialchars($writ->public_id) ?>/edit"
+        class="icon-button"
+        title="Edit writ"
+        aria-label="Edit writ"
+    >
+        <i class="fa-regular fa-pen-to-square"></i>
+    </a>
     <form
         method="POST"
         action="/writs/<?= htmlspecialchars($writ->public_id) ?>/delete"
     >
-        <button type="submit">
+        <button
+            type="submit"
+            class="icon-button danger"
+            title="Delete writ"
+            aria-label="Delete writ"
+        >
             <i class="fa-regular fa-trash-can"></i>
-            Delete
         </button>
     </form>
+</div>
 <?php endif; ?>

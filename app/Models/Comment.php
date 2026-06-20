@@ -61,11 +61,33 @@ class Comment extends Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
     public static function belongsToUser(
-        int $commentId,
-        int $userId
-    ): bool {
-        $comment = static::find($commentId);
-        return $comment !== null
-            && (int) $comment->user_id === $userId;
-    }
+    int $commentId,
+    int $userId
+): bool {
+    $comment = static::find($commentId);
+    return $comment !== null
+        && (int) $comment->user_id === $userId;
+}
+public static function findWithAuthor(
+    int $id
+): ?object {
+    $pdo = Connection::getInstance();
+    $stmt = $pdo->prepare("
+        SELECT
+            c.*,
+            u.handle,
+            u.username,
+            u.display_name
+        FROM comments c
+        INNER JOIN users u
+            ON u.id = c.user_id
+        WHERE c.id = :id
+        LIMIT 1
+    ");
+    $stmt->execute([
+        'id' => $id,
+    ]);
+    return $stmt->fetch(PDO::FETCH_OBJ)
+        ?: null;
+}
 }

@@ -101,5 +101,44 @@ return function (Router $router): void {
         CommentController::class,
         'reply',
     ]);
+    
+    $router
+    ->middleware('auth')
+    ->get('/comments/{id}/edit', [
+        CommentController::class,
+        'edit',
+    ]);
+$router
+    ->middleware('auth')
+    ->post('/comments/{id}/update', [
+        CommentController::class,
+        'update',
+    ]);
+    
+    $router
+    ->middleware('auth')
+    ->post('/comments/{id}/delete', [
+        CommentController::class,
+        'delete',
+    ]);
+    
+    $router
+    ->middleware('auth')
+    ->get('/comments/{id}/edit', [
+        CommentController::class,
+        'edit',
+    ]);
+$router
+    ->middleware('auth')
+    ->post('/comments/{id}/update', [
+        CommentController::class,
+        'update',
+    ]);
+$router
+    ->middleware('auth')
+    ->post('/comments/{id}/delete', [
+        CommentController::class,
+        'delete',
+    ]);
 
 };

@@ -53,17 +53,24 @@
         <i class="fa-regular fa-pen-to-square"></i>
     </a>
     <form
-        method="POST"
-        action="/writs/<?= htmlspecialchars($writ->public_id) ?>/delete"
+    method="POST"
+    action="/writs/<?= htmlspecialchars($writ->public_id) ?>/delete"
+    onsubmit="return confirm(
+        'Delete this writ permanently?'
+    );"
+>
+
+    <button
+        type="submit"
+        class="icon-button danger"
+        title="Delete writ"
+        aria-label="Delete writ"
     >
-        <button
-            type="submit"
-            class="icon-button danger"
-            title="Delete writ"
-            aria-label="Delete writ"
-        >
-            <i class="fa-regular fa-trash-can"></i>
-        </button>
-    </form>
+
+        <i class="fa-regular fa-trash-can"></i>
+
+    </button>
+
+</form>
 </div>
 <?php endif; ?>

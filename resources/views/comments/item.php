@@ -51,17 +51,22 @@
                         href="/comments/<?= $reply->id ?>/edit"
                         class="icon-button"
                         title="Edit reply"
+                        aria-label="Edit reply"
                     >
                         <i class="fa-regular fa-pen-to-square"></i>
                     </a>
                     <form
                         method="POST"
                         action="/comments/<?= $reply->id ?>/delete"
+                        onsubmit="return confirm(
+                            'Delete this reply permanently?'
+                        );"
                     >
                         <button
                             type="submit"
                             class="icon-button danger"
                             title="Delete reply"
+                            aria-label="Delete reply"
                         >
                             <i class="fa-regular fa-trash-can"></i>
                         </button>
@@ -99,6 +104,9 @@
             <form
                 method="POST"
                 action="/comments/<?= $comment->id ?>/delete"
+                onsubmit="return confirm(
+                    'Delete this comment permanently?'
+                );"
             >
                 <button
                     type="submit"

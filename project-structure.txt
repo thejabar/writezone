@@ -1,0 +1,185 @@
+.
+├── app
+│   ├── Controllers
+│   │   ├── AuthController.php
+│   │   ├── CommentController.php
+│   │   ├── CommentVoteController.php
+│   │   ├── HomeController.php
+│   │   ├── ProfileController.php
+│   │   └── WritController.php
+│   ├── Events
+│   ├── Helpers
+│   │   ├── flash.php
+│   │   └── helpers.php
+│   ├── Jobs
+│   ├── Middleware
+│   │   ├── AuthMiddleware.php
+│   │   └── GuestMiddleware.php
+│   ├── Models
+│   │   ├── Comment.php
+│   │   ├── CommentVote.php
+│   │   ├── User.php
+│   │   └── Writ.php
+│   ├── Notifications
+│   ├── Policies
+│   ├── Repositories
+│   ├── Requests
+│   ├── Services
+│   │   └── GreetingService.php
+│   └── ViewModels
+├── bootstrap
+│   ├── app.php
+│   └── container.php
+├── composer.json
+├── composer.lock
+├── config
+│   ├── app.php
+│   ├── cache.php
+│   ├── database.php
+│   ├── features.php
+│   ├── queue.php
+│   ├── security.php
+│   ├── session.php
+│   └── storage.php
+├── core
+│   ├── AI
+│   ├── Authentication
+│   │   └── Auth.php
+│   ├── Authorization
+│   ├── Cache
+│   ├── Container
+│   │   └── Container.php
+│   ├── Database
+│   │   ├── Connection.php
+│   │   ├── Migrator.php
+│   │   ├── Model.php
+│   │   └── QueryBuilder.php
+│   ├── Http
+│   │   ├── Middleware
+│   │   │   ├── MiddlewareInterface.php
+│   │   │   └── MiddlewarePipeline.php
+│   │   ├── Request.php
+│   │   └── Response.php
+│   ├── Queue
+│   ├── Routing
+│   │   └── Router.php
+│   ├── Security
+│   ├── Session
+│   │   └── Session.php
+│   ├── Storage
+│   └── Validation
+├── database
+│   ├── factories
+│   ├── migrations
+│   │   ├── 2025_01_01_000000_create_migrations_table.php
+│   │   ├── 2025_01_01_000001_create_users_table.php
+│   │   └── 2025_01_01_000002_create_writs_table.php
+│   └── seeders
+├── migrate.php
+├── project-structure.txt
+├── public_html
+│   ├── assets
+│   │   ├── css
+│   │   │   └── app.css
+│   │   └── js
+│   │       └── theme.js
+│   ├── index.php
+│   ├── robots.txt
+│   └── uploads
+├── resources
+│   ├── css
+│   ├── icons
+│   ├── images
+│   ├── js
+│   └── views
+│       ├── auth
+│       │   ├── login.php
+│       │   └── register.php
+│       ├── comments
+│       │   ├── edit.php
+│       │   ├── form.php
+│       │   └── item.php
+│       ├── dashboard
+│       │   └── index.php
+│       ├── layouts
+│       │   └── app.php
+│       ├── partials
+│       │   ├── footer.php
+│       │   ├── header.php
+│       │   └── navbar.php
+│       ├── profile
+│       │   └── show.php
+│       └── writs
+│           ├── create.php
+│           ├── edit.php
+│           ├── index.php
+│           └── show.php
+├── routes
+│   ├── admin.php
+│   ├── api.php
+│   ├── auth.php
+│   └── web.php
+├── storage
+│   ├── cache
+│   ├── logs
+│   ├── sessions
+│   ├── temp
+│   └── uploads
+├── tests
+└── vendor
+    ├── autoload.php
+    ├── composer
+    │   ├── autoload_classmap.php
+    │   ├── autoload_files.php
+    │   ├── autoload_namespaces.php
+    │   ├── autoload_psr4.php
+    │   ├── autoload_real.php
+    │   ├── autoload_static.php
+    │   ├── ClassLoader.php
+    │   ├── installed.json
+    │   ├── installed.php
+    │   ├── InstalledVersions.php
+    │   ├── LICENSE
+    │   └── platform_check.php
+    ├── graham-campbell
+    │   └── result-type
+    │       ├── composer.json
+    │       ├── LICENSE
+    │       └── src
+    ├── phpoption
+    │   └── phpoption
+    │       ├── composer.json
+    │       ├── LICENSE
+    │       └── src
+    ├── symfony
+    │   ├── polyfill-ctype
+    │   │   ├── bootstrap80.php
+    │   │   ├── bootstrap.php
+    │   │   ├── composer.json
+    │   │   ├── Ctype.php
+    │   │   ├── LICENSE
+    │   │   └── README.md
+    │   ├── polyfill-mbstring
+    │   │   ├── bootstrap72.php
+    │   │   ├── bootstrap80.php
+    │   │   ├── bootstrap.php
+    │   │   ├── composer.json
+    │   │   ├── LICENSE
+    │   │   ├── Mbstring.php
+    │   │   ├── README.md
+    │   │   └── Resources
+    │   └── polyfill-php80
+    │       ├── bootstrap.php
+    │       ├── composer.json
+    │       ├── LICENSE
+    │       ├── Php80.php
+    │       ├── PhpToken.php
+    │       ├── README.md
+    │       └── Resources
+    └── vlucas
+        └── phpdotenv
+            ├── composer.json
+            ├── LICENSE
+            └── src
+
+77 directories, 105 files

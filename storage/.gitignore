@@ -1,0 +1,7 @@
+*
+!.gitignore
+!cache/
+!logs/
+!sessions/
+!temp/
+!uploads/

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Controllers;
 use App\Models\Comment;
+use App\Models\Notification;
 use App\Models\Writ;
 use Core\Authentication\Auth;
 use Core\Http\Request;
@@ -88,6 +89,16 @@ class CommentController
             'parent_id' => (int) $parent->id,
             'content'   => $content,
         ]);
+        if (
+            (int) $parent->user_id !== (int) Auth::id()
+        ) {
+            Notification::create([
+                'user_id'      => (int) $parent->user_id,
+                'actor_id'     => (int) Auth::id(),
+                'type'         => 'reply_created',
+                'reference_id' => (int) $parent->id,
+            ]);
+        }
         flash(
             'success',
             'Reply added successfully.'

@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 use App\Controllers\AuthController;
-use App\Controllers\HomeController;
-use App\Controllers\ProfileController;
-use App\Controllers\WritController;
 use App\Controllers\CommentController;
 use App\Controllers\CommentVoteController;
+use App\Controllers\HomeController;
+use App\Controllers\NotificationController;
+use App\Controllers\ProfileController;
+use App\Controllers\WritController;
 use Core\Http\Request;
 use Core\Routing\Router;
 return function (Router $router): void {
@@ -84,76 +85,56 @@ return function (Router $router): void {
         WritController::class,
         'show',
     ]);
-    
-    $router
-    ->middleware('auth')
-    ->post('/writs/{id}/comments', [
-        CommentController::class,
-        'store',
-    ]);
     $router->get('/@{handle}', [
         ProfileController::class,
         'show',
     ]);
-    
     $router
-    ->middleware('auth')
-    ->post('/comments/{id}/reply', [
-        CommentController::class,
-        'reply',
-    ]);
-    
+        ->middleware('auth')
+        ->post('/writs/{id}/comments', [
+            CommentController::class,
+            'store',
+        ]);
     $router
-    ->middleware('auth')
-    ->get('/comments/{id}/edit', [
-        CommentController::class,
-        'edit',
-    ]);
-$router
-    ->middleware('auth')
-    ->post('/comments/{id}/update', [
-        CommentController::class,
-        'update',
-    ]);
-    
+        ->middleware('auth')
+        ->post('/comments/{id}/reply', [
+            CommentController::class,
+            'reply',
+        ]);
     $router
-    ->middleware('auth')
-    ->post('/comments/{id}/delete', [
-        CommentController::class,
-        'delete',
-    ]);
-    
+        ->middleware('auth')
+        ->get('/comments/{id}/edit', [
+            CommentController::class,
+            'edit',
+        ]);
     $router
-    ->middleware('auth')
-    ->get('/comments/{id}/edit', [
-        CommentController::class,
-        'edit',
-    ]);
-$router
-    ->middleware('auth')
-    ->post('/comments/{id}/update', [
-        CommentController::class,
-        'update',
-    ]);
-$router
-    ->middleware('auth')
-    ->post('/comments/{id}/delete', [
-        CommentController::class,
-        'delete',
-    ]);
-    
+        ->middleware('auth')
+        ->post('/comments/{id}/update', [
+            CommentController::class,
+            'update',
+        ]);
     $router
-    ->middleware('auth')
-    ->post('/comments/{id}/upvote', [
-        CommentVoteController::class,
-        'upvote',
-    ]);
-
-$router
-    ->middleware('auth')
-    ->post('/comments/{id}/downvote', [
-        CommentVoteController::class,
-        'downvote',
-    ]);
-
+        ->middleware('auth')
+        ->post('/comments/{id}/delete', [
+            CommentController::class,
+            'delete',
+        ]);
+    $router
+        ->middleware('auth')
+        ->post('/comments/{id}/upvote', [
+            CommentVoteController::class,
+            'upvote',
+        ]);
+    $router
+        ->middleware('auth')
+        ->post('/comments/{id}/downvote', [
+            CommentVoteController::class,
+            'downvote',
+        ]);
+    $router
+        ->middleware('auth')
+        ->get('/notifications', [
+            NotificationController::class,
+            'index',
+        ]);
 };

@@ -10,6 +10,22 @@
     ) ?>
 </p>
 <hr>
+<?php if (
+    \Core\Authentication\Auth::check()
+): ?>
+    <form
+        method="POST"
+        action="/bookmarks/<?= htmlspecialchars(
+            $writ->public_id
+        ) ?>"
+    >
+        <button type="submit">
+            <i class="fa-solid fa-bookmark"></i>
+            Save Bookmark
+        </button>
+    </form>
+    <hr>
+<?php endif; ?>
 <h2>
     <i class="fa-solid fa-comments"></i>
     Discussion
@@ -33,8 +49,12 @@
 <hr>
 <small>
     <i class="fa-solid fa-hashtag"></i>
-    <a href="/writs/<?= htmlspecialchars($writ->public_id) ?>">
-        <?= htmlspecialchars($writ->public_id) ?>
+    <a href="/writs/<?= htmlspecialchars(
+        $writ->public_id
+    ) ?>">
+        <?= htmlspecialchars(
+            $writ->public_id
+        ) ?>
     </a>
 </small>
 <?php if (
@@ -44,33 +64,33 @@
 ): ?>
     <hr>
     <div class="writ-actions">
-    <a
-        href="/writs/<?= htmlspecialchars($writ->public_id) ?>/edit"
-        class="icon-button"
-        title="Edit writ"
-        aria-label="Edit writ"
-    >
-        <i class="fa-regular fa-pen-to-square"></i>
-    </a>
-    <form
-    method="POST"
-    action="/writs/<?= htmlspecialchars($writ->public_id) ?>/delete"
-    onsubmit="return confirm(
-        'Delete this writ permanently?'
-    );"
->
-
-    <button
-        type="submit"
-        class="icon-button danger"
-        title="Delete writ"
-        aria-label="Delete writ"
-    >
-
-        <i class="fa-regular fa-trash-can"></i>
-
-    </button>
-
-</form>
-</div>
+        <a
+            href="/writs/<?= htmlspecialchars(
+                $writ->public_id
+            ) ?>/edit"
+            class="icon-button"
+            title="Edit writ"
+            aria-label="Edit writ"
+        >
+            <i class="fa-regular fa-pen-to-square"></i>
+        </a>
+        <form
+            method="POST"
+            action="/writs/<?= htmlspecialchars(
+                $writ->public_id
+            ) ?>/delete"
+            onsubmit="return confirm(
+                'Delete this writ permanently?'
+            );"
+        >
+            <button
+                type="submit"
+                class="icon-button danger"
+                title="Delete writ"
+                aria-label="Delete writ"
+            >
+                <i class="fa-regular fa-trash-can"></i>
+            </button>
+        </form>
+    </div>
 <?php endif; ?>

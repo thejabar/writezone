@@ -1,20 +1,18 @@
 <?php
-
 declare(strict_types=1);
-
 namespace App\Controllers;
-
-use App\Services\GreetingService;
+use App\Models\Writ;
 use Core\Http\Request;
-
 class HomeController
 {
-    public function __construct(
-        private GreetingService $greeting
-    ) {}
-
-    public function index(Request $request): string
-    {
-        return $this->greeting->message();
+    public function index(
+        Request $request
+    ): string {
+        return view(
+            'home.index',
+            [
+                'writs' => Writ::feed(),
+            ]
+        );
     }
 }

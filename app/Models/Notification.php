@@ -21,20 +21,25 @@ class Notification extends Model
         return (int) $stmt->fetchColumn();
     }
     public static function forUser(
-        int $userId
-    ): array {
-        $db = Connection::getInstance();
-        $stmt = $db->prepare(
-            'SELECT *
-             FROM notifications
-             WHERE user_id = ?
-             ORDER BY created_at DESC'
-        );
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll(
-            PDO::FETCH_OBJ
-        );
-    }
+    int $userId
+): array {
+    $db = Connection::getInstance();
+    $stmt = $db->prepare(
+        'SELECT
+            notifications.*,
+            users.handle,
+            users.username
+         FROM notifications
+         LEFT JOIN users
+            ON users.id = notifications.actor_id
+         WHERE notifications.user_id = ?
+         ORDER BY notifications.created_at DESC'
+    );
+    $stmt->execute([$userId]);
+    return $stmt->fetchAll(
+        PDO::FETCH_OBJ
+    );
+}
     public static function markAllRead(
         int $userId
     ): void {

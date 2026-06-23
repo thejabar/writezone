@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
+use App\Controllers\BookmarkController;
 use App\Controllers\AuthController;
 use App\Controllers\CommentController;
 use App\Controllers\CommentVoteController;
 use App\Controllers\HomeController;
+use App\Controllers\FollowController;
 use App\Controllers\NotificationController;
 use App\Controllers\ProfileController;
 use App\Controllers\WritController;
@@ -132,9 +134,29 @@ return function (Router $router): void {
             'downvote',
         ]);
     $router
+    ->middleware('auth')
+    ->post('/follow/{id}', [
+        FollowController::class,
+        'follow',
+    ]);
+    $router
         ->middleware('auth')
         ->get('/notifications', [
             NotificationController::class,
             'index',
         ]);
+    $router
+    ->middleware('auth')
+    ->post('/bookmarks/{id}', [
+        BookmarkController::class,
+        'store',
+    ]);
+
+$router
+    ->middleware('auth')
+    ->get('/bookmarks', [
+        BookmarkController::class,
+        'index',
+    ]);
+
 };

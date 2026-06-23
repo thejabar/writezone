@@ -14,7 +14,23 @@
                 <?php if (
                     $notification->type === 'reply_created'
                 ): ?>
-                    Someone replied to your comment.
+                    <strong>
+                        @<?= htmlspecialchars(
+                            $notification->handle
+                            ?? $notification->username
+                        ) ?>
+                    </strong>
+                    replied to your comment.
+                <?php elseif (
+                    $notification->type === 'user_followed'
+                ): ?>
+                    <strong>
+                        @<?= htmlspecialchars(
+                            $notification->handle
+                            ?? $notification->username
+                        ) ?>
+                    </strong>
+                    followed you.
                 <?php else: ?>
                     Notification received.
                 <?php endif; ?>

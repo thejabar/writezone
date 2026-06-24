@@ -83,11 +83,9 @@ use Core\Authentication\Auth;
                 </span>
             </div>
             <div class="writ-content">
-                <?= nl2br(
-                    htmlspecialchars(
-                        $writ->content
-                    )
-                ) ?>
+                <?= \App\Services\MentionService::render(
+    $writ->content
+) ?>
             </div>
             <div class="writ-actions">
                 <a href="/writs/<?= htmlspecialchars(

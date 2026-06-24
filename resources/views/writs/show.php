@@ -5,9 +5,9 @@
     </a>
 </p>
 <p>
-    <?= nl2br(
-        htmlspecialchars($writ->content)
-    ) ?>
+    <?= \App\Services\MentionService::render(
+    $writ->content
+) ?>
 </p>
 <hr>
 <?php if (

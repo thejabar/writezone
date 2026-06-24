@@ -12,9 +12,9 @@
         </span>
     </div>
     <div class="writ-content">
-        <?= nl2br(
-            htmlspecialchars($comment->content)
-        ) ?>
+        <?= \App\Services\MentionService::render(
+    $comment->content
+) ?>
     </div>
     <?php if (\Core\Authentication\Auth::check()): ?>
         <?php
@@ -46,11 +46,9 @@
                 </span>
             </div>
             <div class="writ-content">
-                <?= nl2br(
-                    htmlspecialchars(
-                        $reply->content
-                    )
-                ) ?>
+              <?= \App\Services\MentionService::render(
+    $reply->content
+) ?>
             </div>
             <?php if (
                 \Core\Authentication\Auth::check()

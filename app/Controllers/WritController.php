@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 use App\Models\Comment;
 use App\Models\Writ;
+use App\Services\MentionService;
 use Core\Authentication\Auth;
 use Core\Http\Request;
 use Core\Http\Response;
@@ -21,26 +22,32 @@ class WritController
         return view('writs.create');
     }
     public function store(
-        Request $request
-    ): void {
-        $content = trim(
-            $request->input('content')
-        );
-        $publicId = Writ::generatePublicId();
-        Writ::create([
-            'public_id' => $publicId,
-            'user_id'   => Auth::id(),
-            'content'   => $content,
-        ]);
-        flash(
-            'success',
-            'Writ published successfully.'
-        );
-        Response::redirect(
-            "/writs/{$publicId}"
-        );
-        return;
-    }
+    Request $request
+): void {
+    $content = trim(
+        $request->input('content')
+    );
+    $publicId = Writ::generatePublicId();
+    $writId = Writ::create([
+        'public_id' => $publicId,
+        'user_id'   => Auth::id(),
+        'content'   => $content,
+    ]);
+    MentionService::notifyMentions(
+        $content,
+        (int) Auth::id(),
+        'mention_writ',
+        $writId
+    );
+    flash(
+        'success',
+        'Writ published successfully.'
+    );
+    Response::redirect(
+        "/writs/{$publicId}"
+    );
+    return;
+}
     public function show(
         Request $request,
         string $id

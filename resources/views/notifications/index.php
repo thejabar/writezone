@@ -31,9 +31,19 @@
                         ) ?>
                     </strong>
                     followed you.
-                <?php else: ?>
-                    Notification received.
-                <?php endif; ?>
+                <?php elseif (
+    $notification->type === 'mention_writ'
+): ?>
+    <strong>
+        @<?= htmlspecialchars(
+            $notification->handle
+            ?? $notification->username
+        ) ?>
+    </strong>
+    mentioned you in a writ.
+<?php else: ?>
+    Notification received.
+<?php endif; ?>
             </div>
             <div class="writ-meta">
                 <?= htmlspecialchars(

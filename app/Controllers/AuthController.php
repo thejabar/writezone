@@ -7,12 +7,14 @@ use Core\Http\Request;
 use Core\Http\Response;
 class AuthController
 {
-    public function showLogin(Request $request): string
-    {
+    public function showLogin(
+        Request $request
+    ): string {
         return view('auth.login');
     }
-    public function login(Request $request): string
-    {
+    public function login(
+        Request $request
+    ): string {
         $user = User::where(
             'email',
             $request->input('email')
@@ -26,21 +28,42 @@ class AuthController
         )) {
             return 'Invalid credentials.';
         }
-        Auth::login((int) $user->id);
-        flash('success', 'Welcome back!');
-        Response::redirect('/dashboard');
+        Auth::login(
+            (int) $user->id
+        );
+        flash(
+            'success',
+            'Welcome back!'
+        );
+        Response::redirect(
+            '/dashboard'
+        );
+        return '';
     }
-    public function showRegister(Request $request): string
-    {
-        return view('auth.register');
+    public function showRegister(
+        Request $request
+    ): string {
+        return view(
+            'auth.register'
+        );
     }
-    public function register(Request $request): string
-    {
+    public function register(
+        Request $request
+    ): string {
+        $username = trim(
+            $request->input('username')
+        );
+        $handle = strtolower(
+            preg_replace(
+                '/[^a-zA-Z0-9_]/',
+                '',
+                $username
+            )
+        );
         $id = User::create([
-            'username' => trim(
-                $request->input('username')
-            ),
-            'email' => trim(
+            'username' => $username,
+            'handle'   => $handle,
+            'email'    => trim(
                 $request->input('email')
             ),
             'password' => password_hash(
@@ -48,20 +71,29 @@ class AuthController
                 PASSWORD_DEFAULT
             ),
         ]);
-        Auth::login((int) $id);
+        Auth::login(
+            (int) $id
+        );
         flash(
             'success',
             'Account created successfully.'
         );
-        Response::redirect('/dashboard');
+        Response::redirect(
+            '/dashboard'
+        );
+        return '';
     }
-    public function logout(Request $request): string
-    {
+    public function logout(
+        Request $request
+    ): string {
         Auth::logout();
         flash(
             'success',
             'You have been signed out.'
         );
-        Response::redirect('/');
+        Response::redirect(
+            '/'
+        );
+        return '';
     }
 }

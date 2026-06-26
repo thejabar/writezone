@@ -52,12 +52,19 @@ class MentionService
             if ((int) $user->id === $actorId) {
                 continue;
             }
-            Notification::create([
-                'user_id'      => (int) $user->id,
-                'actor_id'     => $actorId,
-                'type'         => $type,
-                'reference_id' => $referenceId,
-            ]);
+            $commentId = Comment::create([
+    'writ_id'   => (int) $writ->id,
+    'user_id'   => Auth::id(),
+    'parent_id' => null,
+    'content'   => $content,
+]);
+
+MentionService::notifyMentions(
+    $content,
+    (int) Auth::id(),
+    'mention_comment',
+    $commentId
+);
         }
     }
 }

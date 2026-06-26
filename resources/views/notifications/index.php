@@ -41,6 +41,26 @@
         ) ?>
     </strong>
     mentioned you in a writ.
+<?php elseif (
+    $notification->type === 'mention_comment'
+): ?>
+    <strong>
+        @<?= htmlspecialchars(
+            $notification->handle
+            ?? $notification->username
+        ) ?>
+    </strong>
+    mentioned you in a comment.
+<?php elseif (
+    $notification->type === 'mention_reply'
+): ?>
+    <strong>
+        @<?= htmlspecialchars(
+            $notification->handle
+            ?? $notification->username
+        ) ?>
+    </strong>
+    mentioned you in a reply.
 <?php else: ?>
     Notification received.
 <?php endif; ?>

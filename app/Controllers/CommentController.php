@@ -83,12 +83,19 @@ class CommentController
             );
             return;
         }
-        Comment::create([
-            'writ_id'   => (int) $parent->writ_id,
-            'user_id'   => Auth::id(),
-            'parent_id' => (int) $parent->id,
-            'content'   => $content,
-        ]);
+        $replyId = Comment::create([
+    'writ_id'   => (int) $parent->writ_id,
+    'user_id'   => Auth::id(),
+    'parent_id' => (int) $parent->id,
+    'content'   => $content,
+]);
+
+MentionService::notifyMentions(
+    $content,
+    (int) Auth::id(),
+    'mention_reply',
+    $replyId
+);
         if (
             (int) $parent->user_id !== (int) Auth::id()
         ) {

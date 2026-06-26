@@ -102,4 +102,31 @@ class Writ extends Model
         return $writ !== null
             && (int) $writ->user_id === $userId;
     }
+    
+    public static function search(
+    string $query
+): array {
+    $pdo = Connection::getInstance();
+    $stmt = $pdo->prepare("
+        SELECT
+            w.*,
+            u.handle,
+            u.username,
+            u.display_name
+        FROM writs w
+        INNER JOIN users u
+            ON u.id = w.user_id
+        WHERE
+            w.content LIKE :query
+        ORDER BY
+            w.created_at DESC
+        LIMIT 20
+    ");
+    $stmt->execute([
+        'query' => '%' . $query . '%',
+    ]);
+    return $stmt->fetchAll(
+        PDO::FETCH_OBJ
+    );
+}
 }

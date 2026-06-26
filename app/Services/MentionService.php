@@ -18,7 +18,12 @@ class MentionService
             '<a href="/@$1">@$1</a>',
             $content
         );
-        return nl2br($content);
+        $content = HashtagService::render(
+            $content
+        );
+        return nl2br(
+            $content
+        );
     }
     public static function extractHandles(
         string $content
@@ -52,19 +57,12 @@ class MentionService
             if ((int) $user->id === $actorId) {
                 continue;
             }
-            $commentId = Comment::create([
-    'writ_id'   => (int) $writ->id,
-    'user_id'   => Auth::id(),
-    'parent_id' => null,
-    'content'   => $content,
-]);
-
-MentionService::notifyMentions(
-    $content,
-    (int) Auth::id(),
-    'mention_comment',
-    $commentId
-);
+            Notification::create([
+                'user_id'      => (int) $user->id,
+                'actor_id'     => $actorId,
+                'type'         => $type,
+                'reference_id' => $referenceId,
+            ]);
         }
     }
 }

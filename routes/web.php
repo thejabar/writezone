@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+use App\Controllers\HashtagController;
 use App\Controllers\BookmarkController;
 use App\Controllers\AuthController;
 use App\Controllers\CommentController;
@@ -91,6 +92,15 @@ return function (Router $router): void {
         ProfileController::class,
         'show',
     ]);
+    $router->get('/@{handle}', [
+    ProfileController::class,
+    'show',
+]);
+
+$router->get('/hashtags/{tag}', [
+    HashtagController::class,
+    'show',
+]);
     $router
         ->middleware('auth')
         ->post('/writs/{id}/comments', [

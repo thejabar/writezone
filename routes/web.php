@@ -10,6 +10,7 @@ use App\Controllers\FollowController;
 use App\Controllers\NotificationController;
 use App\Controllers\ProfileController;
 use App\Controllers\WritController;
+use App\Controllers\SearchController;
 use Core\Http\Request;
 use Core\Routing\Router;
 return function (Router $router): void {
@@ -88,6 +89,10 @@ return function (Router $router): void {
         WritController::class,
         'show',
     ]);
+    $router->get('/search', [
+    SearchController::class,
+    'index',
+]);
     $router->get('/@{handle}', [
         ProfileController::class,
         'show',

@@ -11,7 +11,7 @@ class HomeController
         return view(
             'home.index',
             [
-                'writs' => Writ::feed(),
+                'writs' => \App\Services\FeedService::get(),
             ]
         );
     }

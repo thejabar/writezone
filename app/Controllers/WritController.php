@@ -13,7 +13,7 @@ class WritController
         Request $request
     ): string {
         return view('writs.index', [
-            'writs' => Writ::feed(),
+            'writs' => \App\Services\FeedService::get(),
         ]);
     }
     public function create(

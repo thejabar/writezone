@@ -7,6 +7,6 @@ namespace App\Engines\Contracts;
 interface Processor
 {
     public function process(
-        array $data
+        array $payload
     ): array;
 }

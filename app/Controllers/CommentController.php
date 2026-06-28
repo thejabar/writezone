@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 namespace App\Controllers;
+use App\Services\MentionService;
 use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Writ;

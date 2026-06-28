@@ -28,19 +28,6 @@ final class WritPublisher
             $writId
         );
 
-        /*
-         * Next Sprint:
-         *
-         * $dispatcher = new EventDispatcher();
-         *
-         * $dispatcher->dispatch(
-         *     new WritPublished(
-         *         $writId,
-         *         $authorId
-         *     )
-         * );
-         */
-
         return [
             'id'        => $writId,
             'public_id' => $publicId,

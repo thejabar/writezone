@@ -241,3 +241,70 @@ CTO
 WriteZone Architecture
 
 Year One of WriteZone
+
+------------
+The WriteZone Constitution v2
+
+I think we’ve been thinking about the repository.
+
+We should be thinking about the organization.
+
+I believe WriteZone should behave like an engineering institution from day one.
+
+That means we formally establish departments.
+
+⸻
+
+🏛️ The Office of the Founder
+
+Responsible for:
+
+* Vision
+* Long-term direction
+* Culture
+* Community
+* Product philosophy
+* Constitutional amendments
+
+Never responsible for:
+
+* Framework choices
+* Database indexes
+* Internal implementation
+
+Because the Founder protects purpose.
+
+⸻
+
+🏛️ The Office of Architecture
+
+Responsible for:
+
+* System design
+* Scalability
+* Simplicity
+* Engineering standards
+* Blueprints
+* Technical evolution
+
+Never responsible for:
+
+* Changing the vision
+
+Because Architecture serves Vision.
+
+⸻
+
+🏛️ The Office of Engineering
+
+Responsible for:
+
+* Implementation
+* Testing
+* Refactoring
+* Releases
+* Reliability
+
+They don’t invent architecture.
+
+They implement it.

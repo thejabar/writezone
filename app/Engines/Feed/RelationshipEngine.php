@@ -3,19 +3,43 @@
 declare(strict_types=1);
 
 namespace App\Engines\Feed;
+
 use App\Engines\Contracts\Processor;
+use App\Intelligence\Collections\SignalCollection;
+use App\Intelligence\Signals\RelationshipSignal;
+use App\Models\Follow;
 
-class RelationshipEngine
+final class RelationshipEngine implements Processor
 {
-
     public function process(
+        mixed $payload
+    ): mixed {
 
-        array $feed
+        $viewer = $payload['viewer'] ?? null;
+        $writ = $payload['writ'] ?? null;
 
-    ): array {
+        if (! $viewer || ! $writ) {
+            return $payload;
+        }
 
-        return $feed;
+        $signals = $payload['signals'] ?? new SignalCollection();
 
+        if (
+            Follow::isFollowing(
+                (int) $viewer->id,
+                (int) $writ->user_id
+            )
+        ) {
+            $signals->add(
+                new RelationshipSignal(
+                    40,
+                    'Viewer follows author'
+                )
+            );
+        }
+
+        $payload['signals'] = $signals;
+
+        return $payload;
     }
-
 }

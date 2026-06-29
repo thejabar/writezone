@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Engines\Feed\FeedEngine;
 
-class FeedService
+final class FeedService
 {
     public static function get(
         array $payload = []

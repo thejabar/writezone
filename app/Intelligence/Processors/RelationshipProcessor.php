@@ -33,7 +33,7 @@ final class RelationshipProcessor implements Processor
 
             $following = Follow::isFollowing(
                 (int) $viewerId,
-                (int) $candidate->writ->user_id
+                (int) $candidate->item->user_id
             );
 
             $candidate->signals->add(

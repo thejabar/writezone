@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Pipeline;
 
+use App\Engines\Contracts\Processor;
+
 final class Pipeline
 {
     /**
-     * @var Stage[]
+     * @var Processor[]
      */
     private array $stages = [];
 
     public function through(
-        Stage $stage
+        Processor $stage
     ): self {
 
         $this->stages[] = $stage;
@@ -21,8 +23,8 @@ final class Pipeline
     }
 
     public function process(
-        mixed $payload
-    ): mixed {
+        array $payload
+    ): array {
 
         foreach ($this->stages as $stage) {
             $payload = $stage->process($payload);

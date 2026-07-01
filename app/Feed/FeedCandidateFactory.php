@@ -5,28 +5,29 @@ declare(strict_types=1);
 namespace App\Feed;
 
 use App\Intelligence\Collections\SignalCollection;
-use App\Models\Writ;
 
 final class FeedCandidateFactory
 {
     /**
-     * @param Writ[] $writs
+     * @param object[] $rows
      * @return FeedCandidate[]
      */
-    public static function fromWrits(
-        array $writs
+    public static function fromFeed(
+        array $rows,
+        array $metadata = []
     ): array {
 
         return array_map(
 
-            fn (Writ $writ) =>
+            static fn (object $row): FeedCandidate =>
 
                 new FeedCandidate(
-                    writ: $writ,
-                    signals: new SignalCollection()
+                    item: FeedItem::fromRow($row),
+                    signals: new SignalCollection(),
+                    metadata: $metadata
                 ),
 
-            $writs
+            $rows
 
         );
 

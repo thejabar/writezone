@@ -5,15 +5,32 @@ declare(strict_types=1);
 namespace App\Engines\Feed;
 
 use App\Engines\Engine;
+use App\Feed\FeedCandidateFactory;
+use App\Intelligence\Processors\RelationshipProcessor;
 use App\Models\Writ;
+use App\Pipeline\Pipeline;
 
-class FeedEngine extends Engine
+final class FeedEngine extends Engine
 {
     public function execute(
         array $payload = []
     ): array {
 
-        return Writ::feed();
+        $rows = Writ::feed();
+
+        $candidates = FeedCandidateFactory::fromFeed(
+            $rows,
+            $payload
+        );
+
+        $pipeline = (new Pipeline())
+            ->through(
+                new RelationshipProcessor()
+            );
+
+        return $pipeline->process(
+            $candidates
+        );
 
     }
 }

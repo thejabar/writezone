@@ -6,6 +6,7 @@ namespace App\Engines\Feed;
 
 use App\Engines\Engine;
 use App\Feed\FeedCandidateFactory;
+use App\Intelligence\Processors\FreshnessProcessor;
 use App\Intelligence\Processors\RelationshipProcessor;
 use App\Models\Writ;
 use App\Pipeline\Pipeline;
@@ -26,6 +27,9 @@ final class FeedEngine extends Engine
         $pipeline = (new Pipeline())
             ->through(
                 new RelationshipProcessor()
+            )
+            ->through(
+                new FreshnessProcessor()
             );
 
         return $pipeline->process(

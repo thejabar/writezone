@@ -26,10 +26,9 @@ public function show(
     }
     return view('profile.show', [
         'user' => $user,
-        'writs' => Writ::whereAll(
-            'user_id',
-            $user->id
-        ),
+        'writs' => Writ::byUser(
+    (int) $user->id
+),
         'followersCount' =>
             Follow::followersCount(
                 (int) $user->id

@@ -38,7 +38,10 @@ final class RelationshipProcessor implements Processor
 
             $candidate->signals->add(
                 new RelationshipSignal(
-                    $following
+                    value: $following ? 25.0 : 0.0,
+                    reason: $following
+                        ? 'Viewer follows the author.'
+                        : 'Viewer does not follow the author.'
                 )
             );
         }

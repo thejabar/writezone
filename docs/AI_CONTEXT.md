@@ -2095,3 +2095,158 @@ The objective is preserving a coherent architecture that can continue evolving f
 ---
 
 **End of Chapter 8**
+
+---
+
+# Chapter 9
+
+# Decision-Making Framework
+
+## Purpose
+
+Every engineering decision made within WriteZone should follow a consistent reasoning process.
+
+This framework exists to ensure that contributors—whether human or artificial intelligence—arrive at similar architectural conclusions when faced with comparable design problems.
+
+The objective is consistency of thought rather than uniformity of implementation.
+
+---
+
+## Think Before Coding
+
+Implementation should never be the first step.
+
+Every contribution should begin with understanding the problem being solved.
+
+Contributors should ask:
+
+- What is the actual problem?
+- Which architectural layer owns this responsibility?
+- Does an existing abstraction already solve part of this problem?
+- Can the current architecture be extended?
+- Is additional complexity justified?
+
+Only after these questions have been answered should implementation begin.
+
+---
+
+## The WriteZone Decision Order
+
+When evaluating any change, contributors should use the following order of priority:
+
+1. Preserve the platform vision.
+2. Preserve the architecture.
+3. Preserve engineering consistency.
+4. Preserve simplicity.
+5. Preserve maintainability.
+6. Preserve explainability.
+7. Improve implementation.
+
+Features should never come at the expense of these priorities.
+
+---
+
+## Evaluate Existing Components
+
+Before introducing a new class, contributors should evaluate whether the capability naturally belongs within an existing component.
+
+Examples include:
+
+- extending an existing Engine
+- adding another Processor
+- introducing another Signal
+- expanding a Service
+- creating another View
+
+New abstractions should exist only when they introduce meaningful architectural value.
+
+---
+
+## Prefer Independent Components
+
+Independent components are easier to:
+
+- understand
+- test
+- replace
+- document
+- evolve
+
+Whenever possible, functionality should be composed from smaller building blocks rather than concentrated into larger ones.
+
+Loose coupling should remain an architectural objective.
+
+---
+
+## Minimise Future Cost
+
+Every engineering decision has a future maintenance cost.
+
+Before implementing a solution, contributors should consider:
+
+- How difficult will this be to maintain?
+- Will another engineer understand it quickly?
+- Will another AI naturally follow the same pattern?
+- Does this increase technical debt?
+
+The preferred solution is the one that minimises long-term cost while preserving architectural quality.
+
+---
+
+## Respect Existing Decisions
+
+Architectural consistency requires respecting previous decisions.
+
+When a documented pattern already exists, contributors should normally continue using that pattern.
+
+If a previous decision is no longer appropriate, it should be replaced deliberately through an Architecture Decision Record rather than gradually abandoned through inconsistent implementation.
+
+---
+
+## Avoid Premature Optimisation
+
+Performance should be improved through good architecture rather than unnecessary optimisation.
+
+Contributors should optimise only when:
+
+- measurable evidence exists
+- a bottleneck has been identified
+- the optimisation preserves readability
+
+Maintainability remains more valuable than speculative performance improvements.
+
+---
+
+## Continuous Improvement
+
+Every contribution should improve at least one aspect of the repository.
+
+Examples include:
+
+- clearer code
+- better documentation
+- improved naming
+- stronger architecture
+- simpler implementation
+- additional tests
+- improved developer experience
+
+The repository should become incrementally stronger over time.
+
+---
+
+## Decision Framework Summary
+
+The purpose of this framework is not to eliminate creativity.
+
+Its purpose is to ensure that creativity strengthens the architecture instead of fragmenting it.
+
+Well-reasoned decisions accumulate into great software.
+
+Poorly considered decisions accumulate into technical debt.
+
+Every contributor shares responsibility for preserving the long-term health of WriteZone.
+
+---
+
+**End of Chapter 9**

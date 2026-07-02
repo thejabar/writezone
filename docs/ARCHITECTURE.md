@@ -2878,3 +2878,227 @@ By isolating database interaction within Models, the architecture maintains clea
 ---
 
 **End of Chapter 12**
+
+---
+
+# Chapter 13
+
+# View Layer
+
+## Purpose
+
+The View Layer is responsible for presenting prepared information to the user.
+
+Views convert application data into HTML while remaining completely independent of business logic.
+
+The View Layer represents the final stage of the request lifecycle before the response is returned to the browser.
+
+Its responsibility is presentation, not computation.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+resources/views/
+```
+
+### Related
+
+```text
+public_html/assets/
+```
+
+---
+
+## Responsibilities
+
+The View Layer is responsible for:
+
+- rendering HTML
+- displaying prepared data
+- invoking presentation helpers
+- organising layouts
+- presenting user interface components
+
+Views should never execute business workflows.
+
+---
+
+## Current Implementation
+
+The current implementation resides within:
+
+```text
+resources/views/
+```
+
+Current view groups include:
+
+- auth
+- home
+- profile
+- writs
+- notifications
+- search
+- layouts
+- partials
+
+Each view corresponds to a specific presentation responsibility.
+
+---
+
+## Execution Flow
+
+A typical View execution follows this sequence.
+
+```text
+Controller
+
+↓
+
+Prepared Data
+
+↓
+
+View
+
+↓
+
+HTML
+
+↓
+
+Browser
+```
+
+Views consume prepared information.
+
+They should not produce it.
+
+---
+
+## Presentation Logic
+
+Views may perform lightweight presentation tasks such as:
+
+- formatting dates
+- escaping output
+- rendering mentions
+- conditional display
+- looping through collections
+
+Complex calculations should remain outside the View Layer.
+
+---
+
+## Layout System
+
+Views should share common layouts where possible.
+
+Typical shared components include:
+
+- navigation
+- sidebar
+- footer
+- page header
+- reusable UI components
+
+Shared layouts improve consistency across the platform.
+
+---
+
+## Data Ownership
+
+Views should receive complete data structures from Controllers.
+
+Examples include:
+
+- FeedCandidate collections
+- User objects
+- Notification collections
+- Search results
+
+Views should not retrieve additional data independently.
+
+---
+
+## Security
+
+Every View should:
+
+- escape user-generated content
+- prevent XSS vulnerabilities
+- avoid exposing sensitive information
+- present only authorised data
+
+Presentation security is a fundamental responsibility of the View Layer.
+
+---
+
+## Architectural Principles
+
+Views should remain:
+
+- lightweight
+- reusable
+- readable
+- presentation-focused
+- easy to maintain
+
+Business intelligence belongs elsewhere.
+
+---
+
+## Anti-Patterns
+
+Views should never:
+
+- query Models
+- execute SQL
+- invoke Engines
+- coordinate Pipelines
+- calculate Signals
+- perform business validation
+
+Views should only display prepared information.
+
+---
+
+## Future Evolution
+
+Future View enhancements may include:
+
+- reusable UI components
+- server-side rendering improvements
+- progressive enhancement
+- accessibility improvements
+- advanced theming
+- internationalisation
+- component libraries
+
+These enhancements should preserve the separation between presentation and business logic.
+
+---
+
+## Chapter Summary
+
+The View Layer completes the WriteZone request lifecycle.
+
+By limiting Views to presentation responsibilities, the architecture maintains a clear separation between interface, business workflows, intelligence processing, and persistence.
+
+---
+
+**End of Chapter 13**
+
+---
+
+# End of Part II
+
+The Core Application Layers described in this part form the architectural backbone of WriteZone.
+
+Each layer performs one clearly defined responsibility.
+
+Together they provide a modular, scalable, and explainable execution model that supports the platform's long-term evolution.

@@ -310,3 +310,313 @@ When uncertainty exists, contributors should choose the solution that best prese
 ---
 
 **End of Chapter 1**
+
+---
+
+# Chapter 2
+
+# High-Level Architecture
+
+## Purpose
+
+This chapter provides a complete overview of the WriteZone architecture.
+
+Rather than focusing on individual classes or implementation details, it explains how the major architectural layers cooperate to deliver platform functionality.
+
+Every contributor should understand this chapter before working on any subsystem.
+
+---
+
+## Architectural Overview
+
+WriteZone follows a layered architecture where each layer performs one clearly defined responsibility.
+
+Responsibilities flow downward.
+
+Results flow upward.
+
+```text
+                Browser
+                   │
+                   ▼
+              HTTP Request
+                   │
+                   ▼
+                Router
+                   │
+                   ▼
+             Middleware
+                   │
+                   ▼
+             Controller
+                   │
+                   ▼
+               Service
+                   │
+                   ▼
+                Engine
+                   │
+                   ▼
+               Pipeline
+                   │
+                   ▼
+             Processors
+                   │
+                   ▼
+               Signals
+                   │
+                   ▼
+          Signal Collection
+                   │
+                   ▼
+          Enriched Candidate
+                   │
+                   ▼
+          Ranking (Future)
+                   │
+                   ▼
+      Recommendation (Future)
+                   │
+                   ▼
+                View
+                   │
+                   ▼
+               Response
+                   │
+                   ▼
+                Browser
+```
+
+---
+
+## Responsibility Flow
+
+Every layer performs exactly one responsibility.
+
+| Layer | Responsibility |
+|--------|----------------|
+| Router | Route incoming requests |
+| Middleware | Validate and protect requests |
+| Controller | Coordinate execution |
+| Service | Orchestrate business operations |
+| Engine | Execute workflows |
+| Pipeline | Coordinate processors |
+| Processor | Observe and analyse |
+| Signal | Represent evidence |
+| Model | Persist and retrieve data |
+| View | Present prepared information |
+
+No layer should assume responsibilities belonging to another.
+
+---
+
+## Dependency Direction
+
+Dependencies should always move downward.
+
+```text
+Controllers
+
+↓
+
+Services
+
+↓
+
+Engines
+
+↓
+
+Pipelines
+
+↓
+
+Processors
+
+↓
+
+Signals
+
+↓
+
+Models
+```
+
+Lower layers should never depend upon higher layers.
+
+This rule prevents circular dependencies and keeps the architecture maintainable.
+
+---
+
+## Data Flow
+
+During execution, information moves through several stages.
+
+```text
+Database
+
+↓
+
+Models
+
+↓
+
+FeedItem
+
+↓
+
+FeedCandidate
+
+↓
+
+Pipeline
+
+↓
+
+Signals
+
+↓
+
+Enriched Candidate
+
+↓
+
+View
+
+↓
+
+HTML Response
+```
+
+Each transformation adds information while preserving previous observations.
+
+---
+
+## Intelligence Flow
+
+The Intelligence Engine enriches data rather than replacing it.
+
+```text
+Raw Data
+
+↓
+
+Observation
+
+↓
+
+Signal
+
+↓
+
+Signal Collection
+
+↓
+
+Evidence
+
+↓
+
+Ranking
+
+↓
+
+Recommendation
+
+↓
+
+Presentation
+```
+
+This separation allows every intelligent decision to remain explainable.
+
+---
+
+## Current Implementation
+
+The current platform includes the following architectural components:
+
+### Presentation
+
+- Views
+- Layouts
+- Templates
+
+### Application
+
+- Controllers
+- Services
+
+### Workflow
+
+- Engines
+- Pipeline
+
+### Intelligence
+
+- RelationshipProcessor
+- FreshnessProcessor
+- RelationshipSignal
+- FreshnessSignal
+- SignalCollection
+
+### Domain
+
+- FeedItem
+- FeedCandidate
+- FeedCandidateFactory
+
+### Persistence
+
+- Models
+- Database
+
+These components collectively implement the first generation of the WriteZone Intelligence Architecture.
+
+---
+
+## Architectural Characteristics
+
+The current architecture demonstrates:
+
+- Layered design
+- Modular components
+- Explainable intelligence
+- Independent processors
+- Immutable signals
+- Lightweight controllers
+- Workflow orchestration
+- Clear separation of concerns
+
+These characteristics should remain protected.
+
+---
+
+## Extension Points
+
+Future capabilities should integrate into the existing architecture without requiring structural redesign.
+
+Typical extension points include:
+
+- new Engines
+- new Processors
+- new Signals
+- new Services
+- additional Pipelines
+- specialised Candidates
+
+The architecture has been intentionally designed to support gradual expansion.
+
+---
+
+## Chapter Summary
+
+The high-level architecture establishes the structural framework of WriteZone.
+
+Every subsystem described in subsequent chapters fits into this framework.
+
+Contributors should understand this architectural map before examining individual implementation details.
+
+---
+
+**End of Chapter 2**

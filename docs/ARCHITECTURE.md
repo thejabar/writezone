@@ -4458,3 +4458,218 @@ By isolating persistence behind the Model Layer and maintaining a disciplined sc
 
 **End of Chapter 19**
 
+---
+
+# Chapter 20
+
+# Security Architecture
+
+## Purpose
+
+The Security Architecture protects the confidentiality, integrity, and availability of the WriteZone platform.
+
+Security is not a single feature.
+
+It is a cross-cutting architectural responsibility that influences every layer of the application.
+
+Every request, every database operation, every authentication event, and every user interaction should follow secure engineering practices.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+core/Authentication/
+core/Http/Middleware/
+core/Security/
+```
+
+### Related
+
+```text
+app/Controllers/
+app/Models/
+config/
+public_html/
+```
+
+---
+
+## Current Security Stack
+
+The current implementation includes:
+
+- Session Authentication
+- Password Hashing
+- Authentication Middleware
+- Guest Middleware
+- Route Protection
+- PDO Prepared Statements
+- Output Escaping
+- CSRF Protection (planned expansion)
+- Input Validation
+
+These components provide the foundation of WriteZone's security model.
+
+---
+
+## Security Principles
+
+The platform follows the following principles:
+
+- Least Privilege
+- Defence in Depth
+- Secure by Default
+- Fail Securely
+- Explicit Validation
+- Principle of Separation
+
+Security should never depend upon hidden assumptions.
+
+---
+
+## Authentication Security
+
+Identity is verified through authenticated sessions.
+
+Passwords are stored using PHP's secure password hashing functions.
+
+Plain-text passwords are never stored, logged, or transmitted internally.
+
+Authentication information remains isolated from business logic.
+
+---
+
+## Authorization
+
+Authorization determines what an authenticated user is permitted to do.
+
+Examples include:
+
+- editing personal writs
+- deleting owned content
+- following users
+- accessing administrative functionality
+
+Authorization decisions should remain explicit and predictable.
+
+---
+
+## Database Security
+
+Database interaction follows secure practices including:
+
+- prepared statements
+- parameterized queries
+- controlled Model access
+- no direct SQL from Controllers or Views
+
+These practices reduce the risk of SQL injection.
+
+---
+
+## Input Validation
+
+Every external input should be treated as untrusted.
+
+Validation should occur before business processing begins.
+
+Typical validation includes:
+
+- required fields
+- length constraints
+- format validation
+- type validation
+- allowed value checks
+
+Validation failures should produce predictable responses.
+
+---
+
+## Output Encoding
+
+User-generated content should be escaped before rendering.
+
+Current presentation uses functions such as:
+
+```php
+htmlspecialchars()
+```
+
+This reduces the risk of Cross-Site Scripting (XSS).
+
+Output encoding should remain the default behaviour.
+
+---
+
+## Session Security
+
+Sessions should:
+
+- use secure identifiers
+- regenerate identifiers after login
+- expire appropriately
+- avoid storing sensitive information
+
+Future enhancements may include device tracking and session management.
+
+---
+
+## Error Handling
+
+Application errors should never expose:
+
+- SQL queries
+- filesystem paths
+- stack traces
+- credentials
+- internal implementation details
+
+Detailed diagnostic information belongs in application logs rather than user-facing responses.
+
+---
+
+## Future Security Roadmap
+
+Planned enhancements include:
+
+- CSRF token enforcement
+- Content Security Policy (CSP)
+- Security headers
+- Two-Factor Authentication
+- Login anomaly detection
+- Audit logging
+- Device management
+- API authentication
+- Rate limiting enhancements
+- Encryption for sensitive data
+
+These capabilities should integrate with the existing architecture while preserving simplicity.
+
+---
+
+## Architectural Principles
+
+Security should remain:
+
+- proactive
+- layered
+- measurable
+- auditable
+- continuously reviewed
+
+Security is an ongoing engineering responsibility rather than a one-time implementation task.
+
+---
+
+## Chapter Summary
+
+The Security Architecture establishes the defensive foundation of WriteZone.
+
+By embedding security principles into every architectural layer, the platform protects users, preserves trust, and supports long-term sustainable growth.
+
+---
+
+**End of Chapter 20**

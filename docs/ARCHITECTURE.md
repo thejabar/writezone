@@ -3362,3 +3362,294 @@ It represents the first implementation of the architectural principles establish
 
 **End of Chapter 14**
 
+---
+
+# Chapter 15
+
+# Intelligence Architecture
+
+## Purpose
+
+The Intelligence Architecture transforms raw platform data into explainable knowledge.
+
+Rather than relying upon opaque ranking algorithms, WriteZone analyses content through a series of independent observations that generate structured evidence.
+
+This architecture separates observation from decision-making, allowing every intelligent outcome to remain transparent, measurable, and continuously improvable.
+
+The Intelligence Architecture is the defining characteristic of WriteZone.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+app/Intelligence/
+```
+
+### Related
+
+```text
+app/Pipeline/
+app/Feed/
+app/Engines/
+```
+
+---
+
+## Design Philosophy
+
+Traditional social platforms often rely on hidden ranking algorithms.
+
+WriteZone follows a different philosophy.
+
+Instead of asking:
+
+> Which post should appear first?
+
+the platform asks:
+
+> What evidence exists about this content?
+
+Only after evidence has been collected does the platform make intelligent decisions.
+
+This separation improves explainability, experimentation, and long-term maintainability.
+
+---
+
+## Current Intelligence Stack
+
+The current implementation consists of:
+
+- Pipeline
+- Processor Contract
+- RelationshipProcessor
+- FreshnessProcessor
+- Signal Contract
+- RelationshipSignal
+- FreshnessSignal
+- SignalCollection
+
+These components form Generation One of the WriteZone Intelligence Engine.
+
+---
+
+## Intelligence Flow
+
+The current execution model follows this sequence.
+
+```text
+FeedItem
+
+↓
+
+FeedCandidate
+
+↓
+
+Pipeline
+
+↓
+
+RelationshipProcessor
+
+↓
+
+RelationshipSignal
+
+↓
+
+FreshnessProcessor
+
+↓
+
+FreshnessSignal
+
+↓
+
+SignalCollection
+
+↓
+
+Enriched FeedCandidate
+```
+
+The Candidate becomes progressively richer as additional observations are attached.
+
+---
+
+## Candidate-Centric Design
+
+The Candidate is the central object within the Intelligence Engine.
+
+Rather than repeatedly transforming raw database records, WriteZone enriches a Candidate over time.
+
+The Candidate accumulates evidence while preserving its original content.
+
+This design simplifies reasoning about intelligent workflows.
+
+---
+
+## Processor Model
+
+Every Processor answers one specific question.
+
+Examples include:
+
+- Does the viewer follow the author?
+- How recent is the content?
+- Is the content high quality?
+- Is the author trusted?
+- Is the topic relevant?
+
+Processors never make final decisions.
+
+They produce observations.
+
+---
+
+## Signal Model
+
+Signals represent immutable evidence.
+
+Each Signal contains:
+
+- observation name
+- calculated value
+- explanation
+- source
+- metadata
+
+Signals make every intelligent outcome traceable.
+
+---
+
+## Signal Collection
+
+SignalCollection stores every observation generated during execution.
+
+Future ranking systems will evaluate the collection rather than individual Processors.
+
+This separation enables new ranking strategies without modifying existing observations.
+
+---
+
+## Explainability
+
+Every recommendation should eventually answer questions such as:
+
+- Why was this shown?
+- Which observations influenced the ranking?
+- Which Processor generated the evidence?
+- What values contributed to the decision?
+
+Explainability is considered a non-negotiable architectural principle.
+
+---
+
+## Current Processors
+
+Generation One includes:
+
+- RelationshipProcessor
+- FreshnessProcessor
+
+These establish the architectural pattern for all future intelligence modules.
+
+---
+
+## Future Processors
+
+The Intelligence Engine is designed to support many specialised Processors, including:
+
+- QualityProcessor
+- TrustProcessor
+- ReputationProcessor
+- TopicProcessor
+- InterestProcessor
+- DiversityProcessor
+- AuthorityProcessor
+- SpamDetectionProcessor
+- ToxicityProcessor
+- KnowledgeGraphProcessor
+
+Each additional Processor increases intelligence without increasing architectural complexity.
+
+---
+
+## Future Ranking Engine
+
+The next major architectural milestone introduces a Ranking Engine.
+
+The Ranking Engine will evaluate the complete SignalCollection for each Candidate and calculate a transparent ranking score.
+
+Importantly, the Ranking Engine will not generate observations.
+
+It will consume evidence already produced by the Intelligence Engine.
+
+This preserves the separation between observation and decision-making.
+
+---
+
+## Future Recommendation Engine
+
+Above the Ranking Engine will sit the Recommendation Engine.
+
+Responsibilities will include:
+
+- personalised feed ordering
+- content discovery
+- author recommendations
+- topic recommendations
+- knowledge exploration
+
+The Recommendation Engine will build upon existing Signals rather than replacing them.
+
+---
+
+## Architectural Characteristics
+
+The Intelligence Architecture demonstrates:
+
+- explainable intelligence
+- immutable evidence
+- modular analysis
+- deterministic processing
+- extensible workflows
+- reusable observations
+- transparent decision-making
+
+These characteristics should remain protected as the platform evolves.
+
+---
+
+## Long-Term Vision
+
+The long-term objective is to evolve WriteZone into an explainable knowledge platform.
+
+Rather than optimising solely for engagement, the Intelligence Engine should optimise for:
+
+- relevance
+- quality
+- trust
+- discovery
+- learning
+- knowledge preservation
+
+Every future intelligence capability should reinforce these objectives.
+
+---
+
+## Chapter Summary
+
+The Intelligence Architecture defines how WriteZone transforms information into knowledge.
+
+By separating observation, evidence, ranking, and recommendation into independent architectural layers, the platform achieves transparency, flexibility, and long-term scalability.
+
+This architecture forms the foundation upon which every future intelligent capability of WriteZone will be built.
+
+---
+
+**End of Chapter 15**
+

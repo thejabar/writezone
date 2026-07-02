@@ -1863,3 +1863,202 @@ By centralising orchestration within Services, WriteZone maintains lightweight C
 ---
 
 **End of Chapter 7**
+
+---
+
+# Chapter 8
+
+# Engine Layer
+
+## Purpose
+
+The Engine Layer represents one of the defining architectural characteristics of WriteZone.
+
+Engines execute complete business workflows.
+
+Unlike Services, which coordinate business operations, Engines encapsulate the detailed execution of a workflow.
+
+An Engine transforms a business objective into a sequence of well-defined execution steps.
+
+This separation allows workflows to evolve independently while keeping Controllers and Services lightweight.
+
+---
+
+## Responsibilities
+
+The Engine Layer is responsible for:
+
+- executing business workflows
+- coordinating Pipelines
+- preparing domain objects
+- orchestrating processing stages
+- returning enriched results
+
+Engines should avoid presentation logic and direct HTTP concerns.
+
+---
+
+## Current Implementation
+
+Engines reside within:
+
+```text
+app/Engines/
+```
+
+Current implementation includes:
+
+- FeedEngine
+
+Future Engines are expected to include:
+
+- RecommendationEngine
+- SearchEngine
+- ReputationEngine
+- NotificationEngine
+- ModerationEngine
+
+Each Engine should represent one complete workflow.
+
+---
+
+## Execution Flow
+
+A typical Engine execution follows this pattern.
+
+```text
+Service
+
+↓
+
+Engine
+
+↓
+
+Retrieve Data
+
+↓
+
+Create Domain Objects
+
+↓
+
+Execute Pipeline
+
+↓
+
+Return Enriched Result
+```
+
+The Engine owns the workflow.
+
+Individual processing steps remain delegated to lower architectural layers.
+
+---
+
+## Feed Engine
+
+The FeedEngine represents the first implementation of this architectural pattern.
+
+Its current workflow includes:
+
+1. Retrieve feed records.
+2. Construct FeedItem objects.
+3. Construct FeedCandidate objects.
+4. Execute the Intelligence Pipeline.
+5. Return enriched FeedCandidates.
+
+The FeedEngine performs orchestration rather than analysis.
+
+---
+
+## Workflow Ownership
+
+Each Engine owns one business workflow.
+
+Examples include:
+
+- generating a feed
+- producing recommendations
+- ranking search results
+- calculating reputation
+- delivering notifications
+
+Workflow ownership should never be distributed across multiple unrelated classes.
+
+---
+
+## Pipeline Integration
+
+Engines coordinate Pipelines.
+
+They determine:
+
+- which Pipeline executes
+- which Candidates enter the Pipeline
+- which results are returned
+
+Pipelines remain reusable and independent of individual Engines.
+
+---
+
+## Domain Object Creation
+
+Engines are responsible for constructing workflow-specific domain objects.
+
+Examples include:
+
+- FeedItem
+- FeedCandidate
+
+Future workflows may introduce additional domain objects while preserving the same architectural pattern.
+
+---
+
+## Architectural Principles
+
+Engines should remain:
+
+- cohesive
+- deterministic
+- reusable
+- explainable
+- independently testable
+
+Each Engine should expose one clear business capability.
+
+---
+
+## Anti-Patterns
+
+Engines should never:
+
+- render Views
+- manipulate HTTP requests
+- execute SQL directly
+- implement Processor logic
+- calculate individual Signals
+
+Those responsibilities belong to dedicated architectural layers.
+
+---
+
+## Future Evolution
+
+As WriteZone evolves, Engines will become the primary orchestration layer for all major platform capabilities.
+
+Future workflows should normally begin by introducing a new Engine before implementing supporting Processors and Signals.
+
+This approach preserves consistency across the platform.
+
+---
+
+## Chapter Summary
+
+The Engine Layer transforms business objectives into structured execution workflows.
+
+By separating orchestration from analysis and presentation, Engines provide a scalable foundation capable of supporting increasingly sophisticated platform behaviour without sacrificing architectural clarity.
+
+---
+
+**End of Chapter 8**

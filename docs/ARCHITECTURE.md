@@ -4867,3 +4867,206 @@ By treating performance as a continuous engineering discipline rather than a fin
 ---
 
 **End of Chapter 21**
+
+---
+
+# Chapter 22
+
+# Scalability Strategy
+
+## Purpose
+
+The Scalability Strategy defines how WriteZone is expected to grow while preserving its architectural integrity.
+
+Scalability extends beyond supporting more users.
+
+It includes accommodating increasing data volumes, new platform capabilities, larger engineering teams, and more sophisticated intelligence systems.
+
+The objective is to ensure that growth can occur through extension rather than architectural redesign.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+app/
+core/
+```
+
+### Related
+
+```text
+config/
+database/
+docs/
+```
+
+---
+
+## Current Deployment
+
+The current production environment consists of:
+
+- Hostinger Shared Hosting
+- Apache Web Server
+- PHP 8.2
+- MariaDB
+- Custom MVC Framework
+
+This environment supports the current stage of platform development while providing a clear migration path to larger infrastructure.
+
+---
+
+## Scalability Principles
+
+WriteZone follows these principles:
+
+- modular architecture
+- separation of concerns
+- independent components
+- horizontal extensibility
+- incremental evolution
+- minimal coupling
+
+Every architectural layer should support future growth without requiring widespread modification.
+
+---
+
+## Application Scalability
+
+The layered architecture enables the application to scale by introducing new components rather than modifying existing ones.
+
+Examples include:
+
+- additional Controllers
+- additional Services
+- additional Engines
+- additional Pipelines
+- additional Processors
+- additional Signals
+
+Each new capability should integrate naturally into the existing architecture.
+
+---
+
+## Database Scalability
+
+Future database scalability may include:
+
+- read replicas
+- partitioning
+- sharding where appropriate
+- archival storage
+- dedicated analytics databases
+
+The Model Layer should shield the rest of the application from these infrastructure changes.
+
+---
+
+## Intelligence Scalability
+
+The Intelligence Engine is intentionally modular.
+
+Each Processor operates independently, allowing:
+
+- new observations
+- parallel development
+- selective optimisation
+- isolated testing
+
+Future Processors should increase platform intelligence without increasing architectural complexity.
+
+---
+
+## Infrastructure Scalability
+
+As WriteZone grows, infrastructure may evolve to include:
+
+- load balancers
+- multiple application servers
+- Redis caching
+- queue workers
+- object storage
+- CDN distribution
+- containerised deployments
+- cloud infrastructure
+
+These changes should occur beneath the application architecture without affecting business logic.
+
+---
+
+## Team Scalability
+
+The architecture is designed to support multiple engineering teams working simultaneously.
+
+Examples include:
+
+- Platform Team
+- Intelligence Team
+- Search Team
+- Front-End Team
+- Infrastructure Team
+- Security Team
+
+Clear architectural boundaries reduce conflicts and simplify collaboration.
+
+---
+
+## Operational Scalability
+
+Operational growth should include:
+
+- automated deployments
+- continuous integration
+- continuous delivery
+- automated testing
+- infrastructure monitoring
+- centralized logging
+- backup and disaster recovery
+
+Operational maturity is an essential aspect of long-term scalability.
+
+---
+
+## Future Evolution
+
+Future milestones may include:
+
+- distributed services
+- microservices where justified
+- event-driven architecture
+- real-time collaboration
+- AI-assisted moderation
+- knowledge graph infrastructure
+- recommendation platform
+- public APIs
+
+These capabilities should evolve from the existing architecture rather than replacing it.
+
+---
+
+## Architectural Principles
+
+Scalability should remain:
+
+- intentional
+- incremental
+- measurable
+- maintainable
+- explainable
+
+Growth should increase capability without increasing unnecessary complexity.
+
+---
+
+## Chapter Summary
+
+The Scalability Strategy ensures that WriteZone can evolve from a single-server deployment into a globally distributed knowledge platform.
+
+By preserving modularity, separation of concerns, and explainable intelligence, the architecture provides a stable foundation for long-term expansion.
+
+---
+
+**End of Chapter 22**

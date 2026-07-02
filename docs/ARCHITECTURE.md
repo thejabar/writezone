@@ -2669,3 +2669,212 @@ By treating intelligence as a collection of immutable Signals rather than hidden
 ---
 
 **End of Chapter 11**
+
+---
+
+# Chapter 12
+
+# Model Layer
+
+## Purpose
+
+The Model Layer provides controlled access to the application's persistent data.
+
+Models represent the interface between the business architecture and the database.
+
+Their responsibility is to retrieve, persist, and manage application data while shielding the rest of the system from database-specific implementation details.
+
+The Model Layer should remain focused on persistence rather than business orchestration.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+app/Models/
+```
+
+### Related
+
+```text
+core/Database/
+database/
+```
+
+---
+
+## Responsibilities
+
+The Model Layer is responsible for:
+
+- retrieving data
+- persisting data
+- updating records
+- deleting records
+- executing queries
+- exposing domain-specific data access methods
+
+Models should avoid workflow orchestration and presentation logic.
+
+---
+
+## Current Implementation
+
+Current models include:
+
+- User
+- Writ
+- Follow
+- Comment
+- Notification
+- Vote
+
+Each Model represents one persistence boundary.
+
+---
+
+## Execution Flow
+
+```text
+Service
+
+↓
+
+Engine
+
+↓
+
+Model
+
+↓
+
+Database
+
+↓
+
+Model
+
+↓
+
+Engine
+```
+
+Models should remain invisible to higher architectural layers.
+
+Only their interfaces should be exposed.
+
+---
+
+## Data Retrieval
+
+Models provide controlled methods for retrieving information.
+
+Examples include:
+
+- find()
+- where()
+- whereAll()
+- feed()
+- search()
+- findByPublicId()
+
+These methods abstract SQL implementation details from the rest of the application.
+
+---
+
+## Persistence
+
+Models are responsible for:
+
+- INSERT operations
+- UPDATE operations
+- DELETE operations
+- SELECT operations
+
+Database interaction should remain centralized within Models.
+
+---
+
+## Relationships
+
+Models may expose relationships between entities.
+
+Examples include:
+
+- User → Writs
+- User → Followers
+- Writ → Comments
+- Comment → Replies
+
+Relationship handling should remain predictable and well-defined.
+
+---
+
+## Query Design
+
+Queries should be:
+
+- efficient
+- readable
+- secure
+- parameterized
+
+Business calculations should not be embedded within SQL whenever they belong in the Intelligence Engine.
+
+---
+
+## Architectural Principles
+
+Models should remain:
+
+- cohesive
+- reusable
+- persistence-focused
+- independently testable
+
+Each Model should represent one domain entity.
+
+---
+
+## Anti-Patterns
+
+Models should never:
+
+- render HTML
+- execute business workflows
+- coordinate Engines
+- manipulate HTTP requests
+- generate Signals
+- perform intelligence processing
+
+Their responsibility is persistence.
+
+---
+
+## Future Evolution
+
+Future Models may include:
+
+- Reputation
+- Badge
+- Topic
+- Category
+- Collection
+- Bookmark
+- KnowledgeGraphNode
+
+Each should continue following the same architectural principles.
+
+---
+
+## Chapter Summary
+
+The Model Layer provides the persistence foundation of WriteZone.
+
+By isolating database interaction within Models, the architecture maintains clean separation between persistence, business workflows, and intelligent processing.
+
+---
+
+**End of Chapter 12**

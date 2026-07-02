@@ -2062,3 +2062,208 @@ By separating orchestration from analysis and presentation, Engines provide a sc
 ---
 
 **End of Chapter 8**
+
+---
+
+# Chapter 9
+
+# Pipeline Layer
+
+## Purpose
+
+The Pipeline Layer coordinates the sequential execution of independent processing stages.
+
+Rather than embedding business behaviour within one large class, the Pipeline delegates work to specialised Processors.
+
+This architecture promotes modularity, explainability, and extensibility.
+
+Pipelines remain generic and reusable across multiple workflows.
+
+---
+
+## Responsibilities
+
+The Pipeline Layer is responsible for:
+
+- coordinating Processors
+- maintaining execution order
+- passing Candidates between stages
+- returning enriched Candidates
+
+The Pipeline should never contain business-specific rules.
+
+---
+
+## Current Implementation
+
+The current implementation resides within:
+
+```text
+app/Pipeline/
+```
+
+The central component is:
+
+```text
+Pipeline
+```
+
+The Pipeline accepts one or more Processors and executes them sequentially.
+
+---
+
+## Execution Flow
+
+A typical Pipeline execution follows this sequence.
+
+```text
+FeedCandidate
+
+↓
+
+Processor 1
+
+↓
+
+Processor 2
+
+↓
+
+Processor 3
+
+↓
+
+...
+
+↓
+
+Enriched FeedCandidate
+```
+
+Each Processor receives the output of the previous stage.
+
+---
+
+## Sequential Processing
+
+Processors execute in a deterministic order.
+
+Example:
+
+```text
+RelationshipProcessor
+
+↓
+
+FreshnessProcessor
+
+↓
+
+QualityProcessor (future)
+
+↓
+
+TrustProcessor (future)
+
+↓
+
+ReputationProcessor (future)
+```
+
+Changing execution order should be a deliberate architectural decision.
+
+---
+
+## Candidate Flow
+
+Candidates remain immutable in purpose while accumulating observations.
+
+Each Processor enriches the Candidate by attaching additional Signals.
+
+The Pipeline itself does not modify business data.
+
+---
+
+## Processor Independence
+
+Processors should never communicate directly with one another.
+
+Instead, they communicate indirectly through the Candidate and its SignalCollection.
+
+This loose coupling improves:
+
+- maintainability
+- testability
+- scalability
+- explainability
+
+---
+
+## Error Handling
+
+The Pipeline should fail predictably.
+
+Unexpected Processor failures should produce clear diagnostic information.
+
+Future implementations may introduce:
+
+- retry strategies
+- partial execution
+- execution metrics
+- failure reporting
+
+without changing the Pipeline's overall responsibility.
+
+---
+
+## Architectural Principles
+
+Pipelines should remain:
+
+- generic
+- deterministic
+- reusable
+- lightweight
+- framework-independent
+
+Business logic belongs inside Processors rather than within the Pipeline.
+
+---
+
+## Anti-Patterns
+
+Pipelines should never:
+
+- render Views
+- query databases directly
+- calculate Signals
+- perform ranking
+- contain business-specific conditions
+
+Its role is orchestration only.
+
+---
+
+## Future Evolution
+
+Future Pipelines may include:
+
+- RecommendationPipeline
+- SearchPipeline
+- ReputationPipeline
+- ModerationPipeline
+- NotificationPipeline
+
+Each Pipeline should coordinate specialised Processors while preserving the same execution model.
+
+---
+
+## Chapter Summary
+
+The Pipeline Layer provides the execution framework that enables WriteZone's Intelligence Engine to remain modular, extensible, and explainable.
+
+By coordinating independent Processors instead of embedding behaviour directly, the Pipeline establishes a scalable foundation for future intelligent capabilities.
+
+---
+
+**End of Chapter 9**

@@ -2250,3 +2250,210 @@ Every contributor shares responsibility for preserving the long-term health of W
 ---
 
 **End of Chapter 9**
+
+---
+
+# Chapter 10
+
+# Non-Negotiable Rules
+
+## Purpose
+
+This chapter defines the architectural rules that every contributor must follow.
+
+These rules exist to protect the integrity, maintainability, scalability, and long-term evolution of WriteZone.
+
+They are intentionally strict.
+
+Any exception should be documented through an Architecture Decision Record (ADR).
+
+---
+
+# Rule 1
+
+## Never Break the Architecture
+
+Architecture always has priority over implementation convenience.
+
+No feature should bypass architectural layers simply because it appears faster.
+
+If a feature cannot be implemented cleanly, the architecture should be reviewed before implementation proceeds.
+
+---
+
+# Rule 2
+
+## Never Introduce Hidden Behaviour
+
+Every significant behaviour should be observable.
+
+Every intelligent decision should remain explainable.
+
+Every workflow should be traceable.
+
+Hidden side effects should be avoided.
+
+Predictable software is maintainable software.
+
+---
+
+# Rule 3
+
+## One Responsibility Per Component
+
+Every architectural component should have one clearly defined responsibility.
+
+Examples include:
+
+- Controllers coordinate.
+- Services orchestrate.
+- Engines execute workflows.
+- Pipelines coordinate processors.
+- Processors observe.
+- Signals describe evidence.
+- Models persist data.
+- Views present information.
+
+Responsibilities should never overlap.
+
+---
+
+# Rule 4
+
+## Never Duplicate Business Logic
+
+Business rules should exist in one location only.
+
+Duplicated logic eventually becomes inconsistent.
+
+If identical behaviour appears in multiple locations, it should be extracted into a reusable component.
+
+---
+
+# Rule 5
+
+## Preserve Explainability
+
+Every intelligent capability introduced into WriteZone must remain explainable.
+
+A contributor should always be capable of identifying:
+
+- where evidence originated
+- which processor produced it
+- how it was calculated
+- why it influenced the outcome
+
+Artificial intelligence should increase transparency rather than reduce it.
+
+---
+
+# Rule 6
+
+## Respect Existing Patterns
+
+Before introducing a new abstraction, contributors should understand existing architectural patterns.
+
+Consistency should always be preferred over novelty.
+
+Existing patterns should evolve naturally rather than being replaced without clear architectural justification.
+
+---
+
+# Rule 7
+
+## Documentation Is Part of the Product
+
+Every significant architectural change must include corresponding documentation updates.
+
+Documentation should never become an afterthought.
+
+Outdated documentation is considered an engineering defect.
+
+---
+
+# Rule 8
+
+## Protect the Git History
+
+The Git history represents the evolution of WriteZone.
+
+Commits should remain:
+
+- small
+- focused
+- meaningful
+- reviewable
+
+Commit messages should clearly communicate the capability being introduced.
+
+The history should explain how the platform evolved.
+
+---
+
+# Rule 9
+
+## Preserve Backward Compatibility
+
+Whenever practical, new capabilities should extend existing behaviour rather than replacing it.
+
+Breaking changes require explicit justification and documentation.
+
+Future contributors should inherit a stable platform.
+
+---
+
+# Rule 10
+
+## Build for the Next Contributor
+
+Every decision should assume that another engineer or AI assistant will continue the work.
+
+Code should communicate intent.
+
+Architecture should communicate structure.
+
+Documentation should communicate reasoning.
+
+The next contributor should require understanding, not guesswork.
+
+---
+
+# Rule 11
+
+## Prefer Evolution Over Reinvention
+
+Large rewrites should remain exceptional.
+
+Continuous improvement is preferred over periodic reconstruction.
+
+Every milestone should leave the architecture stronger than before.
+
+---
+
+# Rule 12
+
+## Protect the Vision
+
+Every feature, optimisation, architectural improvement, or intelligent capability should reinforce the long-term vision of WriteZone.
+
+If a contribution conflicts with the project's vision, the vision takes precedence.
+
+The platform should evolve deliberately rather than reactively.
+
+---
+
+# Final Principle
+
+The purpose of these rules is not to restrict engineering.
+
+The purpose is to ensure that WriteZone remains understandable, maintainable, extensible, and trustworthy throughout its lifetime.
+
+Every contributor becomes a temporary steward of the platform.
+
+The responsibility is not only to build.
+
+It is to leave the project stronger than it was found.
+
+---
+
+**End of Chapter 10**

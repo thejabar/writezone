@@ -1255,3 +1255,210 @@ A well-designed routing layer improves readability, maintainability, and onboard
 ---
 
 **End of Chapter 4**
+
+---
+
+# Chapter 5
+
+# Middleware Layer
+
+## Purpose
+
+The Middleware Layer provides controlled access to the application's business logic.
+
+Every incoming request passes through middleware before reaching a Controller.
+
+Middleware exists to protect the application, validate requests, enforce policies, and perform cross-cutting concerns that should not be duplicated throughout the codebase.
+
+---
+
+## Responsibilities
+
+The Middleware Layer is responsible for:
+
+- authentication
+- authorization
+- rate limiting
+- request validation
+- session verification
+- request preprocessing
+- response postprocessing
+
+Middleware should never contain business-specific logic.
+
+---
+
+## Current Implementation
+
+The current implementation resides within:
+
+```text
+core/Http/Middleware/
+```
+
+The middleware execution process is coordinated by:
+
+```text
+MiddlewarePipeline
+```
+
+Individual middleware classes remain independent and reusable.
+
+---
+
+## Execution Flow
+
+Middleware executes sequentially.
+
+```text
+Incoming Request
+
+↓
+
+Middleware 1
+
+↓
+
+Middleware 2
+
+↓
+
+Middleware 3
+
+↓
+
+Controller
+
+↓
+
+Response
+
+↓
+
+Middleware (optional response processing)
+
+↓
+
+Browser
+```
+
+Each middleware decides whether execution should continue.
+
+---
+
+## Authentication Middleware
+
+Authentication middleware verifies that a user is logged in before protected resources are accessed.
+
+Responsibilities include:
+
+- verifying active sessions
+- identifying authenticated users
+- redirecting unauthenticated requests when appropriate
+
+Authentication rules should remain centralized.
+
+---
+
+## Authorization Middleware
+
+Authorization determines whether an authenticated user has permission to perform a requested action.
+
+Authorization answers:
+
+> "Can this user perform this operation?"
+
+Authentication answers:
+
+> "Who is this user?"
+
+These responsibilities should remain separate.
+
+---
+
+## Rate Limiting
+
+Rate limiting protects the platform against abuse.
+
+Future implementations may include:
+
+- request frequency limits
+- API throttling
+- login protection
+- intelligent abuse detection
+
+Rate limiting should remain configurable.
+
+---
+
+## Validation
+
+Middleware may perform request-level validation before business logic begins.
+
+Examples include:
+
+- required headers
+- CSRF verification
+- request size limits
+- content type validation
+
+Business validation should remain inside Services.
+
+---
+
+## Error Handling
+
+Middleware should terminate execution when policies are violated.
+
+Examples include:
+
+- unauthorized access
+- invalid authentication
+- expired sessions
+- malformed requests
+
+Early termination protects downstream components.
+
+---
+
+## Architectural Principles
+
+Middleware should remain:
+
+- reusable
+- independent
+- stateless where practical
+- predictable
+- lightweight
+
+Each middleware should perform one clearly defined responsibility.
+
+---
+
+## Future Evolution
+
+Future middleware may include:
+
+- audit logging
+- request tracing
+- localization
+- feature flags
+- API key validation
+- maintenance mode
+- distributed request correlation
+
+These capabilities should integrate through the existing Middleware Pipeline.
+
+---
+
+## Chapter Summary
+
+The Middleware Layer protects the application before business logic begins.
+
+It centralizes cross-cutting concerns, reduces duplication, and ensures that Controllers receive validated and authorized requests.
+
+Middleware should remain focused on request processing rather than business operations.
+
+---
+
+**End of Chapter 5**

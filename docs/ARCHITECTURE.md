@@ -620,3 +620,425 @@ Contributors should understand this architectural map before examining individua
 ---
 
 **End of Chapter 2**
+
+---
+
+# Chapter 3
+
+# Request Lifecycle
+
+## Purpose
+
+Every interaction within WriteZone begins as an HTTP request.
+
+This chapter explains how a request travels through the platform from the moment it reaches the server until the final response is returned to the user's browser.
+
+Understanding this lifecycle is essential before contributing to any architectural layer.
+
+---
+
+## Overview
+
+A request passes through multiple independent architectural layers.
+
+Each layer performs one responsibility before handing execution to the next.
+
+The complete lifecycle is intentionally predictable.
+
+```text
+Browser
+
+↓
+
+public_html/index.php
+
+↓
+
+Composer Autoloader
+
+↓
+
+Bootstrap
+
+↓
+
+Application
+
+↓
+
+Router
+
+↓
+
+Middleware
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+Engine
+
+↓
+
+Pipeline
+
+↓
+
+Processors
+
+↓
+
+Signals
+
+↓
+
+Models
+
+↓
+
+Database
+
+↓
+
+Models
+
+↓
+
+Engine
+
+↓
+
+View
+
+↓
+
+HTML Response
+
+↓
+
+Browser
+```
+
+---
+
+## Stage 1
+
+### Browser Request
+
+A visitor performs an action.
+
+Examples include:
+
+- Opening the homepage
+- Publishing a writ
+- Viewing a profile
+- Following a user
+- Opening notifications
+
+The browser creates an HTTP request.
+
+---
+
+## Stage 2
+
+### Front Controller
+
+Every request enters the application through:
+
+```text
+public_html/index.php
+```
+
+The front controller performs only a small number of responsibilities.
+
+It:
+
+- loads Composer
+- starts the session
+- loads the application
+- transfers execution
+
+Business logic should never exist here.
+
+---
+
+## Stage 3
+
+### Bootstrap
+
+Bootstrap prepares the application.
+
+Typical responsibilities include:
+
+- configuration
+- dependency loading
+- environment setup
+- application creation
+
+Bootstrap executes once per request.
+
+---
+
+## Stage 4
+
+### Routing
+
+The Router determines which Controller should receive the request.
+
+Routing should remain declarative.
+
+Routes map URLs to application behaviour.
+
+Example:
+
+```text
+GET /
+
+↓
+
+HomeController@index
+```
+
+---
+
+## Stage 5
+
+### Middleware
+
+Middleware executes before business logic.
+
+Responsibilities include:
+
+- authentication
+- authorisation
+- rate limiting
+- validation
+- request filtering
+
+Middleware may terminate the request early if necessary.
+
+---
+
+## Stage 6
+
+### Controller
+
+Controllers coordinate execution.
+
+Controllers should remain lightweight.
+
+Typical responsibilities include:
+
+- reading parameters
+- invoking Services
+- returning Views
+
+Controllers should avoid business calculations.
+
+---
+
+## Stage 7
+
+### Service
+
+Services coordinate business operations.
+
+They may combine multiple Engines, Models, or repositories.
+
+Services expose clean business interfaces to Controllers.
+
+---
+
+## Stage 8
+
+### Engine
+
+Engines execute complete workflows.
+
+Current example:
+
+```text
+FeedEngine
+```
+
+The Feed Engine:
+
+- retrieves feed rows
+- creates FeedItems
+- creates FeedCandidates
+- executes Intelligence Pipelines
+- returns enriched candidates
+
+---
+
+## Stage 9
+
+### Pipeline
+
+The Pipeline coordinates Processors.
+
+It contains no business-specific behaviour.
+
+Instead, it executes each Processor sequentially.
+
+Current Pipeline:
+
+```text
+RelationshipProcessor
+
+↓
+
+FreshnessProcessor
+```
+
+Future processors can be added without changing existing processors.
+
+---
+
+## Stage 10
+
+### Processors
+
+Processors analyse one aspect of a Candidate.
+
+Examples include:
+
+- relationship
+- freshness
+- quality
+- trust
+- reputation
+
+Each Processor produces one or more Signals.
+
+Processors remain independent.
+
+---
+
+## Stage 11
+
+### Signals
+
+Signals describe observations.
+
+Examples:
+
+```text
+RelationshipSignal
+
+FreshnessSignal
+```
+
+Signals never perform orchestration.
+
+They simply represent evidence.
+
+---
+
+## Stage 12
+
+### Models
+
+Models retrieve or persist information.
+
+Examples include:
+
+- User
+- Writ
+- Follow
+- Comment
+- Notification
+
+Models should remain focused on persistence.
+
+---
+
+## Stage 13
+
+### Database
+
+Persistent information is stored within MySQL.
+
+Models remain the only architectural layer responsible for database interaction.
+
+Other layers should not communicate directly with persistence.
+
+---
+
+## Stage 14
+
+### View Rendering
+
+Once execution completes, Controllers return prepared data to Views.
+
+Views convert prepared information into HTML.
+
+Views should never:
+
+- calculate intelligence
+- execute workflows
+- query persistence
+
+Views present information only.
+
+---
+
+## Stage 15
+
+### Browser Response
+
+The generated HTML returns to the browser.
+
+The request lifecycle completes.
+
+Every future request repeats the same architectural pattern.
+
+---
+
+## Architectural Benefits
+
+This lifecycle provides:
+
+- predictability
+- maintainability
+- explainability
+- modularity
+- scalability
+
+Every layer performs one responsibility.
+
+No layer becomes excessively complex.
+
+---
+
+## Future Evolution
+
+Future capabilities such as:
+
+- Recommendation Engine
+- Trust Engine
+- Semantic Search
+- AI Ranking
+- Knowledge Graph
+
+should integrate naturally into this lifecycle without altering its overall structure.
+
+The request lifecycle should remain stable even as the platform grows.
+
+---
+
+## Chapter Summary
+
+The Request Lifecycle defines the execution model of WriteZone.
+
+Understanding this lifecycle enables contributors to identify where new functionality belongs and prevents architectural responsibilities from becoming blurred.
+
+---
+
+**End of Chapter 3**

@@ -1042,3 +1042,216 @@ Understanding this lifecycle enables contributors to identify where new function
 ---
 
 **End of Chapter 3**
+
+---
+
+# Part II
+
+# Core Application Layers
+
+This part documents the core architectural layers that compose the WriteZone application.
+
+Each layer has a single responsibility.
+
+Each layer communicates only with adjacent layers.
+
+Understanding these layers is essential before implementing new functionality.
+
+---
+
+# Chapter 4
+
+# Routing Layer
+
+## Purpose
+
+The Routing Layer is responsible for receiving incoming HTTP requests and determining which Controller should handle them.
+
+Routing represents the entry point into the application's business logic.
+
+Its responsibility is limited to request dispatching.
+
+It should never perform business operations.
+
+---
+
+## Responsibilities
+
+The Routing Layer is responsible for:
+
+- matching request URLs
+- matching HTTP methods
+- extracting route parameters
+- invoking middleware
+- dispatching controllers
+
+The Routing Layer is not responsible for:
+
+- authentication logic
+- business rules
+- database interaction
+- presentation
+
+---
+
+## Current Implementation
+
+The current implementation consists primarily of:
+
+```text
+routes/
+
+↓
+
+web.php
+```
+
+and
+
+```text
+core/Routing/
+
+↓
+
+Router.php
+```
+
+These components cooperate to match incoming requests with their corresponding Controllers.
+
+---
+
+## Routing Flow
+
+The current routing process follows this sequence.
+
+```text
+HTTP Request
+
+↓
+
+Route Matching
+
+↓
+
+Parameter Extraction
+
+↓
+
+Middleware Resolution
+
+↓
+
+Controller Dispatch
+
+↓
+
+Controller Execution
+```
+
+Every request follows this predictable flow.
+
+---
+
+## Route Definitions
+
+Routes should remain declarative.
+
+A route should describe:
+
+- HTTP method
+- URI
+- Controller
+- Action
+- Middleware
+
+Routes should avoid embedding business logic.
+
+Example:
+
+```text
+GET /profile/{handle}
+
+↓
+
+ProfileController@show
+```
+
+---
+
+## Route Parameters
+
+Dynamic route parameters should remain simple.
+
+Typical examples include:
+
+- public IDs
+- usernames
+- handles
+- slugs
+
+Parameter validation should occur after routing.
+
+---
+
+## Middleware Integration
+
+The Router coordinates middleware execution before controller execution.
+
+Middleware should be attached declaratively rather than manually invoked inside Controllers.
+
+This keeps request processing predictable.
+
+---
+
+## Error Handling
+
+The Routing Layer should gracefully handle:
+
+- unknown routes
+- unsupported methods
+- invalid parameters
+
+Routing errors should terminate before business logic begins.
+
+---
+
+## Architectural Principles
+
+The Routing Layer should remain:
+
+- lightweight
+- predictable
+- deterministic
+- framework-independent
+
+Routing complexity should remain minimal.
+
+Business complexity belongs elsewhere.
+
+---
+
+## Future Evolution
+
+Future routing capabilities may include:
+
+- API versioning
+- route groups
+- intelligent rate limiting
+- subdomain routing
+- modular route registration
+
+These capabilities should extend the existing Router rather than replacing it.
+
+---
+
+## Chapter Summary
+
+The Routing Layer determines where execution begins.
+
+It should remain simple, declarative, and independent of business logic.
+
+A well-designed routing layer improves readability, maintainability, and onboarding for future contributors.
+
+---
+
+**End of Chapter 4**

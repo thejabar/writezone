@@ -2759,3 +2759,165 @@ This is the engineering standard of WriteZone.
 ---
 
 **End of Chapter 12**
+
+---
+
+# Appendix A
+
+# Terminology
+
+This appendix establishes the canonical terminology used throughout the WriteZone engineering documentation.
+
+Every contributor should use these definitions consistently.
+
+---
+
+## Candidate
+
+A Candidate represents a piece of content travelling through an Engine where additional observations may be attached before a final decision is made.
+
+Current implementation:
+
+- FeedCandidate
+
+Future implementations may include:
+
+- SearchCandidate
+- RecommendationCandidate
+- NotificationCandidate
+
+---
+
+## Engine
+
+An Engine executes a complete business workflow.
+
+Engines coordinate multiple architectural components but should not contain presentation logic.
+
+Examples include:
+
+- FeedEngine
+- RecommendationEngine
+- NotificationEngine
+
+---
+
+## Pipeline
+
+A Pipeline coordinates the sequential execution of Processors.
+
+Pipelines remain generic.
+
+Business logic belongs inside Processors rather than within the Pipeline itself.
+
+---
+
+## Processor
+
+A Processor performs one independent observation.
+
+Processors enrich Candidates by generating Signals.
+
+Each Processor should remain:
+
+- independent
+- testable
+- modular
+- explainable
+
+Examples include:
+
+- RelationshipProcessor
+- FreshnessProcessor
+
+---
+
+## Signal
+
+A Signal represents immutable evidence.
+
+Signals describe observations.
+
+Signals do not make decisions.
+
+Every Signal should implement the common Signal interface.
+
+---
+
+## Signal Collection
+
+A Signal Collection stores all Signals generated during execution.
+
+It represents the complete body of evidence available for a Candidate.
+
+---
+
+## FeedItem
+
+FeedItem represents immutable feed data retrieved from persistence.
+
+It should contain data only.
+
+Business behaviour belongs elsewhere.
+
+---
+
+## FeedCandidate
+
+FeedCandidate combines a FeedItem with intelligence generated during execution.
+
+It becomes progressively richer as it moves through the Intelligence Pipeline.
+
+---
+
+## Service
+
+A Service coordinates business operations.
+
+Services provide a clean interface between Controllers and Engines.
+
+---
+
+## Controller
+
+Controllers coordinate HTTP requests.
+
+Controllers remain intentionally lightweight.
+
+They should delegate work rather than perform business logic.
+
+---
+
+## Model
+
+Models provide controlled access to persistence.
+
+Models should remain focused on data interaction.
+
+---
+
+## View
+
+Views present prepared information.
+
+Views should never calculate business logic or intelligence.
+
+---
+
+## Intelligence Engine
+
+The Intelligence Engine enriches Candidates through Processors and Signals.
+
+It generates explainable evidence rather than final decisions.
+
+---
+
+## Explainability
+
+Explainability refers to the ability to understand why an intelligent observation or recommendation exists.
+
+Every important decision should remain traceable.
+
+---
+
+**End of Appendix A**

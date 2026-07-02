@@ -4249,3 +4249,212 @@ Part III documents the major platform capabilities that distinguish WriteZone fr
 
 These systems demonstrate how the layered architecture described in earlier chapters combines to deliver explainable intelligence, personalized experiences, and knowledge discovery.
 
+---
+
+# Part IV
+
+# Infrastructure
+
+The previous sections described the application architecture and platform capabilities.
+
+This part documents the infrastructure that supports those capabilities.
+
+Infrastructure is responsible for persistence, security, performance, scalability, and operational reliability.
+
+These components are largely invisible to end users but are essential to the long-term success of WriteZone.
+
+---
+
+# Chapter 19
+
+# Database Architecture
+
+## Purpose
+
+The Database Architecture provides the persistent foundation of the WriteZone platform.
+
+Its primary responsibility is to store, organise, and retrieve application data in a secure, consistent, and efficient manner.
+
+The database should remain an implementation detail behind the Model Layer while providing reliable storage for every platform capability.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+database/
+```
+
+### Related
+
+```text
+app/Models/
+core/Database/
+config/database.php
+```
+
+---
+
+## Current Technology
+
+The current persistence layer is built upon:
+
+- MySQL / MariaDB
+- PDO
+- Custom Database Layer
+- Custom Model Base Class
+
+The architecture intentionally avoids framework-specific ORM dependencies.
+
+---
+
+## Design Principles
+
+The database architecture follows these principles:
+
+- normalization where practical
+- explicit relationships
+- parameterized queries
+- predictable schema
+- efficient indexing
+- minimal redundancy
+
+Schema evolution should remain deliberate and well documented.
+
+---
+
+## Current Domain Entities
+
+The platform currently manages entities such as:
+
+- Users
+- Writs
+- Follows
+- Comments
+- Replies
+- Notifications
+- Votes
+
+Each entity represents a distinct persistence boundary.
+
+---
+
+## Data Access
+
+All database interaction should occur through the Model Layer.
+
+Application components should never communicate directly with SQL.
+
+Typical execution flow:
+
+```text
+Controller
+
+↓
+
+Service
+
+↓
+
+Engine
+
+↓
+
+Model
+
+↓
+
+Database
+```
+
+This separation preserves architectural consistency.
+
+---
+
+## Relationships
+
+The database models relationships between platform entities.
+
+Examples include:
+
+- User → Writ
+- User → Follow
+- Writ → Comment
+- Comment → Reply
+- User → Notification
+
+Relationships should remain explicit and predictable.
+
+---
+
+## Indexing Strategy
+
+Indexes should be created for:
+
+- primary keys
+- foreign keys
+- public identifiers
+- frequently searched columns
+- frequently ordered columns
+
+Index creation should be driven by measured query patterns rather than speculation.
+
+---
+
+## Data Integrity
+
+The Database Architecture should preserve integrity through:
+
+- primary keys
+- foreign keys where appropriate
+- unique constraints
+- parameterized queries
+- transactional operations when required
+
+Application correctness depends upon consistent data.
+
+---
+
+## Future Evolution
+
+Future database enhancements may include:
+
+- full-text search indexes
+- partitioning
+- read replicas
+- materialized views
+- analytics tables
+- event logging
+- audit trails
+- graph relationships
+
+These capabilities should integrate without disrupting the existing data model.
+
+---
+
+## Architectural Principles
+
+The Database Architecture should remain:
+
+- reliable
+- secure
+- efficient
+- predictable
+- maintainable
+
+Persistence should support the platform without dictating business architecture.
+
+---
+
+## Chapter Summary
+
+The Database Architecture provides the persistent foundation upon which every WriteZone capability is built.
+
+By isolating persistence behind the Model Layer and maintaining a disciplined schema, the platform ensures consistency, scalability, and long-term maintainability.
+
+---
+
+**End of Chapter 19**
+

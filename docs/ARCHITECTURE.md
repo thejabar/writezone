@@ -3653,3 +3653,203 @@ This architecture forms the foundation upon which every future intelligent capab
 
 **End of Chapter 15**
 
+---
+
+# Chapter 16
+
+# Authentication Architecture
+
+## Purpose
+
+The Authentication Architecture is responsible for establishing and maintaining user identity throughout the platform.
+
+It ensures that every authenticated request can be securely associated with the correct user while remaining independent from business workflows.
+
+Authentication answers one question:
+
+> Who is making this request?
+
+Authorization, handled elsewhere, answers:
+
+> What is this user permitted to do?
+
+Maintaining this distinction keeps the security model simple and scalable.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+app/Controllers/
+core/Authentication/
+core/Http/Middleware/
+```
+
+### Related
+
+```text
+app/Models/User.php
+app/Services/
+```
+
+---
+
+## Current Components
+
+The current authentication implementation includes:
+
+- Login
+- Registration
+- Logout
+- Session Management
+- Authentication Middleware
+- Guest Middleware
+- Auth Helper
+
+These components establish the identity layer of the platform.
+
+---
+
+## Authentication Flow
+
+The current authentication process follows this sequence.
+
+```text
+Browser
+
+↓
+
+Login Request
+
+↓
+
+AuthController
+
+↓
+
+Authentication Service
+
+↓
+
+User Model
+
+↓
+
+Password Verification
+
+↓
+
+Session Creation
+
+↓
+
+Authenticated User
+
+↓
+
+Redirect
+```
+
+Subsequent requests use the active session to determine identity.
+
+---
+
+## Session Management
+
+Authenticated sessions provide continuity between requests.
+
+The session stores only the minimum information required to identify the authenticated user.
+
+Sensitive information should never be stored directly within session data.
+
+---
+
+## Identity Resolution
+
+Every authenticated request should be able to resolve:
+
+- user identifier
+- username
+- handle
+- authentication status
+
+Other application layers consume identity information without needing to understand session implementation.
+
+---
+
+## Middleware Integration
+
+Authentication integrates closely with the Middleware Layer.
+
+Protected routes pass through authentication middleware before reaching Controllers.
+
+This ensures unauthorized requests are rejected early in the request lifecycle.
+
+---
+
+## Password Security
+
+Passwords should never be stored in plain text.
+
+The platform should always use secure password hashing and verification provided by PHP's native password APIs.
+
+Authentication should never expose password values beyond the verification process.
+
+---
+
+## Separation of Responsibilities
+
+Authentication establishes identity.
+
+Authorization determines permissions.
+
+Business logic determines workflows.
+
+Keeping these responsibilities separate simplifies future expansion.
+
+---
+
+## Future Evolution
+
+The Authentication Architecture is designed to support future enhancements, including:
+
+- Two-factor authentication (2FA)
+- Passwordless login
+- OAuth providers
+- Social login
+- Device management
+- Trusted sessions
+- Login history
+- Session revocation
+- Risk-based authentication
+
+These capabilities should extend the existing architecture without changing its core principles.
+
+---
+
+## Architectural Principles
+
+Authentication should remain:
+
+- secure
+- minimal
+- predictable
+- framework-independent
+- easy to audit
+
+Identity should be established once and reused throughout the request lifecycle.
+
+---
+
+## Chapter Summary
+
+The Authentication Architecture provides the secure identity foundation of WriteZone.
+
+By isolating authentication from authorization and business workflows, the platform maintains a clear security model capable of evolving alongside future platform capabilities.
+
+---
+
+**End of Chapter 16**
+

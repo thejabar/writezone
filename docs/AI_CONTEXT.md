@@ -1269,3 +1269,341 @@ Architecture should simplify future development rather than constrain it.
 ---
 
 **End of Chapter 5**
+
+---
+
+# Chapter 6
+
+# Current System Architecture
+
+## Purpose
+
+This chapter documents the current implementation of the WriteZone platform.
+
+Unlike the previous chapters, which describe long-term philosophy and architectural principles, this chapter reflects the current state of the repository.
+
+It should be updated whenever the architecture evolves significantly.
+
+The objective is to provide contributors with an accurate mental model of how WriteZone is currently organised.
+
+---
+
+## Platform Overview
+
+WriteZone is implemented as a modular PHP application using a custom MVC architecture enhanced with workflow engines, processing pipelines, and explainable intelligence.
+
+The project intentionally avoids unnecessary framework dependencies in order to maintain complete architectural control.
+
+The platform prioritises:
+
+- simplicity
+- maintainability
+- modularity
+- explainability
+- long-term scalability
+
+Every major capability should exist as an independent component with a clearly defined responsibility.
+
+---
+
+## Core Architectural Layers
+
+The current platform is organised into the following logical layers.
+
+```text
+Presentation
+
+↓
+
+Routing
+
+↓
+
+Middleware
+
+↓
+
+Controllers
+
+↓
+
+Services
+
+↓
+
+Engines
+
+↓
+
+Pipelines
+
+↓
+
+Processors
+
+↓
+
+Signals
+
+↓
+
+Models
+
+↓
+
+Database
+```
+
+Each layer performs one responsibility and communicates through explicit interfaces.
+
+---
+
+## Controllers
+
+Controllers coordinate incoming HTTP requests.
+
+Controllers remain intentionally lightweight.
+
+Their responsibilities include:
+
+- receiving requests
+- validating route parameters
+- invoking services
+- returning views or responses
+
+Controllers should never contain business logic.
+
+Business behaviour belongs within Services and Engines.
+
+---
+
+## Services
+
+Services orchestrate higher-level application behaviour.
+
+A service may coordinate multiple models, engines, or repositories to complete a business operation.
+
+Services represent the public business interface of the application.
+
+Examples include:
+
+- FeedService
+- NotificationService
+- MentionService
+
+Future services should remain focused and cohesive.
+
+---
+
+## Engines
+
+Engines execute complete workflows.
+
+An Engine represents a business process rather than an HTTP request.
+
+The Feed Engine is the first implementation of this architectural pattern.
+
+Its responsibilities include:
+
+- retrieving feed candidates
+- constructing feed objects
+- executing intelligence pipelines
+- returning enriched feed candidates
+
+Future engines may include:
+
+- Recommendation Engine
+- Reputation Engine
+- Search Engine
+- Moderation Engine
+- Notification Engine
+
+Each engine should remain independent.
+
+---
+
+## Feed Objects
+
+The feed architecture currently consists of two primary objects.
+
+### FeedItem
+
+FeedItem represents immutable feed data.
+
+It contains the information retrieved from persistence and required for rendering.
+
+FeedItem should remain free from business logic.
+
+---
+
+### FeedCandidate
+
+FeedCandidate wraps a FeedItem together with intelligence generated during execution.
+
+A FeedCandidate may contain:
+
+- FeedItem
+- SignalCollection
+- Metadata
+
+The candidate gradually accumulates observations while moving through the intelligence pipeline.
+
+---
+
+## Intelligence Pipeline
+
+The Intelligence Pipeline is responsible for enriching feed candidates.
+
+Processors execute sequentially.
+
+Each processor performs one observation.
+
+Each observation becomes a Signal.
+
+Signals accumulate within the candidate.
+
+The pipeline itself performs no business-specific calculations.
+
+Its responsibility is orchestration.
+
+---
+
+## Current Processors
+
+The current implementation includes:
+
+### RelationshipProcessor
+
+Measures the relationship between the viewer and the author.
+
+Produces:
+
+RelationshipSignal
+
+---
+
+### FreshnessProcessor
+
+Measures temporal relevance.
+
+Produces:
+
+FreshnessSignal
+
+---
+
+Future processors may include:
+
+- QualityProcessor
+- TrustProcessor
+- ReputationProcessor
+- InterestProcessor
+- DiversityProcessor
+- TopicProcessor
+- LocalityProcessor
+
+Every processor should remain completely independent.
+
+---
+
+## Signals
+
+Signals represent immutable observations.
+
+Signals do not rank content.
+
+Signals do not modify candidates.
+
+Signals only describe measurable evidence.
+
+Every signal implements the common Signal interface.
+
+Current implementations include:
+
+- RelationshipSignal
+- FreshnessSignal
+
+Future signals should follow the same contract.
+
+---
+
+## Models
+
+Models provide persistence.
+
+They encapsulate database interaction while remaining independent of presentation and workflow logic.
+
+Current major models include:
+
+- User
+- Writ
+- Follow
+- Comment
+- Notification
+
+Business orchestration should never migrate into models.
+
+---
+
+## Views
+
+Views receive prepared data.
+
+They are responsible only for presentation.
+
+Views should never calculate intelligence.
+
+Views should never query persistence.
+
+Views simply render information supplied by earlier layers.
+
+---
+
+## Current Architectural Strengths
+
+The current implementation already demonstrates several desirable characteristics.
+
+These include:
+
+- modular architecture
+- explainable intelligence
+- immutable observations
+- independent processors
+- reusable pipelines
+- lightweight controllers
+- scalable workflow engines
+
+These strengths should be preserved as the platform evolves.
+
+---
+
+## Future Evolution
+
+The architecture is intentionally incomplete.
+
+Future milestones will introduce:
+
+- ranking engine
+- recommendation engine
+- trust engine
+- reputation engine
+- semantic search
+- knowledge graph
+- AI orchestration
+- enterprise capabilities
+
+These additions should extend the existing architecture rather than replace it.
+
+---
+
+## Chapter Summary
+
+The current implementation establishes the architectural foundation of WriteZone.
+
+Future development should reinforce this foundation through careful extension rather than unnecessary restructuring.
+
+Every contributor should understand this architecture before introducing new capabilities.
+
+---
+
+**End of Chapter 6**

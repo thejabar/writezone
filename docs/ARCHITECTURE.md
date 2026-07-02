@@ -1667,3 +1667,199 @@ Well-designed Controllers simplify maintenance, improve readability, and preserv
 ---
 
 **End of Chapter 6**
+
+---
+
+# Chapter 7
+
+# Service Layer
+
+## Purpose
+
+The Service Layer acts as the application's business orchestration layer.
+
+Services provide a clean interface between Controllers and the underlying Engines, Models, and supporting components.
+
+Their responsibility is to coordinate business operations without becoming tightly coupled to presentation or persistence.
+
+A well-designed Service Layer simplifies Controllers, improves testability, and centralises business workflows.
+
+---
+
+## Responsibilities
+
+The Service Layer is responsible for:
+
+- coordinating business operations
+- invoking Engines
+- combining data from multiple Models
+- enforcing application workflows
+- exposing reusable business interfaces
+
+Services should avoid presentation concerns and low-level persistence logic.
+
+---
+
+## Current Implementation
+
+Services reside within:
+
+```text
+app/Services/
+```
+
+Current examples include:
+
+- FeedService
+- MentionService
+- NotificationService
+
+As the platform evolves, additional Services should be introduced only when they represent a meaningful business capability.
+
+---
+
+## Execution Flow
+
+A typical Service interaction follows this sequence.
+
+```text
+Controller
+
+↓
+
+Service
+
+↓
+
+Engine
+
+↓
+
+Models
+
+↓
+
+Result
+
+↓
+
+Controller
+```
+
+Services coordinate rather than execute specialised processing.
+
+---
+
+## Business Orchestration
+
+Services may combine multiple components to fulfil a business operation.
+
+For example, a Service may:
+
+- retrieve data through Models
+- invoke an Engine
+- enrich results
+- prepare a response object
+
+The Service becomes the coordinator of these activities.
+
+---
+
+## Engine Integration
+
+Services frequently delegate complex workflows to Engines.
+
+Examples include:
+
+- FeedEngine
+- RecommendationEngine (future)
+- NotificationEngine (future)
+
+Services should avoid duplicating workflow logic already encapsulated within an Engine.
+
+---
+
+## Reusability
+
+Services should be reusable.
+
+The same Service should support:
+
+- web requests
+- API requests
+- background jobs
+- scheduled tasks
+
+This separation prevents duplication across multiple entry points.
+
+---
+
+## Error Handling
+
+Services should detect and communicate business-level failures.
+
+Examples include:
+
+- invalid operations
+- missing resources
+- workflow failures
+- business rule violations
+
+Controllers determine how these outcomes are presented to users.
+
+---
+
+## Architectural Principles
+
+Services should remain:
+
+- cohesive
+- reusable
+- framework-independent
+- easy to test
+- focused on orchestration
+
+Each Service should represent one clearly defined business capability.
+
+---
+
+## Anti-Patterns
+
+Services should never:
+
+- render HTML
+- directly manipulate Views
+- contain routing logic
+- implement Intelligence Processors
+- duplicate Engine workflows
+
+These responsibilities belong elsewhere within the architecture.
+
+---
+
+## Future Evolution
+
+As WriteZone grows, the Service Layer will become increasingly important.
+
+Future Services may include:
+
+- ReputationService
+- TrustService
+- RecommendationService
+- ModerationService
+- SearchService
+- AnalyticsService
+
+Each new Service should expose a stable business interface while delegating specialised work to lower architectural layers.
+
+---
+
+## Chapter Summary
+
+The Service Layer provides a stable boundary between request coordination and business execution.
+
+By centralising orchestration within Services, WriteZone maintains lightweight Controllers, reusable workflows, and a scalable architecture capable of supporting future platform growth.
+
+---
+
+**End of Chapter 7**

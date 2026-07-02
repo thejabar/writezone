@@ -1884,3 +1884,214 @@ Its objective is to provide reliable, explainable, and reusable evidence that en
 ---
 
 **End of Chapter 7**
+
+---
+
+# Part III
+
+# AI Collaboration
+
+Artificial Intelligence is considered a permanent engineering contributor to the WriteZone project.
+
+This section defines how AI systems should reason, collaborate, and contribute to the codebase.
+
+The purpose is to ensure that every AI assistant produces code that strengthens the architecture rather than introducing inconsistency.
+
+Every AI should behave as a long-term engineering partner rather than a short-term code generator.
+
+---
+
+# Chapter 8
+
+# AI Collaboration Protocol
+
+## Purpose
+
+This chapter establishes the expected behaviour of every artificial intelligence system contributing to WriteZone.
+
+Regardless of the model, provider, or implementation, every AI should follow the same engineering standards.
+
+The objective is architectural consistency rather than model-specific behaviour.
+
+---
+
+## Understand Before Implementing
+
+Before generating code, an AI should understand:
+
+- the project vision
+- the engineering philosophy
+- the architecture
+- the current implementation
+- existing abstractions
+- previous engineering decisions
+
+Implementation without understanding is discouraged.
+
+Reasoning should always precede coding.
+
+---
+
+## Preserve Existing Architecture
+
+Artificial intelligence should work with the architecture rather than around it.
+
+New capabilities should integrate into existing layers.
+
+Examples include:
+
+- introducing a new Processor
+- creating a new Signal
+- extending an Engine
+- adding a Service
+- expanding documentation
+
+Existing architectural patterns should be preferred over creating new ones.
+
+---
+
+## Prefer Extension
+
+Whenever new functionality is required, AI should first consider:
+
+- extending an existing component
+- introducing a new processor
+- introducing a new signal
+- introducing a new service
+- introducing a new engine
+
+Replacement should remain exceptional.
+
+Evolution is preferred.
+
+---
+
+## Keep Components Small
+
+Large classes are discouraged.
+
+Large methods are discouraged.
+
+Large responsibilities are discouraged.
+
+Instead:
+
+- compose
+- delegate
+- specialise
+
+Small components are easier to understand, maintain, test, and document.
+
+---
+
+## Never Mix Responsibilities
+
+Every architectural layer has a defined purpose.
+
+AI should never:
+
+- place business logic inside views
+- place ranking logic inside controllers
+- place HTML inside processors
+- place persistence inside signals
+- place workflow orchestration inside models
+
+Respecting boundaries preserves maintainability.
+
+---
+
+## Explain Every Significant Decision
+
+Whenever AI introduces a significant architectural change, it should be capable of explaining:
+
+- why the change was necessary
+- why the chosen design fits the architecture
+- why alternatives were rejected
+- how the change affects future development
+
+Engineering decisions should remain understandable.
+
+---
+
+## Think Incrementally
+
+Large rewrites are discouraged.
+
+Instead, AI should introduce improvements through small, reviewable steps.
+
+Each contribution should represent one logical capability.
+
+Incremental development reduces risk and improves long-term quality.
+
+---
+
+## Protect Documentation
+
+Documentation should evolve together with implementation.
+
+Whenever architecture changes:
+
+- update documentation
+- update decision records
+- update examples when necessary
+
+AI should never allow documentation to become stale.
+
+---
+
+## Maintain Consistency
+
+Consistency is one of the most valuable characteristics of WriteZone.
+
+AI should preserve:
+
+- naming conventions
+- folder structure
+- architectural layers
+- coding standards
+- documentation style
+
+Uniformity improves readability and reduces cognitive load.
+
+---
+
+## When Uncertain
+
+When architectural uncertainty exists, AI should prioritise:
+
+1. consistency
+2. simplicity
+3. maintainability
+4. explainability
+
+Speculative implementation should be avoided.
+
+---
+
+## Collaboration Philosophy
+
+Artificial intelligence exists to augment engineering rather than replace engineering judgement.
+
+AI should function as:
+
+- architect
+- reviewer
+- mentor
+- implementer
+- documentation author
+
+Every contribution should leave the project more understandable than before.
+
+---
+
+## Chapter Summary
+
+The collaboration protocol ensures that every AI assistant contributing to WriteZone shares a common engineering mindset.
+
+The objective is not merely producing working code.
+
+The objective is preserving a coherent architecture that can continue evolving for many years.
+
+---
+
+**End of Chapter 8**

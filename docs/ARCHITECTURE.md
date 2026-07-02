@@ -2267,3 +2267,198 @@ By coordinating independent Processors instead of embedding behaviour directly, 
 ---
 
 **End of Chapter 9**
+
+---
+
+# Chapter 10
+
+# Processor Layer
+
+## Purpose
+
+The Processor Layer represents the analytical core of the WriteZone Intelligence Engine.
+
+Processors perform one independent observation on a Candidate.
+
+Each Processor focuses on a single aspect of intelligence, producing measurable evidence without making final decisions.
+
+This design keeps the Intelligence Engine modular, explainable, and easy to extend.
+
+---
+
+## Responsibilities
+
+Processors are responsible for:
+
+- analysing Candidates
+- generating Signals
+- enriching Candidate intelligence
+- remaining independent of other Processors
+
+Processors should never coordinate workflows or perform presentation logic.
+
+---
+
+## Current Implementation
+
+Processors reside within:
+
+```text
+app/Intelligence/Processors/
+```
+
+Current implementations include:
+
+- RelationshipProcessor
+- FreshnessProcessor
+
+Future Processors will follow the same architectural pattern.
+
+---
+
+## Execution Flow
+
+Each Processor follows a simple lifecycle.
+
+```text
+FeedCandidate
+
+↓
+
+Analyse
+
+↓
+
+Generate Signal
+
+↓
+
+Attach Signal
+
+↓
+
+Return Candidate
+```
+
+The Candidate continues to the next Processor.
+
+---
+
+## Single Responsibility
+
+Every Processor performs one observation only.
+
+Examples include:
+
+- relationship analysis
+- freshness analysis
+- quality analysis
+- reputation analysis
+- trust analysis
+- diversity analysis
+
+Combining multiple observations within one Processor is discouraged.
+
+---
+
+## Independence
+
+Processors should never depend on one another.
+
+Each Processor operates only on:
+
+- the Candidate
+- required supporting Models
+- previously accumulated Signals when necessary
+
+This independence enables parallel development and easier testing.
+
+---
+
+## Signal Production
+
+Every Processor should generate one or more Signals.
+
+Signals describe measurable observations rather than business decisions.
+
+The Processor owns the logic that determines how those Signals are calculated.
+
+---
+
+## Deterministic Behaviour
+
+Processors should produce consistent results when given identical inputs.
+
+Avoid hidden state, randomness, or side effects unless explicitly required and documented.
+
+Deterministic behaviour improves explainability and testing.
+
+---
+
+## Error Handling
+
+Processors should fail predictably.
+
+Unexpected failures should produce meaningful diagnostic information.
+
+A Processor should never leave a Candidate in an inconsistent state.
+
+---
+
+## Architectural Principles
+
+Processors should remain:
+
+- modular
+- deterministic
+- explainable
+- independently testable
+- reusable
+
+Each Processor should represent one measurable observation.
+
+---
+
+## Anti-Patterns
+
+Processors should never:
+
+- render HTML
+- coordinate Pipelines
+- manipulate HTTP requests
+- execute unrelated business workflows
+- perform ranking
+- directly modify database records unless the Processor's responsibility explicitly requires persistence
+
+Their responsibility is observation.
+
+---
+
+## Future Evolution
+
+Future Processors may include:
+
+- QualityProcessor
+- TrustProcessor
+- ReputationProcessor
+- InterestProcessor
+- TopicProcessor
+- DiversityProcessor
+- LanguageProcessor
+- SpamDetectionProcessor
+- ToxicityProcessor
+- KnowledgeGraphProcessor
+
+Each should integrate seamlessly into the existing Pipeline.
+
+---
+
+## Chapter Summary
+
+The Processor Layer provides the analytical capabilities of the Intelligence Engine.
+
+By isolating each observation into an independent Processor, WriteZone achieves explainable intelligence, modular growth, and long-term architectural flexibility.
+
+---
+
+**End of Chapter 10**

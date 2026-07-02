@@ -4673,3 +4673,197 @@ By embedding security principles into every architectural layer, the platform pr
 ---
 
 **End of Chapter 20**
+
+---
+
+# Chapter 21
+
+# Performance Strategy
+
+## Purpose
+
+The Performance Strategy defines how WriteZone delivers a responsive user experience while supporting increasing platform complexity.
+
+Performance is considered an architectural concern rather than a late-stage optimisation activity.
+
+Every layer of the platform should contribute to efficient execution.
+
+The objective is to maximise responsiveness without sacrificing maintainability, explainability, or correctness.
+
+---
+
+## Repository Mapping
+
+### Primary
+
+```text
+app/
+core/
+```
+
+### Related
+
+```text
+public_html/
+config/
+database/
+```
+
+---
+
+## Current Environment
+
+The current production environment includes:
+
+- Hostinger Shared Hosting
+- Apache Web Server
+- PHP 8.2
+- MariaDB
+- Custom MVC Framework
+- GitHub and GitLab repository mirrors
+
+The platform is designed to optimise within these constraints while remaining portable to larger infrastructure in the future.
+
+---
+
+## Performance Principles
+
+WriteZone follows these principles:
+
+- Measure before optimising
+- Optimise bottlenecks rather than assumptions
+- Prefer simplicity
+- Avoid unnecessary database queries
+- Minimise duplicate work
+- Keep execution predictable
+
+Performance improvements should never compromise architectural clarity.
+
+---
+
+## Application Performance
+
+Application performance is improved through:
+
+- lightweight Controllers
+- reusable Services
+- focused Engines
+- modular Pipelines
+- independent Processors
+- efficient Models
+
+Each architectural layer should minimise unnecessary computation.
+
+---
+
+## Database Performance
+
+Database performance depends upon:
+
+- efficient indexes
+- parameterised queries
+- selective column retrieval
+- avoiding unnecessary joins
+- limiting result sets
+- efficient ordering
+
+Queries should be reviewed whenever new features are introduced.
+
+---
+
+## Intelligence Performance
+
+The Intelligence Engine is designed to scale incrementally.
+
+Each Processor performs one independent observation.
+
+This allows expensive analysis to be isolated, measured, optimised, or disabled without affecting unrelated Processors.
+
+Future ranking should consume previously generated Signals rather than repeating observations.
+
+---
+
+## Caching Strategy
+
+Caching should be introduced selectively.
+
+Potential caching targets include:
+
+- user profiles
+- trending writs
+- search suggestions
+- configuration
+- frequently requested reference data
+
+Caching should improve response times without introducing stale or inconsistent data.
+
+---
+
+## Front-End Performance
+
+Presentation performance should focus on:
+
+- efficient CSS
+- lightweight JavaScript
+- compressed assets
+- lazy loading where appropriate
+- responsive rendering
+
+User experience should remain smooth across desktop and mobile devices.
+
+---
+
+## Monitoring
+
+Performance should be monitored using measurable indicators such as:
+
+- response time
+- database query duration
+- memory usage
+- request throughput
+- cache effectiveness
+- error rates
+
+Engineering decisions should be guided by data rather than assumptions.
+
+---
+
+## Future Optimisations
+
+Future enhancements may include:
+
+- opcode optimisation
+- Redis caching
+- background job processing
+- asynchronous notifications
+- database read replicas
+- CDN integration
+- image optimisation
+- queue workers
+
+These enhancements should integrate without requiring architectural redesign.
+
+---
+
+## Architectural Principles
+
+Performance should remain:
+
+- measurable
+- incremental
+- evidence-based
+- maintainable
+
+Optimisation should improve user experience while preserving architectural simplicity.
+
+---
+
+## Chapter Summary
+
+The Performance Strategy ensures that WriteZone remains responsive as the platform evolves.
+
+By treating performance as a continuous engineering discipline rather than a final optimisation phase, the architecture supports sustainable long-term growth.
+
+---
+
+**End of Chapter 21**

@@ -1607,3 +1607,280 @@ Every contributor should understand this architecture before introducing new cap
 ---
 
 **End of Chapter 6**
+
+---
+
+# Chapter 7
+
+# Intelligence Engine
+
+## Purpose
+
+The Intelligence Engine is the analytical core of WriteZone.
+
+Its responsibility is not to decide what users should see.
+
+Its responsibility is to observe, analyse, measure, and explain.
+
+The Intelligence Engine transforms raw platform data into structured evidence that other architectural components can consume.
+
+It is designed to remain modular, transparent, extensible, and fully explainable.
+
+Every intelligent capability within WriteZone should ultimately become part of this engine.
+
+---
+
+## Design Philosophy
+
+The Intelligence Engine follows one simple principle:
+
+**Observe first. Decide later.**
+
+Rather than combining observation and decision-making into one large component, the platform deliberately separates these responsibilities.
+
+Observation produces evidence.
+
+Evidence produces confidence.
+
+Confidence supports ranking.
+
+Ranking enables recommendation.
+
+Recommendation improves discovery.
+
+By separating these responsibilities, every intelligent decision remains understandable, measurable, and continuously improvable.
+
+---
+
+## Engine Workflow
+
+The Intelligence Engine operates as a sequential workflow.
+
+```text
+Feed Items
+
+↓
+
+Feed Candidates
+
+↓
+
+Pipeline
+
+↓
+
+Processors
+
+↓
+
+Signals
+
+↓
+
+Signal Collection
+
+↓
+
+Candidate Enrichment
+
+↓
+
+Ranking Engine (Future)
+
+↓
+
+Recommendation Engine (Future)
+```
+
+Every stage performs one responsibility.
+
+No stage should assume the responsibility of another.
+
+---
+
+## Feed Candidates
+
+A FeedCandidate represents a unit of knowledge travelling through the Intelligence Engine.
+
+Initially, it contains only raw information.
+
+As processors execute, additional observations are attached.
+
+By the end of pipeline execution, the candidate contains both:
+
+- original content
+- intelligence generated during processing
+
+The candidate becomes progressively more valuable without modifying the original data.
+
+---
+
+## Processors
+
+Processors are the analytical workers of the Intelligence Engine.
+
+Each processor performs exactly one independent observation.
+
+Examples include:
+
+- Relationship
+- Freshness
+- Quality
+- Trust
+- Reputation
+- Diversity
+- Interest
+- Topic Relevance
+
+Processors should never communicate directly with one another.
+
+Each processor should remain fully independent.
+
+This independence enables:
+
+- easier testing
+- safer maintenance
+- isolated optimisation
+- incremental evolution
+
+---
+
+## Signals
+
+Every processor produces one or more Signals.
+
+Signals represent measurable evidence.
+
+Signals are immutable.
+
+They do not change once created.
+
+Each signal answers a specific question.
+
+Examples include:
+
+- Is the viewer following this author?
+- How recent is this writ?
+- How trustworthy is this contributor?
+- How authoritative is this knowledge?
+
+Signals describe observations.
+
+They do not make decisions.
+
+---
+
+## Signal Collection
+
+Signals are accumulated within a SignalCollection.
+
+This collection represents the complete body of evidence available for a candidate.
+
+Future architectural layers will consume this evidence to perform:
+
+- ranking
+- recommendation
+- explainability
+- auditing
+- experimentation
+
+The collection itself performs no calculations beyond managing signals.
+
+---
+
+## Explainability
+
+Every observation produced by the Intelligence Engine should be explainable.
+
+A contributor should always be capable of identifying:
+
+- which processor generated a signal
+- why the signal exists
+- what evidence was considered
+- how the signal value was calculated
+
+Hidden behaviour is discouraged.
+
+Transparent behaviour is preferred.
+
+---
+
+## Extensibility
+
+The Intelligence Engine is intentionally designed for continuous expansion.
+
+Adding a new intelligence capability should normally require only:
+
+1. A new Processor.
+2. A new Signal.
+3. Registration within the Pipeline.
+
+Existing processors should rarely require modification.
+
+This architecture supports long-term growth without increasing complexity.
+
+---
+
+## Future Evolution
+
+The Intelligence Engine is expected to become increasingly sophisticated over time.
+
+Future capabilities may include:
+
+- semantic understanding
+- topic extraction
+- expertise recognition
+- behavioural analysis
+- knowledge graph integration
+- AI-assisted moderation
+- personalised recommendations
+- trust propagation
+- community health analysis
+- citation quality assessment
+
+These capabilities should extend the existing architecture rather than replace it.
+
+---
+
+## Architectural Responsibilities
+
+The Intelligence Engine should never:
+
+- render HTML
+- query presentation components
+- control routing
+- manage authentication
+- directly modify database records without explicit business intent
+
+Its responsibility is analysis.
+
+Other architectural layers determine how that analysis is used.
+
+---
+
+## Engineering Principles
+
+Every contribution to the Intelligence Engine should preserve the following characteristics:
+
+- modularity
+- explainability
+- determinism
+- maintainability
+- observability
+- extensibility
+
+If a new capability weakens any of these principles, its design should be reconsidered before implementation.
+
+---
+
+## Chapter Summary
+
+The Intelligence Engine represents the analytical foundation of WriteZone.
+
+Its objective is not artificial intelligence for its own sake.
+
+Its objective is to provide reliable, explainable, and reusable evidence that enables the platform to make increasingly intelligent decisions while remaining transparent to contributors and users alike.
+
+---
+
+**End of Chapter 7**

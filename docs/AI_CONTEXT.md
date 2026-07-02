@@ -657,3 +657,268 @@ Every future milestone should reinforce these principles.
 ---
 
 **End of Chapter 3**
+---
+
+# Chapter 4
+
+# Engineering Principles
+
+## Purpose
+
+This chapter defines the engineering standards that govern every contribution made to the WriteZone platform.
+
+These principles are mandatory.
+
+They apply equally to:
+
+- software engineers
+- AI assistants
+- external contributors
+- future maintainers
+
+Whenever implementation decisions conflict with these principles, the principles take precedence unless an Architecture Decision Record (ADR) formally supersedes them.
+
+---
+
+# Principle 1
+
+## Architecture Before Implementation
+
+Every feature must fit naturally into the existing architecture.
+
+No implementation should bypass established architectural layers for the sake of convenience.
+
+When introducing new functionality, contributors should first determine where the capability belongs before writing any code.
+
+Architecture is considered a long-term investment.
+
+---
+
+# Principle 2
+
+## Single Responsibility
+
+Every class, service, engine, processor, signal, model, and controller should have one clearly defined responsibility.
+
+Responsibilities should never overlap.
+
+When a class begins performing multiple unrelated tasks, it should be refactored into smaller components.
+
+Smaller components are easier to understand, test, document, and extend.
+
+---
+
+# Principle 3
+
+## Separation of Concerns
+
+WriteZone maintains strict separation between architectural layers.
+
+Controllers coordinate requests.
+
+Services orchestrate business operations.
+
+Engines execute workflows.
+
+Pipelines coordinate processing stages.
+
+Processors generate observations.
+
+Signals represent observations.
+
+Models interact with persistence.
+
+Views render presentation.
+
+No layer should assume responsibilities belonging to another.
+
+---
+
+# Principle 4
+
+## Extend Before Replacing
+
+Existing abstractions should be extended whenever practical.
+
+Large rewrites should remain exceptional.
+
+Contributors should first ask:
+
+- Can this existing component be extended?
+- Can this behaviour become another processor?
+- Can another signal be introduced?
+- Can another service be added?
+
+Only when extension becomes unreasonable should replacement be considered.
+
+---
+
+# Principle 5
+
+## Explainable Intelligence
+
+Every intelligent capability must remain explainable.
+
+Recommendations should never rely upon hidden behaviour.
+
+Signals should provide:
+
+- measurable score
+- explanation
+- source
+- supporting metadata whenever appropriate
+
+Transparency strengthens engineering quality and user trust.
+
+---
+
+# Principle 6
+
+## Consistency Over Innovation
+
+Innovation is encouraged.
+
+Inconsistency is not.
+
+When multiple implementation approaches exist, contributors should prefer the approach already established within the repository.
+
+Consistency reduces maintenance costs and accelerates future development.
+
+---
+
+# Principle 7
+
+## Documentation Is Mandatory
+
+Every significant architectural change must be reflected within the documentation.
+
+Documentation is considered part of implementation.
+
+Code without documentation is incomplete.
+
+Documentation without implementation is inaccurate.
+
+The two should evolve together.
+
+---
+
+# Principle 8
+
+## Small, Reviewable Changes
+
+Large commits are discouraged.
+
+Every contribution should represent one logical capability.
+
+Each capability should be independently reviewable.
+
+Small commits simplify:
+
+- debugging
+- code review
+- rollback
+- historical analysis
+
+Meaningful commit messages are required.
+
+---
+
+# Principle 9
+
+## Backward Compatibility
+
+Whenever practical, new capabilities should preserve existing behaviour.
+
+Architectural improvements should minimise disruption.
+
+Breaking changes require clear justification and appropriate documentation.
+
+Future contributors should inherit a stable platform rather than a constantly changing foundation.
+
+---
+
+# Principle 10
+
+## Continuous Refactoring
+
+Refactoring is an ongoing engineering activity.
+
+It should improve:
+
+- readability
+- maintainability
+- modularity
+- consistency
+
+Refactoring should not alter externally observable behaviour unless explicitly intended.
+
+Technical debt should be reduced continuously rather than accumulated.
+
+---
+
+# Principle 11
+
+## Security By Design
+
+Security should be considered during design rather than after implementation.
+
+Contributors should prefer secure defaults.
+
+Input validation, output escaping, authentication, authorization, and data protection should remain integral parts of the architecture.
+
+Convenience must never compromise security.
+
+---
+
+# Principle 12
+
+## Performance Through Good Design
+
+Performance optimisation should result from sound architecture rather than premature micro-optimisation.
+
+Well-designed systems naturally scale more effectively than poorly structured code that has been aggressively optimised.
+
+Optimise only after understanding measurable bottlenecks.
+
+---
+
+# Principle 13
+
+## Testability
+
+Every architectural component should remain independently testable.
+
+Loose coupling, clear interfaces, and single responsibilities naturally improve testing capability.
+
+Design for testability before implementing automated tests.
+
+---
+
+# Principle 14
+
+## Long-Term Ownership
+
+Every contributor temporarily becomes a steward of the WriteZone platform.
+
+Before completing any task, contributors should ask:
+
+- Is the code easier to understand?
+- Is the architecture stronger?
+- Is the documentation accurate?
+- Will future contributors benefit from this change?
+
+If the answer is yes, the contribution aligns with the engineering philosophy of WriteZone.
+
+---
+
+# Engineering Principles Summary
+
+These principles collectively define the engineering culture of WriteZone.
+
+Every future milestone should strengthen these principles rather than weaken them.
+
+The quality of the platform is determined not only by its features, but also by the discipline used to build and evolve it.
+
+---
+
+**End of Chapter 4**

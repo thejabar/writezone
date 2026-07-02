@@ -922,3 +922,350 @@ The quality of the platform is determined not only by its features, but also by 
 ---
 
 **End of Chapter 4**
+
+---
+
+# Part II
+
+# Architecture
+
+The second part of this handbook describes the architectural model that governs the WriteZone platform.
+
+Where Part I explains *why* WriteZone exists and *how contributors should think*, Part II explains *how the platform is organised*.
+
+Every architectural layer has a clearly defined responsibility.
+
+Understanding these responsibilities is mandatory before modifying the codebase.
+
+The objective of this architecture is not only correctness.
+
+It is long-term maintainability.
+
+Every contributor should be capable of understanding the platform without needing to reverse-engineer its behaviour.
+
+---
+
+# Chapter 5
+
+# Architecture Overview
+
+## Introduction
+
+WriteZone follows a layered architecture.
+
+Each layer performs one specific responsibility and communicates only through well-defined interfaces.
+
+This separation reduces coupling, improves maintainability, and allows individual components to evolve independently.
+
+No single class should control the entire platform.
+
+Instead, complex behaviour emerges through cooperation between specialised components.
+
+---
+
+## Architectural Philosophy
+
+WriteZone does not organise code around pages.
+
+It organises code around responsibilities.
+
+Every layer performs one task exceptionally well.
+
+This philosophy allows the platform to scale without becoming increasingly difficult to understand.
+
+As new capabilities are introduced, contributors should extend existing architectural patterns instead of creating parallel structures.
+
+Consistency is considered a feature.
+
+---
+
+## High-Level Architecture
+
+The platform is organised into the following layers.
+
+```text
+Presentation Layer
+
+↓
+
+Controllers
+
+↓
+
+Services
+
+↓
+
+Engines
+
+↓
+
+Pipelines
+
+↓
+
+Processors
+
+↓
+
+Signals
+
+↓
+
+Models
+
+↓
+
+Database
+```
+
+Each layer depends only on the layer immediately below it.
+
+Responsibilities should never become inverted.
+
+---
+
+## Request Lifecycle
+
+Every request follows a predictable execution path.
+
+```text
+Browser
+
+↓
+
+Router
+
+↓
+
+Middleware
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+Engine
+
+↓
+
+Pipeline
+
+↓
+
+Processors
+
+↓
+
+Signals
+
+↓
+
+Models
+
+↓
+
+Database
+
+↓
+
+Response
+
+↓
+
+View
+
+↓
+
+Browser
+```
+
+This execution model should remain consistent throughout the platform.
+
+Predictability simplifies debugging and future development.
+
+---
+
+## Responsibilities
+
+Each architectural layer exists for one reason.
+
+### Router
+
+Determines where incoming requests should be directed.
+
+---
+
+### Middleware
+
+Applies authentication, authorisation, rate limiting, and request validation before business logic executes.
+
+---
+
+### Controller
+
+Coordinates incoming requests.
+
+Controllers should remain lightweight.
+
+They should delegate work rather than perform business logic.
+
+---
+
+### Service
+
+Coordinates business operations.
+
+Services may combine multiple engines or models to achieve higher-level objectives.
+
+---
+
+### Engine
+
+Executes complete workflows.
+
+Engines define how capabilities are orchestrated.
+
+Business processes should begin here.
+
+---
+
+### Pipeline
+
+Coordinates sequential execution of processors.
+
+Pipelines remain intentionally generic.
+
+They should never contain business-specific logic.
+
+---
+
+### Processor
+
+Represents one independent capability.
+
+Every processor performs one observation.
+
+Examples include:
+
+- Relationship
+- Freshness
+- Quality
+- Trust
+- Reputation
+
+Processors should remain modular and independently testable.
+
+---
+
+### Signal
+
+Signals represent evidence produced by processors.
+
+Signals are immutable observations.
+
+Every signal should contain:
+
+- name
+- value
+- reason
+- source
+- metadata
+
+Signals never perform calculations after creation.
+
+They simply describe observations.
+
+---
+
+### Model
+
+Models provide controlled access to persistent data.
+
+Business rules should not accumulate inside models.
+
+Models should remain focused on persistence.
+
+---
+
+### View
+
+Views present information.
+
+Views should never perform business logic.
+
+Views should never calculate intelligence.
+
+Views render data prepared by earlier architectural layers.
+
+---
+
+## Architectural Boundaries
+
+Every layer has explicit boundaries.
+
+Controllers should not calculate rankings.
+
+Views should not query databases.
+
+Processors should not generate HTML.
+
+Signals should not modify state.
+
+Models should not coordinate workflows.
+
+Respecting these boundaries keeps the platform modular.
+
+---
+
+## Explainable Architecture
+
+One defining characteristic of WriteZone is explainability.
+
+Every intelligent decision should be traceable.
+
+A contributor should always be capable of identifying:
+
+- where evidence originated
+- how evidence was calculated
+- which processor generated the observation
+- which engine consumed the result
+
+Transparency remains an architectural requirement rather than an optional enhancement.
+
+---
+
+## Scalability
+
+Future capabilities should require minimal architectural modification.
+
+Adding a new intelligence capability should normally require:
+
+1. A new processor.
+2. A new signal.
+3. Registration within the pipeline.
+
+No widespread refactoring should be necessary.
+
+If adding new functionality requires modifications across numerous unrelated components, the architecture should be reviewed before implementation proceeds.
+
+---
+
+## Architecture Summary
+
+The architecture of WriteZone exists to support continuous evolution.
+
+The objective is not to create the smallest codebase.
+
+The objective is to create a codebase that remains understandable, maintainable, extensible, and explainable as the platform grows.
+
+Architecture should simplify future development rather than constrain it.
+
+---
+
+**End of Chapter 5**

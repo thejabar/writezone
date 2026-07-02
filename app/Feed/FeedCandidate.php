@@ -14,4 +14,28 @@ final class FeedCandidate
         public readonly array $metadata = []
     ) {
     }
+
+    /**
+     * Retrieve attached signals.
+     */
+    public function signals(): SignalCollection
+    {
+        return $this->signals;
+    }
+
+    /**
+     * Retrieve the wrapped FeedItem.
+     */
+    public function item(): FeedItem
+    {
+        return $this->item;
+    }
+
+    /**
+     * Retrieve workflow metadata.
+     */
+    public function metadata(): array
+    {
+        return $this->metadata;
+    }
 }

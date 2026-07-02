@@ -2921,3 +2921,249 @@ Every important decision should remain traceable.
 ---
 
 **End of Appendix A**
+
+---
+
+# Appendix B
+
+# Directory Map
+
+## Purpose
+
+This appendix provides a high-level overview of the WriteZone project structure.
+
+Its purpose is to help contributors quickly understand where responsibilities belong.
+
+The directory structure should evolve deliberately.
+
+New directories should only be introduced when they represent a meaningful architectural boundary.
+
+---
+
+# Repository Overview
+
+```text
+writezone.org/
+
+├── app/
+├── bootstrap/
+├── config/
+├── core/
+├── database/
+├── docs/
+├── public_html/
+├── resources/
+├── routes/
+├── storage/
+├── vendor/
+└── composer.json
+```
+
+---
+
+# app/
+
+The `app` directory contains the business implementation of WriteZone.
+
+Major components include:
+
+```text
+app/
+
+Controllers/
+Services/
+Engines/
+Feed/
+Intelligence/
+Models/
+Pipeline/
+Helpers/
+```
+
+This directory contains the majority of application-specific behaviour.
+
+---
+
+# Controllers
+
+Responsible for coordinating HTTP requests.
+
+Controllers should remain lightweight.
+
+Responsibilities include:
+
+- accepting requests
+- invoking Services
+- returning responses
+
+Business logic should remain outside Controllers.
+
+---
+
+# Services
+
+Services coordinate business operations.
+
+They provide clean interfaces for Controllers and may orchestrate multiple Engines or Models.
+
+---
+
+# Engines
+
+Engines execute complete business workflows.
+
+Current implementation includes:
+
+- FeedEngine
+
+Future implementations may include:
+
+- RecommendationEngine
+- SearchEngine
+- NotificationEngine
+- ReputationEngine
+
+---
+
+# Feed
+
+Contains data structures representing feed execution.
+
+Examples include:
+
+- FeedItem
+- FeedCandidate
+- FeedCandidateFactory
+
+These classes represent feed-specific domain objects.
+
+---
+
+# Intelligence
+
+Contains the analytical capabilities of WriteZone.
+
+Typical components include:
+
+```text
+Signals/
+
+Processors/
+
+Collections/
+
+Contracts/
+```
+
+Every new intelligence capability should normally begin here.
+
+---
+
+# Models
+
+Models provide controlled interaction with persistence.
+
+Models should remain focused on data access rather than business orchestration.
+
+---
+
+# Pipeline
+
+Contains the generic workflow execution framework.
+
+Pipelines coordinate Processors but remain independent of business logic.
+
+---
+
+# resources/
+
+Contains presentation assets.
+
+Examples include:
+
+- views
+- templates
+- layouts
+
+Presentation logic should remain isolated from business logic.
+
+---
+
+# routes/
+
+Defines application routing.
+
+Routes should remain declarative.
+
+Complex behaviour belongs within Controllers and Services.
+
+---
+
+# docs/
+
+Contains the WriteZone Engineering Handbook.
+
+Major documents include:
+
+- AI_CONTEXT.md
+- ARCHITECTURE.md
+- ENGINEERING.md
+- ROADMAP.md
+- DECISIONS.md
+- CONTRIBUTING.md
+- CHANGELOG.md
+
+Documentation evolves alongside implementation.
+
+---
+
+# storage/
+
+Contains runtime-generated data.
+
+Examples include:
+
+- logs
+- cache
+- temporary files
+
+Application source code should never be stored here.
+
+---
+
+# public_html/
+
+Contains publicly accessible assets.
+
+Examples include:
+
+- CSS
+- JavaScript
+- images
+- entry point
+
+Sensitive application logic should never be placed inside the public directory.
+
+---
+
+# Future Growth
+
+The directory structure should evolve conservatively.
+
+New top-level directories should be introduced only when they improve architectural clarity.
+
+Maintaining a predictable project structure reduces cognitive load and simplifies onboarding.
+
+---
+
+# Appendix Summary
+
+The repository structure reflects the architectural principles established throughout this handbook.
+
+Every directory exists to support a clearly defined responsibility.
+
+Contributors should preserve this structure as the platform continues to evolve.
+
+---
+
+**End of Appendix B**

@@ -112,3 +112,201 @@ Architectural Principles Reference
 ---
 
 **End of Table of Contents**
+
+---
+
+# Part I
+
+# Architecture Fundamentals
+
+This part introduces the architectural philosophy that governs every technical decision made within WriteZone.
+
+Unlike the AI Context handbook, which focuses on vision, collaboration, and engineering principles, this volume explains how the software itself is designed.
+
+Every future architectural change should remain consistent with the concepts established in this part.
+
+---
+
+# Chapter 1
+
+# Architectural Philosophy
+
+## Purpose
+
+The purpose of the WriteZone architecture is to create a platform that remains understandable, maintainable, scalable, and explainable throughout its lifetime.
+
+Architecture exists to reduce complexity rather than increase it.
+
+Every layer, component, and abstraction should simplify future development.
+
+---
+
+## Core Objectives
+
+The architecture has been designed to achieve the following objectives:
+
+- Maintainability
+- Scalability
+- Explainability
+- Modularity
+- Testability
+- Performance
+- Security
+- Extensibility
+
+Every architectural decision should strengthen at least one of these objectives without weakening the others.
+
+---
+
+## Design Philosophy
+
+WriteZone is organised around responsibilities rather than technologies.
+
+The architecture does not revolve around PHP, MySQL, or any particular framework.
+
+Instead, it is organised around clearly defined responsibilities.
+
+Examples include:
+
+- Coordinating requests
+- Executing workflows
+- Producing intelligence
+- Persisting data
+- Rendering presentation
+
+Each responsibility belongs to one architectural layer.
+
+---
+
+## Layered Architecture
+
+WriteZone follows a layered architecture.
+
+Each layer communicates only through clearly defined interfaces.
+
+Responsibilities move in one direction.
+
+```text
+Presentation
+
+↓
+
+Application
+
+↓
+
+Business Logic
+
+↓
+
+Intelligence
+
+↓
+
+Persistence
+
+↓
+
+Infrastructure
+```
+
+This structure reduces coupling and allows components to evolve independently.
+
+---
+
+## Explainability
+
+Explainability is considered a first-class architectural requirement.
+
+Every intelligent observation should be traceable.
+
+Every workflow should be understandable.
+
+Every recommendation should be reproducible.
+
+The platform should never depend upon unexplained behaviour.
+
+---
+
+## Modularity
+
+Large systems become maintainable through modularity.
+
+Every capability should exist as an independent component.
+
+Modules should be:
+
+- cohesive
+- reusable
+- independently testable
+- loosely coupled
+
+The objective is to minimise the impact of future change.
+
+---
+
+## Composition Over Complexity
+
+WriteZone prefers composing small components instead of creating large monolithic classes.
+
+Complex behaviour should emerge through cooperation between specialised components.
+
+Examples include:
+
+- Engines coordinating Pipelines
+- Pipelines coordinating Processors
+- Processors producing Signals
+- Signal Collections accumulating evidence
+
+No single class should become responsible for the entire workflow.
+
+---
+
+## Stable Boundaries
+
+Architectural boundaries should remain stable.
+
+Controllers should never become Services.
+
+Services should never become Views.
+
+Processors should never become Models.
+
+Respecting these boundaries protects long-term maintainability.
+
+---
+
+## Evolution
+
+The architecture is expected to evolve continuously.
+
+New capabilities should normally require extension rather than replacement.
+
+Examples include:
+
+- introducing a new Processor
+- adding another Signal
+- extending an Engine
+- creating another Service
+
+Existing abstractions should remain stable while allowing the platform to grow.
+
+---
+
+## Architecture Summary
+
+The WriteZone architecture is designed to support many years of continuous evolution.
+
+Every architectural decision should reinforce:
+
+- simplicity
+- consistency
+- explainability
+- modularity
+- maintainability
+
+When uncertainty exists, contributors should choose the solution that best preserves these characteristics.
+
+---
+
+**End of Chapter 1**

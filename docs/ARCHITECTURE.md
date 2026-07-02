@@ -1462,3 +1462,208 @@ Middleware should remain focused on request processing rather than business oper
 ---
 
 **End of Chapter 5**
+
+---
+
+# Chapter 6
+
+# Controller Layer
+
+## Purpose
+
+The Controller Layer serves as the entry point into the application's business logic.
+
+Controllers receive requests that have already passed through the Routing and Middleware layers.
+
+Their primary responsibility is coordination rather than computation.
+
+Controllers should remain lightweight, predictable, and easy to understand.
+
+---
+
+## Responsibilities
+
+The Controller Layer is responsible for:
+
+- receiving validated requests
+- extracting request parameters
+- invoking Services
+- returning responses or Views
+- handling redirects
+- coordinating request flow
+
+Controllers should not contain business rules.
+
+---
+
+## Current Implementation
+
+Controllers reside within:
+
+```text
+app/Controllers/
+```
+
+Current controllers include examples such as:
+
+- HomeController
+- AuthController
+- WritController
+- ProfileController
+- SearchController
+- NotificationController
+
+Each controller focuses on a specific domain of responsibility.
+
+---
+
+## Execution Flow
+
+A typical controller execution follows this pattern.
+
+```text
+HTTP Request
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+Engine
+
+↓
+
+Response
+
+↓
+
+View
+```
+
+Controllers should delegate responsibility as early as possible.
+
+---
+
+## Thin Controllers
+
+Controllers should remain intentionally small.
+
+A controller method should generally:
+
+1. Read the request.
+2. Call a Service.
+3. Return a response.
+
+Any additional business behaviour should be moved into lower architectural layers.
+
+---
+
+## Request Handling
+
+Controllers may access:
+
+- route parameters
+- query parameters
+- form data
+- authenticated user information
+
+They should avoid transforming this data beyond what is necessary for coordination.
+
+---
+
+## Service Delegation
+
+Controllers should communicate primarily with Services.
+
+Examples include:
+
+- FeedService
+- AuthenticationService
+- NotificationService
+
+Services provide a stable interface between Controllers and the application's business workflows.
+
+---
+
+## Response Types
+
+Controllers may return:
+
+- HTML Views
+- Redirects
+- JSON responses
+- Error responses
+
+The response type should match the needs of the requesting client.
+
+---
+
+## Error Handling
+
+Controllers may handle user-facing errors such as:
+
+- resource not found
+- invalid request
+- unauthorized access
+
+Complex error recovery should remain within Services or Engines where appropriate.
+
+---
+
+## Architectural Principles
+
+Controllers should remain:
+
+- lightweight
+- readable
+- predictable
+- cohesive
+- easy to test
+
+Every controller should have a clearly defined purpose.
+
+---
+
+## Anti-Patterns
+
+Controllers should never:
+
+- execute SQL queries
+- contain ranking algorithms
+- perform Intelligence processing
+- manipulate Signals
+- coordinate Pipelines
+- generate HTML manually
+
+Those responsibilities belong to other architectural layers.
+
+---
+
+## Future Evolution
+
+As WriteZone grows, Controllers should remain stable.
+
+New capabilities should primarily require:
+
+- additional Services
+- additional Engines
+- additional Processors
+
+Controller complexity should grow very slowly over time.
+
+---
+
+## Chapter Summary
+
+The Controller Layer coordinates application execution without becoming responsible for business behaviour.
+
+Well-designed Controllers simplify maintenance, improve readability, and preserve the separation of concerns that defines the WriteZone architecture.
+
+---
+
+**End of Chapter 6**

@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace App\Feed\Results;
 
-use App\Ranking\Results\RankedCandidate;
+use App\Support\Collections\Collection;
 
 final class FeedResult
 {
-    /**
-     * @param RankedCandidate[] $candidates
-     */
     public function __construct(
-        private readonly array $candidates,
+        private readonly Collection $candidates,
         private readonly array $metadata = []
     ) {
     }
 
     /**
      * Ranked feed candidates.
-     *
-     * @return RankedCandidate[]
      */
-    public function candidates(): array
+    public function candidates(): Collection
     {
         return $this->candidates;
     }
@@ -32,7 +27,7 @@ final class FeedResult
      */
     public function count(): int
     {
-        return count($this->candidates);
+        return $this->candidates->count();
     }
 
     /**
@@ -40,7 +35,7 @@ final class FeedResult
      */
     public function isEmpty(): bool
     {
-        return empty($this->candidates);
+        return $this->candidates->isEmpty();
     }
 
     /**

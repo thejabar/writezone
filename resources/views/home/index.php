@@ -12,7 +12,7 @@
 
 <?php foreach ($writs as $candidate): ?>
 
-    <?php $item = $candidate->item; ?>
+    <?php $item = $candidate->item(); ?>
 
     <article class="writ-card">
 
@@ -33,11 +33,9 @@
         </div>
 
         <div class="writ-content">
-
             <?= nl2br(
                 htmlspecialchars($item->content)
             ) ?>
-
         </div>
 
         <div class="writ-actions">

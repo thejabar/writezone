@@ -13,9 +13,6 @@ final class SignalCollection
      */
     private array $signals = [];
 
-    /**
-     * Store a signal.
-     */
     public function add(
         Signal $signal
     ): void {
@@ -27,20 +24,25 @@ final class SignalCollection
     }
 
     /**
-     * Retrieve one signal.
+     * @return Signal[]
      */
+    public function all(): array
+    {
+        return array_values(
+            $this->signals
+        );
+    }
+
     public function get(
         string $name
     ): ?Signal {
 
-        return $this->signals[$name]
-            ?? null;
+        return $this->signals[
+            $name
+        ] ?? null;
 
     }
 
-    /**
-     * Determine whether a signal exists.
-     */
     public function has(
         string $name
     ): bool {
@@ -51,48 +53,8 @@ final class SignalCollection
 
     }
 
-    /**
-     * Number of signals.
-     */
-    public function count(): int
-    {
-
-        return count(
-            $this->signals
-        );
-
-    }
-
-    /**
-     * Collection empty?
-     */
-    public function isEmpty(): bool
-    {
-
-        return empty(
-            $this->signals
-        );
-
-    }
-
-    /**
-     * @return Signal[]
-     */
-    public function all(): array
-    {
-
-        return array_values(
-            $this->signals
-        );
-
-    }
-
-    /**
-     * Sum all signal values.
-     */
     public function total(): float
     {
-
         return array_reduce(
             $this->signals,
             fn (
@@ -101,6 +63,5 @@ final class SignalCollection
             ) => $total + $signal->value(),
             0.0
         );
-
     }
 }

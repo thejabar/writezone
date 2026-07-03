@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Ranking\Results;
 
 use App\Feed\FeedCandidate;
+use App\Feed\FeedItem;
+use App\Intelligence\Collections\SignalCollection;
 
 final class RankedCandidate
 {
@@ -23,6 +25,22 @@ final class RankedCandidate
     }
 
     /**
+     * Feed item.
+     */
+    public function item(): FeedItem
+    {
+        return $this->candidate->item;
+    }
+
+    /**
+     * Intelligence signals.
+     */
+    public function signals(): SignalCollection
+    {
+        return $this->candidate->signals;
+    }
+
+    /**
      * Ranking result.
      */
     public function ranking(): RankingResult
@@ -31,7 +49,7 @@ final class RankedCandidate
     }
 
     /**
-     * Convenience helper.
+     * Final score.
      */
     public function score(): float
     {
@@ -39,7 +57,7 @@ final class RankedCandidate
     }
 
     /**
-     * Convenience helper.
+     * Score breakdown.
      */
     public function breakdown(): array
     {
@@ -49,7 +67,7 @@ final class RankedCandidate
     }
 
     /**
-     * Convenience helper.
+     * Confidence score.
      */
     public function confidence(): float
     {

@@ -14,12 +14,17 @@ class HomeController
         Request $request
     ): string {
 
+        $feed = FeedService::get([
+            'viewer_id' => Auth::id(),
+        ]);
+
         return view(
             'home.index',
             [
-                'writs' => FeedService::get([
-                    'viewer_id' => Auth::id(),
-                ]),
+                'feed'  => $feed,
+                'writs' => $feed
+                    ->candidates()
+                    ->all(),
             ]
         );
 

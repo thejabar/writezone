@@ -10,9 +10,9 @@ abstract class Engine
      * Execute the engine.
      *
      * @param array $payload
-     * @return array
+     * @return mixed
      */
     abstract public function execute(
         array $payload = []
-    ): array;
+    ): mixed;
 }

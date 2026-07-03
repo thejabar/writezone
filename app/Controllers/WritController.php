@@ -15,12 +15,23 @@ use Core\Http\Response;
 class WritController
 {
     public function index(
-        Request $request
-    ): string {
-        return view('writs.index', [
-            'writs' => FeedService::get(),
-        ]);
-    }
+    Request $request
+): string {
+
+    $feed = FeedService::get([
+        'viewer_id' => Auth::id(),
+    ]);
+
+    return view(
+        'writs.index',
+        [
+            'feed'  => $feed,
+            'writs' => $feed
+                ->candidates()
+                ->all(),
+        ]
+    );
+}
 
     public function create(
         Request $request

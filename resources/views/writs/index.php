@@ -5,7 +5,7 @@
 
 <?php foreach ($writs as $candidate): ?>
 
-    <?php $item = $candidate->item; ?>
+    <?php $item = $candidate->item(); ?>
 
     <article class="writ-card">
 
@@ -46,5 +46,7 @@
         </div>
 
     </article>
+<?php require BASE_PATH
+    . '/resources/views/partials/intelligence-panel.php'; ?>
 
 <?php endforeach; ?>

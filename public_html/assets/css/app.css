@@ -364,3 +364,36 @@ button:hover {
 
     padding: 0 5px;
 }
+
+
+.intelligence-panel {
+    margin: .75rem 0 2rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: .75rem;
+    background: var(--surface-hover, #f8f8f8);
+    font-size: .9rem;
+}
+
+.intelligence-title {
+    font-weight: 700;
+    margin-bottom: .75rem;
+}
+
+.intelligence-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .35rem 0;
+    border-bottom: 1px dashed rgba(0,0,0,.08);
+}
+
+.intelligence-row:last-child {
+    border-bottom: none;
+}
+
+.intelligence-row small {
+    display: block;
+    opacity: .75;
+    margin-top: .15rem;
+}

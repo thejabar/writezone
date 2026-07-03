@@ -6,16 +6,17 @@ namespace App\Engines\Feed;
 
 use App\Engines\Engine;
 use App\Feed\FeedCandidateFactory;
-use App\Intelligence\Processors\FreshnessProcessor;
-use App\Intelligence\Processors\RelationshipProcessor;
+use App\Feed\Pipeline\FeedPipeline;
+use App\Feed\Results\FeedResult;
 use App\Models\Writ;
-use App\Pipeline\Pipeline;
+use App\Ranking\Engines\RankingEngine;
+use App\Support\Collections\ArrayCollection;
 
 final class FeedEngine extends Engine
 {
     public function execute(
         array $payload = []
-    ): array {
+    ): FeedResult {
 
         $rows = Writ::feed();
 
@@ -24,17 +25,23 @@ final class FeedEngine extends Engine
             $payload
         );
 
-        $pipeline = (new Pipeline())
-            ->through(
-                new RelationshipProcessor()
-            )
-            ->through(
-                new FreshnessProcessor()
-            );
+        $pipeline = new FeedPipeline();
 
-        return $pipeline->process(
+        $ranking = new RankingEngine();
+
+        $processed = $pipeline->process(
             $candidates
         );
 
+        $ranked = $ranking->rankAll(
+            $processed
+        );
+
+        return new FeedResult(
+            candidates: new ArrayCollection(
+                $ranked
+            ),
+            metadata: $payload
+        );
     }
 }

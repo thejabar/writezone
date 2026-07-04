@@ -6,16 +6,36 @@ document.addEventListener(
             "🧠 WriteZone Studio Ready"
         );
 
-        const editor =
-            document.getElementById(
-                "studio-editor"
-            );
+        const editor = document.getElementById(
+            "studio-editor"
+        );
 
         if (!editor) {
             return;
         }
 
         editor.focus();
+
+        const clear = document.getElementById(
+            "studio-clear"
+        );
+
+        clear?.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    !confirm(
+                        "Start a new analysis?"
+                    )
+                ) {
+                    return;
+                }
+
+                window.location.href = "/lab";
+
+            }
+        );
 
     }
 );

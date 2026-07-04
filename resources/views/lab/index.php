@@ -30,23 +30,36 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
             <div class="studio-toolbar">
 
-                <button
-                    class="btn btn-primary"
-                    type="submit"
-                >
-                    <i class="fa-solid fa-brain"></i>
-                    Analyze
-                </button>
+    <div class="studio-actions">
 
-                <span
-                    id="studio-status"
-                    class="studio-status"
-                >
-                    <i class="fa-solid fa-circle"></i>
-                    Intelligence Ready
-                </span>
+        <button
+            class="btn btn-primary"
+            type="submit"
+        >
+            <i class="fa-solid fa-brain"></i>
+            Analyze
+        </button>
 
-            </div>
+        <button
+            id="studio-clear"
+            class="btn"
+            type="button"
+        >
+            <i class="fa-solid fa-file-circle-plus"></i>
+New Analysis
+        </button>
+
+    </div>
+
+    <span
+        id="studio-status"
+        class="studio-status"
+    >
+        <i class="fa-solid fa-circle"></i>
+        Intelligence Ready
+    </span>
+
+</div>
 
         </form>
 

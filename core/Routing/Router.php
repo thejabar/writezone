@@ -4,65 +4,130 @@ declare(strict_types=1);
 
 namespace Core\Routing;
 
+use Exception;
 use Core\Container\Container;
+use Core\Http\Middleware\MiddlewarePipeline;
 use Core\Http\Request;
 use Core\Http\Response;
-use Core\Http\Middleware\MiddlewarePipeline;
 
-class Router
+final class Router
 {
+    /**
+     * Registered application routes.
+     *
+     * @var array<string,array<string,array{
+     *     handler: callable|array,
+     *     middleware: array<int,string>
+     * }>>
+     */
     private array $routes = [];
 
+    /**
+     * Registered middleware aliases.
+     *
+     * @var array<string,string>
+     */
     private array $middlewareAliases = [];
 
+    /**
+     * Middleware awaiting registration
+     * on the next route.
+     *
+     * @var string[]
+     */
     private array $pendingMiddleware = [];
 
     public function __construct(
-        private Container $container
-    ) {}
+        private readonly Container $container
+    ) {
+    }
 
-    public function alias(string $name, string $middleware): void
-    {
+    /**
+     * Register a middleware alias.
+     */
+    public function alias(
+        string $name,
+        string $middleware
+    ): void {
         $this->middlewareAliases[$name] = $middleware;
     }
 
-    public function middleware(string|array $middleware): self
-    {
+    /**
+     * Attach middleware to the next route.
+     */
+    public function middleware(
+        string|array $middleware
+    ): self {
+
         $this->pendingMiddleware = (array) $middleware;
 
         return $this;
     }
 
-    public function get(string $path, callable|array $handler): void
-    {
-        $this->addRoute('GET', $path, $handler);
+    public function get(
+        string $path,
+        callable|array $handler
+    ): void {
+        $this->addRoute(
+            'GET',
+            $path,
+            $handler
+        );
     }
 
-    public function post(string $path, callable|array $handler): void
-    {
-        $this->addRoute('POST', $path, $handler);
+    public function post(
+        string $path,
+        callable|array $handler
+    ): void {
+        $this->addRoute(
+            'POST',
+            $path,
+            $handler
+        );
     }
 
-    public function put(string $path, callable|array $handler): void
-    {
-        $this->addRoute('PUT', $path, $handler);
+    public function put(
+        string $path,
+        callable|array $handler
+    ): void {
+        $this->addRoute(
+            'PUT',
+            $path,
+            $handler
+        );
     }
 
-    public function patch(string $path, callable|array $handler): void
-    {
-        $this->addRoute('PATCH', $path, $handler);
+    public function patch(
+        string $path,
+        callable|array $handler
+    ): void {
+        $this->addRoute(
+            'PATCH',
+            $path,
+            $handler
+        );
     }
 
-    public function delete(string $path, callable|array $handler): void
-    {
-        $this->addRoute('DELETE', $path, $handler);
+    public function delete(
+        string $path,
+        callable|array $handler
+    ): void {
+        $this->addRoute(
+            'DELETE',
+            $path,
+            $handler
+        );
     }
 
+    /**
+     * Register a route.
+     */
     private function addRoute(
         string $method,
         string $path,
         callable|array $handler
     ): void {
+
         $this->routes[$method][$path] = [
             'handler' => $handler,
             'middleware' => $this->pendingMiddleware,
@@ -71,76 +136,124 @@ class Router
         $this->pendingMiddleware = [];
     }
 
-    public function dispatch(Request $request): void
-{
-    $method = $request->method();
-    $uri = trim($request->uri(), '/');
+    /**
+     * Dispatch the current request.
+     */
+    public function dispatch(
+        Request $request
+    ): void {
 
-    $routes = $this->routes[$method] ?? [];
+        $method = $request->method();
 
-    foreach ($routes as $route => $config) {
-
-        $pattern = preg_replace(
-            '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
-            '([^/]+)',
-            trim($route, '/')
+        $uri = trim(
+            $request->uri(),
+            '/'
         );
 
-        $pattern = "#^{$pattern}$#";
+        $routes = $this->routes[$method] ?? [];
 
-        if (! preg_match($pattern, $uri, $matches)) {
-            continue;
-        }
+        foreach ($routes as $route => $config) {
 
-        array_shift($matches);
+            $pattern = preg_replace(
+                '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
+                '([^/]+)',
+                trim($route, '/')
+            );
 
-        $handler = $config['handler'];
+            $pattern = "#^{$pattern}$#";
 
-        $middlewares = array_map(
-            function (string $name) {
+            if (
+                ! preg_match(
+                    $pattern,
+                    $uri,
+                    $matches
+                )
+            ) {
+                continue;
+            }
 
-                if (! isset($this->middlewareAliases[$name])) {
-                    throw new \Exception(
-                        "Middleware alias '{$name}' is not registered."
+            array_shift($matches);
+
+            $handler = $config['handler'];
+
+            $middlewares = array_map(
+
+                function (
+                    string $name
+                ) {
+
+                    if (
+                        ! isset(
+                            $this->middlewareAliases[$name]
+                        )
+                    ) {
+
+                        throw new Exception(
+                            "Middleware alias '{$name}' is not registered."
+                        );
+
+                    }
+
+                    return $this->container->resolve(
+                        $this->middlewareAliases[$name]
                     );
-                }
 
-                return $this->container->resolve(
-                    $this->middlewareAliases[$name]
-                );
-            },
-            $config['middleware']
-        );
+                },
 
-        $pipeline = new MiddlewarePipeline($middlewares);
+                $config['middleware']
 
-        $response = $pipeline->process(
-            $request,
-            function () use ($handler, $matches, $request) {
+            );
 
-                if (is_array($handler)) {
-                    [$controller, $action] = $handler;
+            $pipeline = new MiddlewarePipeline(
+                $middlewares
+            );
 
-                    $instance = $this->container->resolve($controller);
+            $response = $pipeline->process(
 
-                    return $instance->$action(
+                $request,
+
+                function () use (
+                    $handler,
+                    $matches,
+                    $request
+                ) {
+
+                    if (
+                        is_array($handler)
+                    ) {
+
+                        [$controller, $action] = $handler;
+
+                        $instance = $this->container->resolve(
+                            $controller
+                        );
+
+                        return $instance->$action(
+                            $request,
+                            ...$matches
+                        );
+
+                    }
+
+                    return $handler(
                         $request,
                         ...$matches
                     );
+
                 }
 
-                return $handler(
-                    $request,
-                    ...$matches
-                );
-            }
+            );
+
+            Response::send(
+                (string) $response
+            );
+
+            return;
+        }
+
+        Response::send(
+            '404 Not Found',
+            404
         );
-
-        Response::send((string) $response);
-
-        return;
     }
-
-    Response::send('404 Not Found', 404);
-}
 }

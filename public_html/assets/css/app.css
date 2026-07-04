@@ -585,3 +585,9 @@ button:hover {
     }
 
 }
+
+.studio-actions{
+    display:flex;
+    gap:.75rem;
+    align-items:center;
+}

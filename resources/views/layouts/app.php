@@ -46,11 +46,15 @@
 ></script>
 <script
     defer
+    src="/assets/js/studio.js?v=<?= filemtime(
+        BASE_PATH . '/public_html/assets/js/studio.js'
+    ) ?>"
+></script>
+<script
+    defer
     src="/assets/js/comments.js?v=<?= filemtime(
         BASE_PATH . '/public_html/assets/js/comments.js'
     ) ?>"
 ></script>
-</body>
-</html>
 </body>
 </html>

@@ -173,5 +173,15 @@ $router
         BookmarkController::class,
         'index',
     ]);
+    
+    $router->get('/lab', [
+    \App\Controllers\LabController::class,
+    'index',
+]);
+
+$router->post('/lab', [
+    \App\Controllers\LabController::class,
+    'index',
+]);
 
 };

@@ -281,6 +281,11 @@ return static function (Router $router): void {
         LabController::class,
         'index',
     ]);
+    
+    $router->post('/lab/analyze', [
+    LabController::class,
+    'analyze',
+]);
 
     /*
     |--------------------------------------------------------------------------

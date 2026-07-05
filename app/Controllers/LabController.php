@@ -7,14 +7,20 @@ namespace App\Controllers;
 use App\Intelligence\Lab\IntelligenceLab;
 use App\Intelligence\Lab\LabRequest;
 use Core\Http\Request;
+use Core\Http\Response;
 
 final class LabController
 {
+    /**
+     * Display the Studio.
+     */
     public function index(
         Request $request
     ): string {
 
         $result = null;
+
+        $content = '';
 
         if (
             $request->method() === 'POST'
@@ -37,12 +43,61 @@ final class LabController
         }
 
         return view(
-    'lab.index',
-    [
-        'result'  => $result,
-        'content' => $content ?? '',
-    ]
-);
+            'lab.index',
+            [
+                'result'  => $result,
+                'content' => $content,
+            ]
+        );
+    }
 
+    /**
+     * Analyze writing and return JSON.
+     */
+    public function analyze(
+        Request $request
+    ): never {
+
+        $content = trim(
+            $request->input('content')
+        );
+
+        if ($content === '') {
+
+            Response::json([
+                'success' => false,
+                'message' => 'No content provided.',
+            ]);
+
+        }
+
+        $lab = new IntelligenceLab();
+
+        $result = $lab->analyze(
+            new LabRequest($content)
+        );
+
+        $metrics = $result->metrics();
+
+        Response::json([
+
+            'success' => true,
+
+            'score' => $result->score(),
+
+            'metrics' => [
+
+                'characters' => $metrics->characters,
+                'words' => $metrics->words,
+                'sentences' => $metrics->sentences,
+                'paragraphs' => $metrics->paragraphs,
+                'mentions' => $metrics->mentions,
+                'hashtags' => $metrics->hashtags,
+                'links' => $metrics->links,
+                'emojis' => $metrics->emojis,
+
+            ],
+
+        ]);
     }
 }

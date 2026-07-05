@@ -6,19 +6,310 @@ document.addEventListener(
             "🧠 WriteZone Studio Ready"
         );
 
-        const editor = document.getElementById(
-            "studio-editor"
-        );
+        const form =
+            document.getElementById(
+                "studio-form"
+            );
 
-        if (!editor) {
+        const editor =
+            document.getElementById(
+                "studio-editor"
+            );
+
+        const clear =
+            document.getElementById(
+                "studio-clear"
+            );
+
+        const status =
+            document.getElementById(
+                "studio-status"
+            );
+
+        if (
+            !form ||
+            !editor
+        ) {
             return;
         }
 
         editor.focus();
 
-        const clear = document.getElementById(
-            "studio-clear"
+        let timer = null;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Status
+        |--------------------------------------------------------------------------
+        */
+
+        function setStatus(
+            message
+        ) {
+
+            if (!status) {
+                return;
+            }
+
+            status.innerHTML =
+                `<i class="fa-solid fa-circle"></i> ${message}`;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Score
+        |--------------------------------------------------------------------------
+        */
+
+        function renderScore(
+            score
+        ) {
+
+            const element =
+                document.getElementById(
+                    "studio-score"
+                );
+
+            const quality =
+                document.getElementById(
+                    "signal-quality"
+                );
+
+            if (element) {
+                element.textContent = score;
+            }
+
+            if (quality) {
+                quality.textContent = score;
+            }
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Metrics
+        |--------------------------------------------------------------------------
+        */
+
+        function renderMetrics(
+            metrics
+        ) {
+
+            const map = {
+
+                characters:
+                    "metric-characters",
+
+                words:
+                    "metric-words",
+
+                sentences:
+                    "metric-sentences",
+
+                paragraphs:
+                    "metric-paragraphs",
+
+                mentions:
+                    "metric-mentions",
+
+                hashtags:
+                    "metric-hashtags",
+
+                links:
+                    "metric-links",
+
+                emojis:
+                    "metric-emojis",
+
+            };
+
+            Object.entries(map)
+                .forEach(
+                    ([key, id]) => {
+
+                        const node =
+                            document.getElementById(
+                                id
+                            );
+
+                        if (
+                            node &&
+                            metrics[key] !== undefined
+                        ) {
+                            node.textContent =
+                                metrics[key];
+                        }
+
+                    }
+                );
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Suggestions
+        |--------------------------------------------------------------------------
+        */
+
+        function renderSuggestions() {
+
+            const container =
+                document.getElementById(
+                    "studio-suggestions"
+                );
+
+            if (!container) {
+                return;
+            }
+
+            container.innerHTML = `
+                <ul class="studio-suggestions">
+                    <li>Analysis completed successfully.</li>
+                    <li>More intelligent recommendations will appear as the Intelligence Engine evolves.</li>
+                </ul>
+            `;
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Analyze
+        |--------------------------------------------------------------------------
+        */
+
+        async function analyze() {
+
+            const content =
+                editor.value.trim();
+
+            if (
+                content.length === 0
+            ) {
+
+                renderScore("--");
+
+                return;
+
+            }
+
+            setStatus(
+                "Analyzing..."
+            );
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/lab/analyze",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/x-www-form-urlencoded",
+                            },
+
+                            body:
+                                new URLSearchParams({
+                                    content,
+                                }),
+
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                if (
+                    !data.success
+                ) {
+
+                    setStatus(
+                        "Analysis failed"
+                    );
+
+                    return;
+
+                }
+
+                renderScore(
+                    data.score
+                );
+
+                renderMetrics(
+                    data.metrics
+                );
+
+                renderSuggestions();
+
+                setStatus(
+                    "Intelligence Ready"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+                setStatus(
+                    "Connection error"
+                );
+
+            }
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Debounce
+        |--------------------------------------------------------------------------
+        */
+
+        editor.addEventListener(
+            "input",
+            () => {
+
+                clearTimeout(
+                    timer
+                );
+
+                timer =
+                    setTimeout(
+                        analyze,
+                        400
+                    );
+
+            }
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Prevent form submit
+        |--------------------------------------------------------------------------
+        */
+
+        form.addEventListener(
+            "submit",
+            function (
+                event
+            ) {
+
+                event.preventDefault();
+
+                analyze();
+
+            }
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | New Analysis
+        |--------------------------------------------------------------------------
+        */
 
         clear?.addEventListener(
             "click",
@@ -32,7 +323,8 @@ document.addEventListener(
                     return;
                 }
 
-                window.location.href = "/lab";
+                window.location.href =
+                    "/lab";
 
             }
         );

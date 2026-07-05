@@ -16,7 +16,10 @@
             Writing Workspace
         </h2>
 
-        <form method="post">
+        <form
+            id="studio-form"
+            method="post"
+        >
 
             <textarea
                 id="studio-editor"
@@ -30,36 +33,36 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
             <div class="studio-toolbar">
 
-    <div class="studio-actions">
+                <div class="studio-actions">
 
-        <button
-            class="btn btn-primary"
-            type="submit"
-        >
-            <i class="fa-solid fa-brain"></i>
-            Analyze
-        </button>
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                    >
+                        <i class="fa-solid fa-brain"></i>
+                        Analyze
+                    </button>
 
-        <button
-            id="studio-clear"
-            class="btn"
-            type="button"
-        >
-            <i class="fa-solid fa-file-circle-plus"></i>
-New Analysis
-        </button>
+                    <button
+                        id="studio-clear"
+                        class="btn"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-file-circle-plus"></i>
+                        New Analysis
+                    </button>
 
-    </div>
+                </div>
 
-    <span
-        id="studio-status"
-        class="studio-status"
-    >
-        <i class="fa-solid fa-circle"></i>
-        Intelligence Ready
-    </span>
+                <span
+                    id="studio-status"
+                    class="studio-status"
+                >
+                    <i class="fa-solid fa-circle"></i>
+                    Intelligence Ready
+                </span>
 
-</div>
+            </div>
 
         </form>
 
@@ -78,14 +81,12 @@ New Analysis
                 id="studio-score"
                 class="studio-score"
             >
-
                 <?= $result
                     ? number_format(
                         $result->score(),
                         0
                     )
                     : '--' ?>
-
             </div>
 
         </div>
@@ -97,59 +98,69 @@ New Analysis
                 Metrics
             </h3>
 
+            <?php if ($result): ?>
+
+                <?php $metrics = $result->metrics(); ?>
+
+            <?php endif; ?>
+
             <div id="studio-metrics">
 
-                <?php if ($result): ?>
+                <div class="studio-metric">
+                    <span>Characters</span>
+                    <strong id="metric-characters">
+                        <?= $result ? $metrics->characters : '--' ?>
+                    </strong>
+                </div>
 
-                    <?php $metrics = $result->metrics(); ?>
+                <div class="studio-metric">
+                    <span>Words</span>
+                    <strong id="metric-words">
+                        <?= $result ? $metrics->words : '--' ?>
+                    </strong>
+                </div>
 
-                    <div class="studio-metric">
-                        <span>Characters</span>
-                        <strong><?= $metrics->characters ?></strong>
-                    </div>
+                <div class="studio-metric">
+                    <span>Sentences</span>
+                    <strong id="metric-sentences">
+                        <?= $result ? $metrics->sentences : '--' ?>
+                    </strong>
+                </div>
 
-                    <div class="studio-metric">
-                        <span>Words</span>
-                        <strong><?= $metrics->words ?></strong>
-                    </div>
+                <div class="studio-metric">
+                    <span>Paragraphs</span>
+                    <strong id="metric-paragraphs">
+                        <?= $result ? $metrics->paragraphs : '--' ?>
+                    </strong>
+                </div>
 
-                    <div class="studio-metric">
-                        <span>Sentences</span>
-                        <strong><?= $metrics->sentences ?></strong>
-                    </div>
+                <div class="studio-metric">
+                    <span>Mentions</span>
+                    <strong id="metric-mentions">
+                        <?= $result ? $metrics->mentions : '--' ?>
+                    </strong>
+                </div>
 
-                    <div class="studio-metric">
-                        <span>Paragraphs</span>
-                        <strong><?= $metrics->paragraphs ?></strong>
-                    </div>
+                <div class="studio-metric">
+                    <span>Hashtags</span>
+                    <strong id="metric-hashtags">
+                        <?= $result ? $metrics->hashtags : '--' ?>
+                    </strong>
+                </div>
 
-                    <div class="studio-metric">
-                        <span>Mentions</span>
-                        <strong><?= $metrics->mentions ?></strong>
-                    </div>
+                <div class="studio-metric">
+                    <span>Links</span>
+                    <strong id="metric-links">
+                        <?= $result ? $metrics->links : '--' ?>
+                    </strong>
+                </div>
 
-                    <div class="studio-metric">
-                        <span>Hashtags</span>
-                        <strong><?= $metrics->hashtags ?></strong>
-                    </div>
-
-                    <div class="studio-metric">
-                        <span>Links</span>
-                        <strong><?= $metrics->links ?></strong>
-                    </div>
-
-                    <div class="studio-metric">
-                        <span>Emojis</span>
-                        <strong><?= $metrics->emojis ?></strong>
-                    </div>
-
-                <?php else: ?>
-
-                    <p class="muted">
-                        Analyze some writing to see live metrics.
-                    </p>
-
-                <?php endif; ?>
+                <div class="studio-metric">
+                    <span>Emojis</span>
+                    <strong id="metric-emojis">
+                        <?= $result ? $metrics->emojis : '--' ?>
+                    </strong>
+                </div>
 
             </div>
 
@@ -164,24 +175,35 @@ New Analysis
 
             <div id="studio-signals">
 
-                <?php if ($result): ?>
+                <div class="studio-metric">
+                    <span>Quality</span>
 
-                    <div class="studio-metric">
-                        <span>Quality</span>
-                        <strong><?= number_format($result->score(), 0) ?></strong>
-                    </div>
+                    <strong id="signal-quality">
+                        <?= $result
+                            ? number_format(
+                                $result->score(),
+                                0
+                            )
+                            : '--' ?>
+                    </strong>
 
-                    <p class="muted">
+                </div>
+
+                <p
+                    id="signal-description"
+                    class="muted"
+                >
+                    <?php if ($result): ?>
+
                         More signal processors will appear here as the Intelligence Engine evolves.
-                    </p>
 
-                <?php else: ?>
+                    <?php else: ?>
 
-                    <p class="muted">
                         Signal breakdown will appear after analysis.
-                    </p>
 
-                <?php endif; ?>
+                    <?php endif; ?>
+
+                </p>
 
             </div>
 
@@ -198,7 +220,10 @@ New Analysis
 
                 <?php if ($result): ?>
 
-                    <ul class="studio-suggestions">
+                    <ul
+                        id="suggestion-list"
+                        class="studio-suggestions"
+                    >
 
                         <li>
                             The Intelligence Engine successfully analyzed your writing.
@@ -212,7 +237,10 @@ New Analysis
 
                 <?php else: ?>
 
-                    <p class="muted">
+                    <p
+                        id="suggestion-empty"
+                        class="muted"
+                    >
                         Suggestions will appear after analysis.
                     </p>
 

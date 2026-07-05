@@ -152,25 +152,83 @@ document.addEventListener(
         |--------------------------------------------------------------------------
         */
 
-        function renderSuggestions() {
+        function renderSuggestions(quality) {
 
-            const container =
-                document.getElementById(
-                    "studio-suggestions"
-                );
+    const container =
+        document.getElementById(
+            "studio-suggestions"
+        );
 
-            if (!container) {
-                return;
+    if (!container) {
+        return;
+    }
+
+    let html = "";
+
+    if (
+        quality.strengths.length
+    ) {
+
+        html += `
+            <h4 class="studio-section-title">
+                <i class="fa-solid fa-circle-check"></i>
+                Strengths
+            </h4>
+
+            <ul class="studio-suggestions">
+        `;
+
+        quality.strengths.forEach(
+            strength => {
+
+                html += `
+                    <li>${strength}</li>
+                `;
+
             }
+        );
 
-            container.innerHTML = `
-                <ul class="studio-suggestions">
-                    <li>Analysis completed successfully.</li>
-                    <li>More intelligent recommendations will appear as the Intelligence Engine evolves.</li>
-                </ul>
-            `;
+        html += "</ul>";
 
-        }
+    }
+
+    if (
+        quality.suggestions.length
+    ) {
+
+        html += `
+            <h4 class="studio-section-title studio-section-spacing">
+                <i class="fa-solid fa-lightbulb"></i>
+                Coach
+            </h4>
+
+            <ul class="studio-suggestions">
+        `;
+
+        quality.suggestions.forEach(
+            suggestion => {
+
+                html += `
+                    <li>${suggestion}</li>
+                `;
+
+            }
+        );
+
+        html += "</ul>";
+
+    }
+
+    if (html === "") {
+
+        html =
+            '<p class="muted">No coaching advice available.</p>';
+
+    }
+
+    container.innerHTML = html;
+
+}
 
         /*
         |--------------------------------------------------------------------------
@@ -241,7 +299,12 @@ document.addEventListener(
                     data.metrics
                 );
 
-                renderSuggestions();
+                renderSuggestions(
+    data.quality ?? {
+        strengths: [],
+        suggestions: []
+    }
+);
 
                 setStatus(
                     "Intelligence Ready"

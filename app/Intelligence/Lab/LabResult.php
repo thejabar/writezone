@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Intelligence\Lab;
 
 use App\Intelligence\Analysis\ContentMetrics;
+use App\Intelligence\Evaluation\QualityResult;
 
 final class LabResult
 {
@@ -23,6 +24,15 @@ final class LabResult
     public function signals(): array
     {
         return $this->signals;
+    }
+
+    public function quality(): ?QualityResult
+    {
+        $quality = $this->signals['quality'] ?? null;
+
+        return $quality instanceof QualityResult
+            ? $quality
+            : null;
     }
 
     public function score(): float

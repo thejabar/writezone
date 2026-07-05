@@ -591,3 +591,7 @@ button:hover {
     gap:.75rem;
     align-items:center;
 }
+
+.studio-section-spacing {
+    margin-top: 1rem;
+}

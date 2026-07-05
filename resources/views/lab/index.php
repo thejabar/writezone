@@ -7,6 +7,13 @@
     Analyze writing exactly as the Intelligence Engine sees it.
 </p>
 
+<?php
+
+$metrics = $result?->metrics();
+$quality = $result?->quality();
+
+?>
+
 <div class="studio-layout">
 
     <section class="studio-editor card">
@@ -97,12 +104,6 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
                 <i class="fa-solid fa-chart-column"></i>
                 Metrics
             </h3>
-
-            <?php if ($result): ?>
-
-                <?php $metrics = $result->metrics(); ?>
-
-            <?php endif; ?>
 
             <div id="studio-metrics">
 
@@ -211,44 +212,82 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
         <div class="card">
 
-            <h3>
-                <i class="fa-solid fa-lightbulb"></i>
-                Suggestions
-            </h3>
+    <h3>
+        <i class="fa-solid fa-lightbulb"></i>
+        Writing Coach
+    </h3>
 
-            <div id="studio-suggestions">
+    <div id="studio-suggestions">
 
-                <?php if ($result): ?>
+        <?php if ($result && $quality): ?>
 
-                    <ul
-                        id="suggestion-list"
-                        class="studio-suggestions"
-                    >
+            <?php if (!empty($quality->strengths())): ?>
+
+                <h4 class="studio-section-title">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Strengths
+                </h4>
+
+                <ul class="studio-suggestions">
+
+                    <?php foreach ($quality->strengths() as $strength): ?>
 
                         <li>
-                            The Intelligence Engine successfully analyzed your writing.
+                            <?= htmlspecialchars($strength) ?>
                         </li>
+
+                    <?php endforeach; ?>
+
+                </ul>
+
+            <?php endif; ?>
+
+            <?php if (!empty($quality->suggestions())): ?>
+
+                <h4 class="studio-section-title studio-section-spacing">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    Coach
+                </h4>
+
+                <ul class="studio-suggestions">
+
+                    <?php foreach ($quality->suggestions() as $suggestion): ?>
 
                         <li>
-                            Additional suggestions will appear as new evaluators are introduced.
+                            <?= htmlspecialchars($suggestion) ?>
                         </li>
 
-                    </ul>
+                    <?php endforeach; ?>
 
-                <?php else: ?>
+                </ul>
 
-                    <p
-                        id="suggestion-empty"
-                        class="muted"
-                    >
-                        Suggestions will appear after analysis.
-                    </p>
+            <?php endif; ?>
 
-                <?php endif; ?>
+            <?php if (
+                empty($quality->strengths())
+                && empty($quality->suggestions())
+            ): ?>
 
-            </div>
+                <p class="muted">
+                    No coaching advice is available yet.
+                </p>
 
-        </div>
+            <?php endif; ?>
+
+        <?php else: ?>
+
+            <p
+                id="suggestion-empty"
+                class="muted"
+            >
+                Analyze your writing to receive personalised coaching.
+            </p>
+
+        <?php endif; ?>
+
+    </div>
+
+</div>
 
         <div class="card">
 

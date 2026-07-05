@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Intelligence\Lab;
 
 use App\Intelligence\Analysis\ContentAnalyzer;
-use App\Intelligence\Evaluators\QualityEvaluator;
+use App\Intelligence\Evaluation\QualityEngine;
 
 final class IntelligenceLab
 {
@@ -19,15 +19,15 @@ final class IntelligenceLab
             $request->content()
         );
 
-        $quality = (new QualityEvaluator())
-            ->evaluate($metrics);
+        $quality = (new QualityEngine())
+    ->evaluate($metrics);
 
         return new LabResult(
             metrics: $metrics,
             signals: [
-                'quality' => $quality,
-            ],
-            score: $quality
+    'quality' => $quality,
+],
+score: $quality->score()
         );
     }
 }

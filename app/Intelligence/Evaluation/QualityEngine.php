@@ -6,7 +6,9 @@ namespace App\Intelligence\Evaluation;
 
 use App\Intelligence\Analysis\ContentMetrics;
 use App\Intelligence\Contracts\Evaluator;
+use App\Intelligence\Evaluation\Evaluators\ReadabilityEvaluator;
 use App\Intelligence\Evaluation\Evaluators\StructureEvaluator;
+use App\Intelligence\Evaluation\Evaluators\VocabularyEvaluator;
 
 final class QualityEngine
 {
@@ -19,6 +21,8 @@ final class QualityEngine
     {
         $this->evaluators = [
             new StructureEvaluator(),
+            new ReadabilityEvaluator(),
+            new VocabularyEvaluator(),
         ];
     }
 

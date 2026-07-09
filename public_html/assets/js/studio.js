@@ -62,97 +62,251 @@ document.addEventListener(
         |--------------------------------------------------------------------------
         */
 
-        function renderScore(
-            score
-        ) {
+        function renderScore(score) {
 
-            const element =
-                document.getElementById(
-                    "studio-score"
-                );
+    const value =
+        typeof score === "number"
+            ? Math.round(score)
+            : "--";
 
-            const quality =
-                document.getElementById(
-                    "signal-quality"
-                );
+    const element =
+        document.getElementById(
+            "studio-score"
+        );
 
-            if (element) {
-                element.textContent = score;
-            }
+    const quality =
+        document.getElementById(
+            "signal-quality"
+        );
 
-            if (quality) {
-                quality.textContent = score;
-            }
+    if (element) {
+        element.textContent = value;
+    }
 
-        }
+    if (quality) {
+        quality.textContent = value;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| Signal Description
+|--------------------------------------------------------------------------
+*/
+
+function renderSignalDescription(score) {
+
+    const element =
+        document.getElementById(
+            "signal-description"
+        );
+
+    if (!element) {
+        return;
+    }
+
+    if (score >= 80) {
+
+        element.textContent =
+            "Excellent writing quality detected.";
+
+    } else if (score >= 60) {
+
+        element.textContent =
+            "Good writing with room for improvement.";
+
+    } else {
+
+        element.textContent =
+            "Improve structure and clarity for a stronger score.";
+
+    }
+}
+/*
+
+|--------------------------------------------------------------------------
+
+| Reset Signal Description
+
+|--------------------------------------------------------------------------
+
+*/
+
+function resetSignalDescription() {
+
+    const element =
+
+        document.getElementById(
+
+            "signal-description"
+
+        );
+
+    if (!element) {
+
+        return;
+
+    }
+
+    element.textContent =
+
+        "Signal breakdown will appear after analysis.";
+}
 
         /*
         |--------------------------------------------------------------------------
         | Metrics
         |--------------------------------------------------------------------------
         */
-
         function renderMetrics(
-            metrics
-        ) {
+    metrics
+) {
 
-            const map = {
+    const map = {
 
-                characters:
-                    "metric-characters",
+        characters:
+            "metric-characters",
 
-                words:
-                    "metric-words",
+        words:
+            "metric-words",
 
-                sentences:
-                    "metric-sentences",
+        sentences:
+            "metric-sentences",
 
-                paragraphs:
-                    "metric-paragraphs",
+        paragraphs:
+            "metric-paragraphs",
 
-                mentions:
-                    "metric-mentions",
+        mentions:
+            "metric-mentions",
 
-                hashtags:
-                    "metric-hashtags",
+        hashtags:
+            "metric-hashtags",
 
-                links:
-                    "metric-links",
+        links:
+            "metric-links",
 
-                emojis:
-                    "metric-emojis",
+        emojis:
+            "metric-emojis",
 
-            };
+    };
 
-            Object.entries(map)
-                .forEach(
-                    ([key, id]) => {
+    Object.entries(map)
+        .forEach(
+            ([key, id]) => {
 
-                        const node =
-                            document.getElementById(
-                                id
-                            );
+                const node =
+                    document.getElementById(
+                        id
+                    );
 
-                        if (
-                            node &&
-                            metrics[key] !== undefined
-                        ) {
-                            node.textContent =
-                                metrics[key];
-                        }
+                if (!node) {
+                    return;
+                }
 
-                    }
-                );
+                node.textContent =
+                    metrics[key] ?? "--";
 
-        }
+            }
+        );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Suggestions
-        |--------------------------------------------------------------------------
-        */
+}
 
-        function renderSuggestions(quality) {
+/*
+|--------------------------------------------------------------------------
+| Writing Insights
+|--------------------------------------------------------------------------
+*/
+
+function renderInsights(
+    metrics
+) {
+
+    const readingTime =
+        document.getElementById(
+            "metric-reading-time"
+        );
+
+    if (readingTime) {
+
+        readingTime.textContent =
+            metrics.readingTime !== undefined
+                ? metrics.readingTime + " min"
+                : "--";
+
+    }
+
+    const averageSentence =
+        document.getElementById(
+            "metric-average-sentence"
+        );
+
+    if (averageSentence) {
+
+        averageSentence.textContent =
+            metrics.averageSentenceLength !== undefined
+                ? Number(
+                    metrics.averageSentenceLength
+                ).toFixed(1) + " words"
+                : "--";
+
+    }
+
+    const averageParagraph =
+        document.getElementById(
+            "metric-average-paragraph"
+        );
+
+    if (averageParagraph) {
+
+        averageParagraph.textContent =
+            metrics.averageParagraphLength !== undefined
+                ? Number(
+                    metrics.averageParagraphLength
+                ).toFixed(1) + " words"
+                : "--";
+
+    }
+
+    const questions =
+        document.getElementById(
+            "metric-questions"
+        );
+
+    if (questions) {
+
+        questions.textContent =
+            metrics.questions ?? "--";
+
+    }
+
+    const exclamations =
+        document.getElementById(
+            "metric-exclamations"
+        );
+
+    if (exclamations) {
+
+        exclamations.textContent =
+            metrics.exclamations ?? "--";
+
+    }
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Suggestions
+|--------------------------------------------------------------------------
+*/
+
+function renderSuggestions(
+    quality
+) {
+
+    quality = quality ?? {
+        strengths: [],
+        suggestions: [],
+    };
 
     const container =
         document.getElementById(
@@ -166,7 +320,7 @@ document.addEventListener(
     let html = "";
 
     if (
-        quality.strengths.length
+        quality.strengths.length > 0
     ) {
 
         html += `
@@ -188,12 +342,14 @@ document.addEventListener(
             }
         );
 
-        html += "</ul>";
+        html += `
+            </ul>
+        `;
 
     }
 
     if (
-        quality.suggestions.length
+        quality.suggestions.length > 0
     ) {
 
         html += `
@@ -215,14 +371,19 @@ document.addEventListener(
             }
         );
 
-        html += "</ul>";
+        html += `
+            </ul>
+        `;
 
     }
 
     if (html === "") {
 
-        html =
-            '<p class="muted">No coaching advice available.</p>';
+        html = `
+            <p class="muted">
+                No coaching advice available.
+            </p>
+        `;
 
     }
 
@@ -230,167 +391,243 @@ document.addEventListener(
 
 }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Analyze
-        |--------------------------------------------------------------------------
-        */
+/*
+|--------------------------------------------------------------------------
+| Writing Dimensions
+|--------------------------------------------------------------------------
+*/
 
-        async function analyze() {
+function renderBreakdown(
+    breakdown
+) {
 
-            const content =
-                editor.value.trim();
+    breakdown = breakdown ?? {};
 
-            if (
-                content.length === 0
-            ) {
+    const map = {
 
-                renderScore("--");
+        structure:
+            "dimension-structure",
 
-                return;
+        readability:
+            "dimension-readability",
 
-            }
+        vocabulary:
+            "dimension-vocabulary",
 
-            setStatus(
-                "Analyzing..."
-            );
+    };
 
-            try {
+    Object.entries(map)
+        .forEach(
+            ([key, id]) => {
 
-                const response =
-                    await fetch(
-                        "/lab/analyze",
-                        {
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/x-www-form-urlencoded",
-                            },
-
-                            body:
-                                new URLSearchParams({
-                                    content,
-                                }),
-
-                        }
+                const node =
+                    document.getElementById(
+                        id
                     );
 
-                const data =
-                    await response.json();
-
-                if (
-                    !data.success
-                ) {
-
-                    setStatus(
-                        "Analysis failed"
-                    );
-
+                if (!node) {
                     return;
-
                 }
 
-                renderScore(
-                    data.score
-                );
+                node.textContent =
+                    breakdown[key] !== undefined
+                        ? Math.round(
+                            breakdown[key]
+                        )
+                        : "--";
 
-                renderMetrics(
-                    data.metrics
-                );
+            }
+        );
 
-                renderSuggestions(
-    data.quality ?? {
-        strengths: [],
-        suggestions: []
+}
+
+/*
+|--------------------------------------------------------------------------
+| Analyze
+|--------------------------------------------------------------------------
+*/
+
+async function analyze() {
+
+    const content =
+        editor.value.trim();
+
+    if (
+        content.length === 0
+    ) {
+
+   renderScore("--");
+
+renderMetrics({});
+
+renderInsights({});
+
+renderBreakdown({});
+
+renderSuggestions();
+
+resetSignalDescription();
+
+setStatus(
+    "Intelligence Ready"
+);
+        return;
+
+    }
+
+    setStatus(
+        "Analyzing with Intelligence..."
+    );
+
+    try {
+
+        const response =
+            await fetch(
+                "/lab/analyze",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/x-www-form-urlencoded",
+                    },
+
+                    body:
+                        new URLSearchParams({
+                            content,
+                        }),
+
+                }
+            );
+
+        const data = await response.json();
+
+renderScore(data.score);
+
+renderSignalDescription(data.score);
+
+renderMetrics(data.metrics);
+
+renderInsights(data.metrics);
+
+renderBreakdown(data.quality.breakdown);
+
+renderSuggestions(data.quality);
+
+setStatus("Analysis Complete");
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        setStatus(
+            "Connection error"
+        );
+
+    }
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Debounce
+|--------------------------------------------------------------------------
+*/
+
+editor.addEventListener(
+    "input",
+    () => {
+
+        clearTimeout(
+            timer
+        );
+
+        timer = setTimeout(
+            analyze,
+            400
+        );
+
     }
 );
 
-                setStatus(
-                    "Intelligence Ready"
-                );
+/*
+|--------------------------------------------------------------------------
+| Prevent Form Submit
+|--------------------------------------------------------------------------
+*/
 
-            }
+form.addEventListener(
+    "submit",
+    event => {
 
-            catch (error) {
+        event.preventDefault();
 
-                console.error(
-                    error
-                );
+        analyze();
 
-                setStatus(
-                    "Connection error"
-                );
+    }
+);
 
-            }
+/*
+|--------------------------------------------------------------------------
+| New Analysis
+|--------------------------------------------------------------------------
+*/
 
+clear?.addEventListener(
+    "click",
+    () => {
+
+        if (
+            !confirm(
+                "Start a new analysis?"
+            )
+        ) {
+            return;
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Debounce
-        |--------------------------------------------------------------------------
-        */
+        editor.value = "";
 
-        editor.addEventListener(
-            "input",
-            () => {
+renderScore("--");
 
-                clearTimeout(
-                    timer
-                );
+renderMetrics({});
 
-                timer =
-                    setTimeout(
-                        analyze,
-                        400
-                    );
+renderInsights({});
 
-            }
-        );
+renderBreakdown({});
 
-        /*
-        |--------------------------------------------------------------------------
-        | Prevent form submit
-        |--------------------------------------------------------------------------
-        */
+renderSuggestions();
 
-        form.addEventListener(
-            "submit",
-            function (
-                event
-            ) {
+resetSignalDescription();
 
-                event.preventDefault();
+setStatus(
+    "Intelligence Ready"
+);
 
-                analyze();
+        editor.focus();
 
-            }
-        );
+    }
+);
 
-        /*
-        |--------------------------------------------------------------------------
-        | New Analysis
-        |--------------------------------------------------------------------------
-        */
+/*
+|--------------------------------------------------------------------------
+| Initial State
+|--------------------------------------------------------------------------
+*/
 
-        clear?.addEventListener(
-            "click",
-            () => {
+setStatus(
+    "Intelligence Ready"
+);
 
-                if (
-                    !confirm(
-                        "Start a new analysis?"
-                    )
-                ) {
-                    return;
-                }
+if (
+    editor.value.trim().length > 0
+) {
 
-                window.location.href =
-                    "/lab";
+    analyze();
 
-            }
-        );
+}
 
     }
 );

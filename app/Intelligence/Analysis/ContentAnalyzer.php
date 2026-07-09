@@ -51,6 +51,44 @@ final class ContentAnalyzer
             $content,
             $emojis
         );
+        /*
+|--------------------------------------------------------------------------
+| Advanced Metrics
+|--------------------------------------------------------------------------
+*/
+
+$readingTime = max(
+    1,
+    (int) ceil($words / 200)
+);
+
+$averageSentenceLength =
+    count(array_filter($sentences)) > 0
+        ? round(
+            $words / count(array_filter($sentences)),
+            1
+        )
+        : 0.0;
+
+$averageParagraphLength =
+    count(array_filter($paragraphs)) > 0
+        ? round(
+            $words / count(array_filter($paragraphs)),
+            1
+        )
+        : 0.0;
+
+preg_match_all(
+    '/\?/',
+    $content,
+    $questions
+);
+
+preg_match_all(
+    '/!/',
+    $content,
+    $exclamations
+);
 
         return new ContentMetrics(
             characters: $characters,
@@ -71,8 +109,24 @@ final class ContentAnalyzer
                 $links[0]
             ),
             emojis: count(
-                $emojis[0]
-            )
+    $emojis[0]
+),
+
+readingTime: $readingTime,
+
+averageSentenceLength:
+    $averageSentenceLength,
+
+averageParagraphLength:
+    $averageParagraphLength,
+
+questions: count(
+    $questions[0]
+),
+
+exclamations: count(
+    $exclamations[0]
+),
         );
     }
 }

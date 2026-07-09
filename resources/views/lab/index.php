@@ -14,6 +14,7 @@ $quality = $result?->quality();
 
 ?>
 
+
 <div class="studio-layout">
 
     <section class="studio-editor card">
@@ -74,142 +75,242 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
         </form>
 
     </section>
+<aside class="studio-sidebar">
 
-    <aside class="studio-sidebar">
+    <div class="card">
 
-        <div class="card">
+        <h3>
+            <i class="fa-solid fa-gauge-high"></i>
+            Overall Score
+        </h3>
 
-            <h3>
-                <i class="fa-solid fa-gauge-high"></i>
-                Overall Score
-            </h3>
+        <div
+            id="studio-score"
+            class="studio-score"
+        >
+            <?= $result
+                ? number_format(
+                    $result->score(),
+                    0
+                )
+                : '--' ?>
+        </div>
 
-            <div
-                id="studio-score"
-                class="studio-score"
-            >
+    </div>
+
+    <div class="card">
+
+    <h3>
+        <i class="fa-solid fa-layer-group"></i>
+        Writing Dimensions
+    </h3>
+
+    <div class="studio-metric">
+
+        <span>Structure</span>
+
+        <strong id="dimension-structure">
+    <?= $quality
+        ? number_format(
+            $quality->scoreFor('structure') ?? 0,
+            0
+        )
+        : '--' ?>
+</strong>
+
+    </div>
+
+    <div class="studio-metric">
+
+        <span>Readability</span>
+
+        <strong id="dimension-readability">
+    <?= $quality
+        ? number_format(
+            $quality->scoreFor('readability') ?? 0,
+            0
+        )
+        : '--' ?>
+</strong>
+
+    </div>
+
+    <div class="studio-metric">
+
+        <span>Vocabulary</span>
+
+        <strong id="dimension-vocabulary">
+    <?= $quality
+        ? number_format(
+            $quality->scoreFor('vocabulary') ?? 0,
+            0
+        )
+        : '--' ?>
+</strong>
+
+    </div>
+
+</div>
+
+    <div class="card">
+
+        <h3>
+            <i class="fa-solid fa-chart-column"></i>
+            Metrics
+        </h3>
+
+        <div id="studio-metrics">
+
+            <div class="studio-metric">
+                <span>Characters</span>
+                <strong id="metric-characters">
+                    <?= $result ? $metrics->characters : '--' ?>
+                </strong>
+            </div>
+
+            <div class="studio-metric">
+                <span>Words</span>
+                <strong id="metric-words">
+                    <?= $result ? $metrics->words : '--' ?>
+                </strong>
+            </div>
+
+            <div class="studio-metric">
+                <span>Sentences</span>
+                <strong id="metric-sentences">
+                    <?= $result ? $metrics->sentences : '--' ?>
+                </strong>
+            </div>
+
+            <div class="studio-metric">
+                <span>Paragraphs</span>
+                <strong id="metric-paragraphs">
+                    <?= $result ? $metrics->paragraphs : '--' ?>
+                </strong>
+            </div>
+
+            <div class="studio-metric">
+                <span>Mentions</span>
+                <strong id="metric-mentions">
+                    <?= $result ? $metrics->mentions : '--' ?>
+                </strong>
+            </div>
+
+            <div class="studio-metric">
+                <span>Hashtags</span>
+                <strong id="metric-hashtags">
+                    <?= $result ? $metrics->hashtags : '--' ?>
+                </strong>
+            </div>
+
+            <div class="studio-metric">
+                <span>Links</span>
+                <strong id="metric-links">
+                    <?= $result ? $metrics->links : '--' ?>
+                </strong>
+            </div>
+
+            <div class="studio-metric">
+                <span>Emojis</span>
+                <strong id="metric-emojis">
+                    <?= $result ? $metrics->emojis : '--' ?>
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+    <h3>
+        <i class="fa-solid fa-chart-line"></i>
+        Writing Insights
+    </h3>
+
+    <div class="studio-metric">
+        <span>Reading Time</span>
+        <strong id="metric-reading-time">
+            <?= $result ? $metrics->readingTime . ' min' : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Average Sentence</span>
+        <strong id="metric-average-sentence">
+            <?= $result
+                ? number_format($metrics->averageSentenceLength, 1) . ' words'
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Average Paragraph</span>
+        <strong id="metric-average-paragraph">
+            <?= $result
+                ? number_format($metrics->averageParagraphLength, 1) . ' words'
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Questions</span>
+        <strong id="metric-questions">
+            <?= $result ? $metrics->questions : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Exclamations</span>
+        <strong id="metric-exclamations">
+            <?= $result ? $metrics->exclamations : '--' ?>
+        </strong>
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h3>
+        <i class="fa-solid fa-bolt"></i>
+        Signals
+    </h3>
+
+    <div id="studio-signals">
+
+        <div class="studio-metric">
+
+            <span>Quality</span>
+
+            <strong id="signal-quality">
                 <?= $result
                     ? number_format(
                         $result->score(),
                         0
                     )
                     : '--' ?>
-            </div>
+            </strong>
 
         </div>
 
-        <div class="card">
+        <p
+            id="signal-description"
+            class="muted"
+        >
+            <?php if ($result): ?>
 
-            <h3>
-                <i class="fa-solid fa-chart-column"></i>
-                Metrics
-            </h3>
+                More signal processors will appear here as the Intelligence Engine evolves.
 
-            <div id="studio-metrics">
+            <?php else: ?>
 
-                <div class="studio-metric">
-                    <span>Characters</span>
-                    <strong id="metric-characters">
-                        <?= $result ? $metrics->characters : '--' ?>
-                    </strong>
-                </div>
+                Signal breakdown will appear after analysis.
 
-                <div class="studio-metric">
-                    <span>Words</span>
-                    <strong id="metric-words">
-                        <?= $result ? $metrics->words : '--' ?>
-                    </strong>
-                </div>
+            <?php endif; ?>
+        </p>
 
-                <div class="studio-metric">
-                    <span>Sentences</span>
-                    <strong id="metric-sentences">
-                        <?= $result ? $metrics->sentences : '--' ?>
-                    </strong>
-                </div>
+    </div>
 
-                <div class="studio-metric">
-                    <span>Paragraphs</span>
-                    <strong id="metric-paragraphs">
-                        <?= $result ? $metrics->paragraphs : '--' ?>
-                    </strong>
-                </div>
-
-                <div class="studio-metric">
-                    <span>Mentions</span>
-                    <strong id="metric-mentions">
-                        <?= $result ? $metrics->mentions : '--' ?>
-                    </strong>
-                </div>
-
-                <div class="studio-metric">
-                    <span>Hashtags</span>
-                    <strong id="metric-hashtags">
-                        <?= $result ? $metrics->hashtags : '--' ?>
-                    </strong>
-                </div>
-
-                <div class="studio-metric">
-                    <span>Links</span>
-                    <strong id="metric-links">
-                        <?= $result ? $metrics->links : '--' ?>
-                    </strong>
-                </div>
-
-                <div class="studio-metric">
-                    <span>Emojis</span>
-                    <strong id="metric-emojis">
-                        <?= $result ? $metrics->emojis : '--' ?>
-                    </strong>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="card">
-
-            <h3>
-                <i class="fa-solid fa-bolt"></i>
-                Signals
-            </h3>
-
-            <div id="studio-signals">
-
-                <div class="studio-metric">
-                    <span>Quality</span>
-
-                    <strong id="signal-quality">
-                        <?= $result
-                            ? number_format(
-                                $result->score(),
-                                0
-                            )
-                            : '--' ?>
-                    </strong>
-
-                </div>
-
-                <p
-                    id="signal-description"
-                    class="muted"
-                >
-                    <?php if ($result): ?>
-
-                        More signal processors will appear here as the Intelligence Engine evolves.
-
-                    <?php else: ?>
-
-                        Signal breakdown will appear after analysis.
-
-                    <?php endif; ?>
-
-                </p>
-
-            </div>
-
-        </div>
-
+</div>
         <div class="card">
 
     <h3>
@@ -291,21 +392,20 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
         <div class="card">
 
-            <h3>
-                <i class="fa-solid fa-flask"></i>
-                Benchmarks
-            </h3>
+    <h3>
+        <i class="fa-solid fa-flask"></i>
+        Benchmarks
+    </h3>
 
-            <div id="studio-benchmarks">
+    <div id="studio-benchmarks">
 
-                <p class="muted">
-                    Benchmark comparison coming in the next generation of the Intelligence Lab.
-                </p>
+        <p class="muted">
+            Benchmark comparison coming in the next generation of the Intelligence Lab.
+        </p>
 
-            </div>
+    </div>
 
-        </div>
-
+</div>
     </aside>
 
 </div>

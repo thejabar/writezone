@@ -12,7 +12,7 @@ use Core\Http\Response;
 final class LabController
 {
     /**
-     * Display the Studio.
+     * Display the Intelligence Studio.
      */
     public function index(
         Request $request
@@ -49,70 +49,87 @@ final class LabController
                 'content' => $content,
             ]
         );
+
     }
 
     /**
      * Analyze writing and return JSON.
      */
     public function analyze(
-    Request $request
-): never {
+        Request $request
+    ): never {
 
-    $content = trim(
-        $request->input('content')
-    );
+        $content = trim(
+            $request->input('content')
+        );
 
-    if ($content === '') {
+        if ($content === '') {
+
+            Response::json([
+                'success' => false,
+                'message' => 'No content provided.',
+            ]);
+
+        }
+
+        $lab = new IntelligenceLab();
+
+        $result = $lab->analyze(
+            new LabRequest($content)
+        );
+
+        $metrics = $result->metrics();
+
+        $quality = $result->quality();
 
         Response::json([
-            'success' => false,
-            'message' => 'No content provided.',
+
+            'success' => true,
+
+            'score' => $result->score(),
+
+            'metrics' => [
+
+                'characters' => $metrics->characters,
+                'words' => $metrics->words,
+                'sentences' => $metrics->sentences,
+                'paragraphs' => $metrics->paragraphs,
+                'mentions' => $metrics->mentions,
+                'hashtags' => $metrics->hashtags,
+                'links' => $metrics->links,
+                'emojis' => $metrics->emojis,
+
+                'readingTime' =>
+                    $metrics->readingTime,
+
+                'averageSentenceLength' =>
+                    $metrics->averageSentenceLength,
+
+                'averageParagraphLength' =>
+                    $metrics->averageParagraphLength,
+
+                'questions' =>
+                    $metrics->questions,
+
+                'exclamations' =>
+                    $metrics->exclamations,
+
+            ],
+
+            'quality' => [
+
+                'strengths' =>
+                    $quality->strengths(),
+
+                'suggestions' =>
+                    $quality->suggestions(),
+
+                'breakdown' =>
+                    $quality->breakdown(),
+
+            ],
+
         ]);
 
     }
-
-    $lab = new IntelligenceLab();
-
-    $result = $lab->analyze(
-        new LabRequest($content)
-    );
-
-    $metrics = $result->metrics();
-
-    $quality = $result->quality();
-
-    Response::json([
-
-        'success' => true,
-
-        'score' => $result->score(),
-
-        'metrics' => [
-
-            'characters' => $metrics->characters,
-            'words' => $metrics->words,
-            'sentences' => $metrics->sentences,
-            'paragraphs' => $metrics->paragraphs,
-            'mentions' => $metrics->mentions,
-            'hashtags' => $metrics->hashtags,
-            'links' => $metrics->links,
-            'emojis' => $metrics->emojis,
-
-        ],
-
-        'quality' => [
-
-            'strengths' =>
-                $quality?->strengths() ?? [],
-
-            'suggestions' =>
-                $quality?->suggestions() ?? [],
-
-            'breakdown' =>
-                $quality?->breakdown() ?? [],
-
-        ],
-
-    ]);
-}
 }

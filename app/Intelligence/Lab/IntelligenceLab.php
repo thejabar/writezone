@@ -13,21 +13,37 @@ final class IntelligenceLab
         LabRequest $request
     ): LabResult {
 
-        $analyzer = new ContentAnalyzer();
+        $started = microtime(true);
 
-        $metrics = $analyzer->analyze(
-            $request->content()
-        );
+        $metrics = (new ContentAnalyzer())
+            ->analyze(
+                $request->content()
+            );
 
         $quality = (new QualityEngine())
-    ->evaluate($metrics);
+            ->evaluate($metrics);
+
+        $metadata = new AnalysisMetadata(
+            engineVersion: '0.7.0',
+            evaluatorCount: count(
+                $quality->breakdown()
+            ),
+            metricCount: 8,
+            executionTime: round(
+                (microtime(true) - $started) * 1000,
+                2
+            ),
+            generatedAt: new \DateTimeImmutable()
+        );
+
+        $report = new AnalysisReport(
+            metrics: $metrics,
+            quality: $quality,
+            metadata: $metadata
+        );
 
         return new LabResult(
-            metrics: $metrics,
-            signals: [
-    'quality' => $quality,
-],
-score: $quality->score()
+            report: $report
         );
     }
 }

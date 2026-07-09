@@ -56,4 +56,38 @@ final class QualityResult
     {
         return $this->suggestions;
     }
+
+    /**
+     * Determine whether any strengths exist.
+     */
+    public function hasStrengths(): bool
+    {
+        return $this->strengths !== [];
+    }
+
+    /**
+     * Determine whether any suggestions exist.
+     */
+    public function hasSuggestions(): bool
+    {
+        return $this->suggestions !== [];
+    }
+
+    /**
+     * Determine whether any evaluator breakdown exists.
+     */
+    public function hasBreakdown(): bool
+    {
+        return $this->breakdown !== [];
+    }
+
+    /**
+     * Retrieve the score for a single evaluation dimension.
+     */
+    public function scoreFor(
+        string $dimension
+    ): ?float {
+
+        return $this->breakdown[$dimension] ?? null;
+    }
 }

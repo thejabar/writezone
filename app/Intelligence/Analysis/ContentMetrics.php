@@ -14,7 +14,19 @@ final class ContentMetrics
         public readonly int $mentions,
         public readonly int $hashtags,
         public readonly int $links,
-        public readonly int $emojis
+        public readonly int $emojis,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Intelligence Metrics
+        |--------------------------------------------------------------------------
+        */
+
+        public readonly int $readingTime,
+        public readonly float $averageSentenceLength,
+        public readonly float $averageParagraphLength,
+        public readonly int $questions,
+        public readonly int $exclamations,
     ) {
     }
 }

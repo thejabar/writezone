@@ -7,35 +7,29 @@ namespace App\Intelligence\Lab;
 use App\Intelligence\Analysis\ContentMetrics;
 use App\Intelligence\Evaluation\QualityResult;
 
-final class LabResult
+final class AnalysisReport
 {
     public function __construct(
-        private readonly AnalysisReport $report,
+        private readonly ContentMetrics $metrics,
+        private readonly QualityResult $quality,
+        private readonly AnalysisMetadata $metadata,
     ) {
     }
 
     /**
-     * Complete analysis report.
-     */
-    public function report(): AnalysisReport
-    {
-        return $this->report;
-    }
-
-    /**
-     * Content metrics.
+     * Content metrics collected during analysis.
      */
     public function metrics(): ContentMetrics
     {
-        return $this->report->metrics();
+        return $this->metrics;
     }
 
     /**
-     * Quality assessment.
+     * Overall writing quality.
      */
     public function quality(): QualityResult
     {
-        return $this->report->quality();
+        return $this->quality;
     }
 
     /**
@@ -43,14 +37,14 @@ final class LabResult
      */
     public function metadata(): AnalysisMetadata
     {
-        return $this->report->metadata();
+        return $this->metadata;
     }
 
     /**
-     * Overall score.
+     * Convenience helper.
      */
     public function score(): float
     {
-        return $this->report->score();
+        return $this->quality->score();
     }
 }

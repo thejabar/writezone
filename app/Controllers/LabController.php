@@ -81,6 +81,8 @@ final class LabController
         $metrics = $result->metrics();
 
         $quality = $result->quality();
+        
+        $sentences = $result->sentences();
 
         Response::json([
 
@@ -128,6 +130,28 @@ final class LabController
                     $quality->breakdown(),
 
             ],
+            
+            'sentences' => [
+
+    'total' =>
+        $sentences->total,
+
+    'shortest' =>
+        $sentences->shortest,
+
+    'longest' =>
+        $sentences->longest,
+
+    'average' =>
+        round(
+            $sentences->average,
+            1
+        ),
+
+    'variety' =>
+        $sentences->variety,
+
+],
 
         ]);
 

@@ -1,6 +1,6 @@
 <h1 class="page-title">
     <i class="fa-solid fa-brain"></i>
-    WriteZone Studio
+    <span>WriteZone Studio</span>
 </h1>
 
 <p class="page-subtitle">
@@ -11,7 +11,9 @@
 
 $metrics = $result?->metrics();
 $quality = $result?->quality();
-
+$sentenceReport = $result
+    ? $result->sentences()
+    : null;
 ?>
 
 
@@ -21,7 +23,7 @@ $quality = $result?->quality();
 
         <h2>
             <i class="fa-solid fa-pen-nib"></i>
-            Writing Workspace
+            <span>Writing Workspace</span>
         </h2>
 
         <form
@@ -48,7 +50,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
                         type="submit"
                     >
                         <i class="fa-solid fa-brain"></i>
-                        Analyze
+                       <span>Analyze</span>
                     </button>
 
                     <button
@@ -57,7 +59,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
                         type="button"
                     >
                         <i class="fa-solid fa-file-circle-plus"></i>
-                        New Analysis
+                        <span>New Analysis</span>
                     </button>
 
                 </div>
@@ -67,7 +69,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
                     class="studio-status"
                 >
                     <i class="fa-solid fa-circle"></i>
-                    Intelligence Ready
+                    <span>Intelligence Ready</span>
                 </span>
 
             </div>
@@ -81,7 +83,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
         <h3>
             <i class="fa-solid fa-gauge-high"></i>
-            Overall Score
+            <span>Overall Score</span>
         </h3>
 
         <div
@@ -102,7 +104,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
     <h3>
         <i class="fa-solid fa-layer-group"></i>
-        Writing Dimensions
+        <span>Writing Dimensions</span>
     </h3>
 
     <div class="studio-metric">
@@ -152,11 +154,67 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
 </div>
 
+<div class="card">
+
+    <h3>
+        <i class="fa-solid fa-paragraph"></i>
+        <span>Sentence Intelligence</span>
+    </h3>
+
+    <div class="studio-metric">
+        <span>Total Sentences</span>
+        <strong id="sentence-total">
+            <?= $sentenceReport
+                ? $sentenceReport->total
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Shortest Sentence</span>
+        <strong id="sentence-shortest">
+            <?= $sentenceReport
+                ? $sentenceReport->shortest . ' words'
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Longest Sentence</span>
+        <strong id="sentence-longest">
+            <?= $sentenceReport
+                ? $sentenceReport->longest . ' words'
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Average Sentence Length</span>
+        <strong id="sentence-average">
+            <?= $sentenceReport
+                ? number_format(
+                    $sentenceReport->average,
+                    1
+                ) . ' words'
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Sentence Variety</span>
+        <strong id="sentence-variety">
+            <?= $sentenceReport
+                ? $sentenceReport->variety
+                : '--' ?>
+        </strong>
+    </div>
+
+</div>
     <div class="card">
 
         <h3>
             <i class="fa-solid fa-chart-column"></i>
-            Metrics
+            <span>Metrics</span>
         </h3>
 
         <div id="studio-metrics">
@@ -225,7 +283,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
     <h3>
         <i class="fa-solid fa-chart-line"></i>
-        Writing Insights
+        <span>Writing Insights</span>
     </h3>
 
     <div class="studio-metric">
@@ -236,7 +294,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
     </div>
 
     <div class="studio-metric">
-        <span>Average Sentence</span>
+        <span>Average Sentence Length</span>
         <strong id="metric-average-sentence">
             <?= $result
                 ? number_format($metrics->averageSentenceLength, 1) . ' words'
@@ -245,7 +303,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
     </div>
 
     <div class="studio-metric">
-        <span>Average Paragraph</span>
+        <span>Average Paragraph Length</span>
         <strong id="metric-average-paragraph">
             <?= $result
                 ? number_format($metrics->averageParagraphLength, 1) . ' words'
@@ -273,7 +331,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
     <h3>
         <i class="fa-solid fa-bolt"></i>
-        Signals
+        <span>Signals</span>
     </h3>
 
     <div id="studio-signals">
@@ -315,7 +373,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
     <h3>
         <i class="fa-solid fa-lightbulb"></i>
-        Writing Coach
+        <span>Writing Coach</span>
     </h3>
 
     <div id="studio-suggestions">
@@ -326,7 +384,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
                 <h4 class="studio-section-title">
                     <i class="fa-solid fa-circle-check"></i>
-                    Strengths
+                    <span>Strengths</span>
                 </h4>
 
                 <ul class="studio-suggestions">
@@ -347,7 +405,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
                 <h4 class="studio-section-title studio-section-spacing">
                     <i class="fa-solid fa-lightbulb"></i>
-                    Coach
+                    <span>Coach</span>
                 </h4>
 
                 <ul class="studio-suggestions">
@@ -394,7 +452,7 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
 
     <h3>
         <i class="fa-solid fa-flask"></i>
-        Benchmarks
+        <span>Benchmarks</span>
     </h3>
 
     <div id="studio-benchmarks">

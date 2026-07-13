@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Intelligence\Lab;
 
 use App\Intelligence\Analysis\ContentAnalyzer;
+use App\Intelligence\Analysis\SentenceAnalyzer;
 use App\Intelligence\Evaluation\QualityEngine;
 
 final class IntelligenceLab
@@ -19,6 +20,10 @@ final class IntelligenceLab
             ->analyze(
                 $request->content()
             );
+        $sentences = (new SentenceAnalyzer())
+    ->analyze(
+        $request->content()
+    );
 
         $quality = (new QualityEngine())
             ->evaluate($metrics);
@@ -39,6 +44,7 @@ final class IntelligenceLab
         $report = new AnalysisReport(
             metrics: $metrics,
             quality: $quality,
+            sentences: $sentences,
             metadata: $metadata
         );
 

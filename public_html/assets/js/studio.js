@@ -443,6 +443,96 @@ function renderBreakdown(
 
 /*
 |--------------------------------------------------------------------------
+| Sentence Intelligence
+|--------------------------------------------------------------------------
+*/
+
+function renderSentences(
+    sentences
+) {
+
+    sentences = sentences ?? {};
+
+    const map = {
+
+        total:
+            "sentence-total",
+
+        shortest:
+            "sentence-shortest",
+
+        longest:
+            "sentence-longest",
+
+        average:
+            "sentence-average",
+
+        variety:
+            "sentence-variety",
+
+    };
+
+    Object.entries(map)
+        .forEach(
+            ([key, id]) => {
+
+                const node =
+                    document.getElementById(
+                        id
+                    );
+
+                if (!node) {
+                    return;
+                }
+
+                const value =
+                    sentences[key];
+
+                if (
+                    value === undefined
+                ) {
+
+                    node.textContent =
+                        "--";
+
+                    return;
+
+                }
+
+                switch (key) {
+
+                    case "shortest":
+
+                    case "longest":
+
+                        node.textContent =
+                            value + " words";
+
+                        break;
+
+                    case "average":
+
+                        node.textContent =
+                            Number(value)
+                                .toFixed(1)
+                            + " words";
+
+                        break;
+
+                    default:
+
+                        node.textContent =
+                            value;
+
+                }
+
+            }
+        );
+
+}
+
+/*
+|--------------------------------------------------------------------------
 | Analyze
 |--------------------------------------------------------------------------
 */
@@ -463,6 +553,8 @@ renderMetrics({});
 renderInsights({});
 
 renderBreakdown({});
+
+renderSentences({});
 
 renderSuggestions();
 
@@ -511,6 +603,8 @@ renderMetrics(data.metrics);
 renderInsights(data.metrics);
 
 renderBreakdown(data.quality.breakdown);
+
+renderSentences(data.sentences);
 
 renderSuggestions(data.quality);
 
@@ -597,6 +691,8 @@ renderMetrics({});
 renderInsights({});
 
 renderBreakdown({});
+
+renderSentences({});
 
 renderSuggestions();
 

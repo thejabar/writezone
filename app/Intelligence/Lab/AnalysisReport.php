@@ -6,12 +6,14 @@ namespace App\Intelligence\Lab;
 
 use App\Intelligence\Analysis\ContentMetrics;
 use App\Intelligence\Evaluation\QualityResult;
+use App\Intelligence\Analysis\SentenceReport;
 
 final class AnalysisReport
 {
     public function __construct(
         private readonly ContentMetrics $metrics,
         private readonly QualityResult $quality,
+        private readonly SentenceReport $sentences,
         private readonly AnalysisMetadata $metadata,
     ) {
     }
@@ -31,6 +33,14 @@ final class AnalysisReport
     {
         return $this->quality;
     }
+    
+    /**
+ * Sentence intelligence.
+ */
+public function sentences(): SentenceReport
+{
+    return $this->sentences;
+}
 
     /**
      * Analysis metadata.

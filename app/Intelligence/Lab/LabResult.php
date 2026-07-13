@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Intelligence\Lab;
 
 use App\Intelligence\Analysis\ContentMetrics;
+use App\Intelligence\Analysis\SentenceReport;
 use App\Intelligence\Evaluation\QualityResult;
 
 final class LabResult
@@ -37,6 +38,14 @@ final class LabResult
     {
         return $this->report->quality();
     }
+    
+    /**
+ * Sentence intelligence.
+ */
+public function sentences(): SentenceReport
+{
+    return $this->report->sentences();
+}
 
     /**
      * Analysis metadata.

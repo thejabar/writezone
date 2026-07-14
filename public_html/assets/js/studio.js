@@ -52,9 +52,42 @@ document.addEventListener(
             }
 
             status.innerHTML =
-                `<i class="fa-solid fa-circle"></i> ${message}`;
-
+    `<i class="fa-solid fa-circle"></i><span>${message}</span>`;
         }
+        
+        /*
+|--------------------------------------------------------------------------
+| Text Helpers
+|--------------------------------------------------------------------------
+*/
+
+function pluralize(
+    value,
+    singular,
+    plural,
+    decimals = null
+) {
+
+    const number =
+        Number(value);
+
+    if (
+        Number.isNaN(number)
+    ) {
+        return "--";
+    }
+
+    const display =
+    decimals === null
+        ? number
+        : Number(number.toFixed(decimals));
+    return `${display} ${
+        number === 1
+            ? singular
+            : plural
+    }`;
+
+}
 
         /*
         |--------------------------------------------------------------------------
@@ -228,12 +261,16 @@ function renderInsights(
 
     if (readingTime) {
 
-        readingTime.textContent =
-            metrics.readingTime !== undefined
-                ? metrics.readingTime + " min"
-                : "--";
+    readingTime.textContent =
+        metrics.readingTime !== undefined
+            ? pluralize(
+                metrics.readingTime,
+                "minute",
+                "minutes"
+            )
+            : "--";
 
-    }
+}
 
     const averageSentence =
         document.getElementById(
@@ -242,14 +279,17 @@ function renderInsights(
 
     if (averageSentence) {
 
-        averageSentence.textContent =
-            metrics.averageSentenceLength !== undefined
-                ? Number(
-                    metrics.averageSentenceLength
-                ).toFixed(1) + " words"
-                : "--";
+    averageSentence.textContent =
+        metrics.averageSentenceLength !== undefined
+            ? pluralize(
+                metrics.averageSentenceLength,
+                "word",
+                "words",
+                1
+            )
+            : "--";
 
-    }
+}
 
     const averageParagraph =
         document.getElementById(
@@ -258,14 +298,17 @@ function renderInsights(
 
     if (averageParagraph) {
 
-        averageParagraph.textContent =
-            metrics.averageParagraphLength !== undefined
-                ? Number(
-                    metrics.averageParagraphLength
-                ).toFixed(1) + " words"
-                : "--";
+    averageParagraph.textContent =
+        metrics.averageParagraphLength !== undefined
+            ? pluralize(
+                metrics.averageParagraphLength,
+                "word",
+                "words",
+                1
+            )
+            : "--";
 
-    }
+}
 
     const questions =
         document.getElementById(
@@ -275,8 +318,13 @@ function renderInsights(
     if (questions) {
 
         questions.textContent =
-            metrics.questions ?? "--";
-
+    metrics.questions !== undefined
+        ? pluralize(
+            metrics.questions,
+            "question",
+            "questions"
+        )
+        : "--";
     }
 
     const exclamations =
@@ -287,8 +335,13 @@ function renderInsights(
     if (exclamations) {
 
         exclamations.textContent =
-            metrics.exclamations ?? "--";
-
+    metrics.exclamations !== undefined
+        ? pluralize(
+            metrics.exclamations,
+            "exclamation",
+            "exclamations"
+        )
+        : "--";
     }
 
 }
@@ -388,7 +441,7 @@ function renderSuggestions(
         html += `
             <h4 class="studio-section-title">
                 <i class="fa-solid fa-circle-check"></i>
-                Strengths
+<span>Strengths</span>
             </h4>
 
             <ul class="studio-suggestions">
@@ -417,7 +470,7 @@ function renderSuggestions(
         html += `
             <h4 class="studio-section-title studio-section-spacing">
                 <i class="fa-solid fa-lightbulb"></i>
-                Coach
+<span>Coach</span>
             </h4>
 
             <ul class="studio-suggestions">
@@ -563,31 +616,37 @@ function renderSentences(
 
                 switch (key) {
 
-                    case "shortest":
+    case "shortest":
 
-                    case "longest":
+    case "longest":
 
-                        node.textContent =
-                            value + " words";
+        node.textContent =
+            pluralize(
+                value,
+                "word",
+                "words"
+            );
 
-                        break;
+        break;
 
-                    case "average":
+    case "average":
 
-                        node.textContent =
-                            Number(value)
-                                .toFixed(1)
-                            + " words";
+        node.textContent =
+            pluralize(
+                value,
+                "word",
+                "words",
+                1
+            );
 
-                        break;
+        break;
 
-                    default:
+    default:
 
-                        node.textContent =
-                            value;
+        node.textContent =
+            value;
 
-                }
-
+}
             }
         );
 

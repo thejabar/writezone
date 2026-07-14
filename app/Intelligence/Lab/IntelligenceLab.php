@@ -47,12 +47,12 @@ final class IntelligenceLab
         );
 
         $report = new AnalysisReport(
-            metrics: $metrics,
-            quality: $quality,
-            sentences: $sentences,
-            metadata: $metadata
-        );
-
+    metrics: $metrics,
+    quality: $quality,
+    sentences: $sentences,
+    vocabulary: $vocabulary,
+    metadata: $metadata
+);
         return new LabResult(
             report: $report
         );

@@ -187,6 +187,8 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
                 : '--' ?>
         </strong>
     </div>
+    
+    
 
     <div class="studio-metric">
         <span>Average Sentence Length</span>
@@ -205,6 +207,72 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
         <strong id="sentence-variety">
             <?= $sentenceReport
                 ? $sentenceReport->variety
+                : '--' ?>
+        </strong>
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h3>
+        <i class="fa-solid fa-book"></i>
+        <span>Vocabulary Intelligence</span>
+    </h3>
+
+    <div class="studio-metric">
+        <span>Total Words</span>
+        <strong id="vocabulary-total">
+            <?= $result
+                ? $result->vocabulary()->totalWords
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Unique Words</span>
+        <strong id="vocabulary-unique">
+            <?= $result
+                ? $result->vocabulary()->uniqueWords
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Repeated Words</span>
+        <strong id="vocabulary-repeated">
+            <?= $result
+                ? $result->vocabulary()->repeatedWords
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Lexical Diversity</span>
+        <strong id="vocabulary-diversity">
+            <?= $result
+                ? number_format(
+                    $result->vocabulary()->lexicalDiversity,
+                    1
+                ) . '%'
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Filler Words</span>
+        <strong id="vocabulary-filler">
+            <?= $result
+                ? $result->vocabulary()->fillerWords
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Transition Words</span>
+        <strong id="vocabulary-transition">
+            <?= $result
+                ? $result->vocabulary()->transitionWords
                 : '--' ?>
         </strong>
     </div>

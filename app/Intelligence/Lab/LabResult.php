@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Lab;
 
+use App\Intelligence\Analysis\VocabularyReport;
 use App\Intelligence\Analysis\ContentMetrics;
 use App\Intelligence\Analysis\SentenceReport;
 use App\Intelligence\Evaluation\QualityResult;
@@ -45,6 +46,14 @@ final class LabResult
 public function sentences(): SentenceReport
 {
     return $this->report->sentences();
+}
+
+/**
+ * Vocabulary intelligence.
+ */
+public function vocabulary(): VocabularyReport
+{
+    return $this->report->vocabulary();
 }
 
     /**

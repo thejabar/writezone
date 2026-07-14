@@ -295,6 +295,68 @@ function renderInsights(
 
 /*
 |--------------------------------------------------------------------------
+| Vocabulary Intelligence
+|--------------------------------------------------------------------------
+*/
+
+function renderVocabulary(vocabulary) {
+
+    vocabulary = vocabulary ?? {};
+
+    const map = {
+
+        totalWords:
+            "vocabulary-total",
+
+        uniqueWords:
+            "vocabulary-unique",
+
+        repeatedWords:
+            "vocabulary-repeated",
+
+        lexicalDiversity:
+            "vocabulary-diversity",
+
+        fillerWords:
+            "vocabulary-filler",
+
+        transitionWords:
+            "vocabulary-transition",
+
+    };
+
+    Object.entries(map).forEach(
+        ([key, id]) => {
+
+            const node =
+                document.getElementById(id);
+
+            if (!node) {
+                return;
+            }
+
+            let value = vocabulary[key];
+
+            if (
+                key === "lexicalDiversity" &&
+                value !== undefined
+            ) {
+
+                value =
+                    Number(value).toFixed(1) + "%";
+
+            }
+
+            node.textContent =
+                value ?? "--";
+
+        }
+    );
+
+}
+
+/*
+|--------------------------------------------------------------------------
 | Suggestions
 |--------------------------------------------------------------------------
 */
@@ -558,6 +620,8 @@ renderSentences({});
 
 renderSuggestions();
 
+renderVocabulary({});
+
 resetSignalDescription();
 
 setStatus(
@@ -607,6 +671,8 @@ renderBreakdown(data.quality.breakdown);
 renderSentences(data.sentences);
 
 renderSuggestions(data.quality);
+
+renderVocabulary(data.vocabulary);
 
 setStatus("Analysis Complete");
     }
@@ -695,6 +761,8 @@ renderBreakdown({});
 renderSentences({});
 
 renderSuggestions();
+
+renderVocabulary({});
 
 resetSignalDescription();
 

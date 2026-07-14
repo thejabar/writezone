@@ -83,6 +83,8 @@ final class LabController
         $quality = $result->quality();
         
         $sentences = $result->sentences();
+        
+        $vocabulary = $result->vocabulary();
 
         Response::json([
 
@@ -150,6 +152,31 @@ final class LabController
 
     'variety' =>
         $sentences->variety,
+
+],
+
+'vocabulary' => [
+
+    'totalWords' =>
+        $vocabulary->totalWords,
+
+    'uniqueWords' =>
+        $vocabulary->uniqueWords,
+
+    'repeatedWords' =>
+        $vocabulary->repeatedWords,
+
+    'lexicalDiversity' =>
+        round(
+            $vocabulary->lexicalDiversity,
+            1
+        ),
+
+    'fillerWords' =>
+        $vocabulary->fillerWords,
+
+    'transitionWords' =>
+        $vocabulary->transitionWords,
 
 ],
 

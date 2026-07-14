@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Intelligence\Lab;
 
 use App\Intelligence\Analysis\ContentAnalyzer;
+use App\Intelligence\Analysis\VocabularyAnalyzer;
 use App\Intelligence\Analysis\SentenceAnalyzer;
 use App\Intelligence\Evaluation\QualityEngine;
 
@@ -20,6 +21,10 @@ final class IntelligenceLab
             ->analyze(
                 $request->content()
             );
+        $vocabulary = (new VocabularyAnalyzer())
+    ->analyze(
+        $request->content()
+    );
         $sentences = (new SentenceAnalyzer())
     ->analyze(
         $request->content()

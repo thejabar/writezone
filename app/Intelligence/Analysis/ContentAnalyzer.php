@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Analysis;
 
+use App\Intelligence\Support\SentenceParser;
+
 final class ContentAnalyzer
 {
     public function analyze(
@@ -19,13 +21,18 @@ final class ContentAnalyzer
         );
 
         $paragraphs = preg_split(
-            '/\R{2,}/',
+            '/\R{2,}/u',
             trim($content)
         );
 
-        $sentences = preg_split(
-            '/(?<=[.!?])\s+/',
-            trim($content)
+        /*
+        |--------------------------------------------------------------------------
+        | Shared Sentence Parser
+        |--------------------------------------------------------------------------
+        */
+
+        $sentences = SentenceParser::parse(
+            $content
         );
 
         preg_match_all(
@@ -51,82 +58,112 @@ final class ContentAnalyzer
             $content,
             $emojis
         );
+
         /*
-|--------------------------------------------------------------------------
-| Advanced Metrics
-|--------------------------------------------------------------------------
-*/
+        |--------------------------------------------------------------------------
+        | Advanced Metrics
+        |--------------------------------------------------------------------------
+        */
 
-$readingTime = max(
-    1,
-    (int) ceil($words / 200)
-);
+        $readingTime = max(
+            1,
+            (int) ceil(
+                $words / 200
+            )
+        );
 
-$averageSentenceLength =
-    count(array_filter($sentences)) > 0
-        ? round(
-            $words / count(array_filter($sentences)),
-            1
-        )
-        : 0.0;
+        $sentenceCount = count(
+            $sentences
+        );
 
-$averageParagraphLength =
-    count(array_filter($paragraphs)) > 0
-        ? round(
-            $words / count(array_filter($paragraphs)),
-            1
-        )
-        : 0.0;
+        $paragraphCount = count(
+            array_filter(
+                $paragraphs
+            )
+        );
 
-preg_match_all(
-    '/\?/',
-    $content,
-    $questions
-);
+        $averageSentenceLength =
+            $sentenceCount > 0
+                ? round(
+                    $words / $sentenceCount,
+                    1
+                )
+                : 0.0;
 
-preg_match_all(
-    '/!/',
-    $content,
-    $exclamations
-);
+        $averageParagraphLength =
+            $paragraphCount > 0
+                ? round(
+                    $words / $paragraphCount,
+                    1
+                )
+                : 0.0;
+
+        preg_match_all(
+            '/\?/',
+            $content,
+            $questions
+        );
+
+        preg_match_all(
+            '/!/',
+            $content,
+            $exclamations
+        );
 
         return new ContentMetrics(
-            characters: $characters,
-            words: $words,
-            sentences: count(
-                array_filter($sentences)
-            ),
-            paragraphs: count(
-                array_filter($paragraphs)
-            ),
-            mentions: count(
-                $mentions[0]
-            ),
-            hashtags: count(
-                $hashtags[0]
-            ),
-            links: count(
-                $links[0]
-            ),
-            emojis: count(
-    $emojis[0]
-),
 
-readingTime: $readingTime,
+            characters:
+                $characters,
 
-averageSentenceLength:
-    $averageSentenceLength,
+            words:
+                $words,
 
-averageParagraphLength:
-    $averageParagraphLength,
+            sentences:
+                $sentenceCount,
 
-questions: count(
-    $questions[0]
-),
+            paragraphs:
+                $paragraphCount,
 
-exclamations: count(
-    $exclamations[0]
-),
+            mentions:
+                count(
+                    $mentions[0]
+                ),
+
+            hashtags:
+                count(
+                    $hashtags[0]
+                ),
+
+            links:
+                count(
+                    $links[0]
+                ),
+
+            emojis:
+                count(
+                    $emojis[0]
+                ),
+
+            readingTime:
+                $readingTime,
+
+            averageSentenceLength:
+                $averageSentenceLength,
+
+            averageParagraphLength:
+                $averageParagraphLength,
+
+            questions:
+                count(
+                    $questions[0]
+                ),
+
+            exclamations:
+                count(
+                    $exclamations[0]
+                ),
+
         );
+
     }
 }

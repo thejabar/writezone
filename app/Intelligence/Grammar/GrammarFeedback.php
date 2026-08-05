@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Intelligence\Grammar;
+
+final class GrammarFeedback
+{
+    /**
+     * @param array<int, string> $strengths
+     * @param array<int, string> $warnings
+     * @param array<int, string> $suggestions
+     */
+    public function __construct(
+
+        public readonly array $strengths,
+
+        public readonly array $warnings,
+
+        public readonly array $suggestions,
+    ) {
+    }
+}

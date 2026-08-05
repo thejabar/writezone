@@ -4,83 +4,138 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Analysis;
 
+use App\Intelligence\Lab\AnalysisContext;
+
 final class VocabularyAnalyzer
 {
     public function analyze(
-        string $content
+        AnalysisContext $context
     ): VocabularyReport {
 
-        $content = trim($content);
-        $words = preg_split(
-    '/\PL+/u',
-    mb_strtolower($content),
-    -1,
-    PREG_SPLIT_NO_EMPTY
-);
+        /*
+        |--------------------------------------------------------------------------
+        | Shared Word Intelligence
+        |--------------------------------------------------------------------------
+        */
 
-$totalWords = count($words);
+        $words = $context->words();
 
-$uniqueWords = count(
-    array_unique($words)
-);
+        /*
+        |--------------------------------------------------------------------------
+        | Lexical Diversity
+        |--------------------------------------------------------------------------
+        */
 
-$repeatedWords =
-    $totalWords - $uniqueWords;
+        $lexicalDiversity =
+            $words->totalWords > 0
+                ? round(
+                    (
+                        $words->uniqueWords /
+                        $words->totalWords
+                    ) * 100,
+                    1
+                )
+                : 0.0;
 
-$lexicalDiversity =
-    $totalWords > 0
-        ? ($uniqueWords / $totalWords) * 100
-        : 0;
+        /*
+        |--------------------------------------------------------------------------
+        | Filler Words
+        |--------------------------------------------------------------------------
+        */
 
-return new VocabularyReport(
+        $fillerWords = 0;
 
-    totalWords: $totalWords,
+        $fillerList = [
 
-    uniqueWords: $uniqueWords,
+            'actually',
+            'basically',
+            'literally',
+            'really',
+            'very',
+            'just',
+            'quite',
+            'simply',
 
-    lexicalDiversity: $lexicalDiversity,
+        ];
 
-    repeatedWords: $repeatedWords,
+        foreach (
+            $words->wordFrequency as $word => $count
+        ) {
 
-    fillerWords: 0,
+            if (
+                in_array(
+                    $word,
+                    $fillerList,
+                    true
+                )
+            ) {
 
-    transitionWords: 0,
+                $fillerWords += $count;
 
-);
+            }
 
-        if ($content === '') {
+        }
 
-            return new VocabularyReport(
+        /*
+        |--------------------------------------------------------------------------
+        | Transition Words
+        |--------------------------------------------------------------------------
+        */
 
-                totalWords: 0,
+        $transitionWords = 0;
 
-                uniqueWords: 0,
+        $transitionList = [
 
-                lexicalDiversity: 0,
+            'however',
+            'therefore',
+            'moreover',
+            'furthermore',
+            'consequently',
+            'meanwhile',
+            'finally',
+            'additionally',
+            'instead',
+            'otherwise',
 
-                repeatedWords: 0,
+        ];
 
-                fillerWords: 0,
+        foreach (
+            $words->wordFrequency as $word => $count
+        ) {
 
-                transitionWords: 0,
+            if (
+                in_array(
+                    $word,
+                    $transitionList,
+                    true
+                )
+            ) {
 
-            );
+                $transitionWords += $count;
+
+            }
 
         }
 
         return new VocabularyReport(
 
-            totalWords: 0,
+            totalWords:
+                $words->totalWords,
 
-            uniqueWords: 0,
+            uniqueWords:
+                $words->uniqueWords,
 
-            lexicalDiversity: 0,
+            lexicalDiversity:
+                $lexicalDiversity,
 
-            repeatedWords: 0,
+            repeatedWords:
+                $words->repeatedWords,
 
-            fillerWords: 0,
+            fillerWords:
+                $fillerWords,
 
-            transitionWords: 0,
+            transitionWords:
+                $transitionWords,
 
         );
 

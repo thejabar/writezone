@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Analysis;
 
+use App\Intelligence\Support\SentenceParser;
+
 final class SentenceAnalyzer
 {
     public function analyze(
@@ -24,65 +26,90 @@ final class SentenceAnalyzer
 
         }
 
-       $sentences = preg_split(
+        /*
+        |--------------------------------------------------------------------------
+        | Parse Sentences
+        |--------------------------------------------------------------------------
+        */
 
-    '/(?<=[.!?])\s+/u',
+        $sentences = SentenceParser::parse(
+            $content
+        );
 
-    $content,
+        $total = count(
+            $sentences
+        );
 
-    -1,
+        if ($total === 0) {
 
-    PREG_SPLIT_NO_EMPTY
+            return new SentenceReport(
+                total: 0,
+                shortest: 0,
+                longest: 0,
+                average: 0,
+                variety: 0,
+            );
 
-);
+        }
 
-$total = count(
-    $sentences
-);
+        $lengths = [];
 
-$lengths = [];
+        foreach ($sentences as $sentence) {
 
-foreach ($sentences as $sentence) {
+            $words = preg_split(
+                '/\s+/u',
+                trim($sentence),
+                -1,
+                PREG_SPLIT_NO_EMPTY
+            );
 
-    $words = preg_split(
+            $lengths[] = count(
+                $words
+            );
 
-        '/\s+/u',
+        }
 
-        trim($sentence),
+        $shortest = min(
+            $lengths
+        );
 
-        -1,
+        $longest = max(
+            $lengths
+        );
 
-        PREG_SPLIT_NO_EMPTY
+        $average =
+            array_sum($lengths)
+            / $total;
 
-    );
+        /*
+        |--------------------------------------------------------------------------
+        | Sentence Variety
+        |--------------------------------------------------------------------------
+        */
 
-    $lengths[] = count($words);
+        $spread =
+            $longest - $shortest;
 
-}
-$shortest = min($lengths);
+        $variety = min(
+            100,
+            (int) round(
+                $spread * 5
+            )
+        );
 
-$longest = max($lengths);
-
-$average = array_sum($lengths) / $total;
-$spread = $longest - $shortest;
-
-$variety = min(
-    100,
-    (int) round(
-        $spread * 5
-    )
-);
         return new SentenceReport(
 
-    total: $total,
+            total: $total,
 
-    shortest: $shortest,
+            shortest: $shortest,
 
-longest: $longest,
+            longest: $longest,
 
-average: $average,
-    variety: $variety,
-);
+            average: $average,
+
+            variety: $variety,
+
+        );
 
     }
 }

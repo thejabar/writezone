@@ -82,9 +82,19 @@ final class LabController
 
         $quality = $result->quality();
         
+        $grammar = $result->grammar();
+        
+        $grammarFeedback = $result->grammarFeedback();
+        
+        $grammarDiagnostics = $result->grammarDiagnostics();
+        
         $sentences = $result->sentences();
         
         $vocabulary = $result->vocabulary();
+        
+        $readability = $result->readability();
+        
+        $executiveSummary = $result->executiveSummary();
 
         Response::json([
 
@@ -133,6 +143,19 @@ final class LabController
 
             ],
             
+            'executiveSummary' => [
+
+    'title' =>
+        $executiveSummary?->title,
+
+    'summary' =>
+        $executiveSummary?->summary,
+
+    'overallAssessment' =>
+        $executiveSummary?->overallAssessment,
+
+],
+            
             'sentences' => [
 
     'total' =>
@@ -177,6 +200,109 @@ final class LabController
 
     'transitionWords' =>
         $vocabulary->transitionWords,
+
+],
+
+'grammar' => [
+
+    'score' =>
+        $grammar->score,
+
+    'capitalizedSentences' =>
+        $grammar->capitalizedSentences,
+
+    'sentenceEndings' =>
+        $grammar->sentenceEndings,
+
+    'doubleSpaces' =>
+        $grammar->doubleSpaces,
+
+    'repeatedPunctuation' =>
+        $grammar->repeatedPunctuation,
+
+    'commas' =>
+        $grammar->commas,
+
+    'semicolons' =>
+        $grammar->semicolons,
+
+    'colons' =>
+        $grammar->colons,
+
+    'quotationMarks' =>
+        $grammar->quotationMarks,
+
+    'parentheses' =>
+        $grammar->parentheses,
+
+],
+
+'grammarFeedback' => [
+
+    'strengths' =>
+        $grammarFeedback->strengths,
+
+    'warnings' =>
+        $grammarFeedback->warnings,
+
+    'suggestions' =>
+        $grammarFeedback->suggestions,
+
+],
+
+'grammarDiagnostics' => [
+
+    'capitalizationConsistent' =>
+        $grammarDiagnostics->capitalizationConsistent,
+
+    'sentenceEndingsConsistent' =>
+        $grammarDiagnostics->sentenceEndingsConsistent,
+
+    'balancedQuotationMarks' =>
+        $grammarDiagnostics->balancedQuotationMarks,
+
+    'balancedParentheses' =>
+        $grammarDiagnostics->balancedParentheses,
+
+    'doubleSpacesDetected' =>
+        $grammarDiagnostics->doubleSpacesDetected,
+
+    'repeatedPunctuationDetected' =>
+        $grammarDiagnostics->repeatedPunctuationDetected,
+
+    'heavyCommaUsage' =>
+        $grammarDiagnostics->heavyCommaUsage,
+
+    'longSentencesDetected' =>
+        $grammarDiagnostics->longSentencesDetected,
+
+],
+
+'readability' => [
+
+    'score' =>
+        $readability->score,
+
+    'shortSentences' =>
+        $readability->shortSentences,
+
+    'longSentences' =>
+        $readability->longSentences,
+
+    'averageSentenceLength' =>
+        $readability->averageSentenceLength,
+
+    'averageParagraphLength' =>
+        $readability->averageParagraphLength,
+
+    'readingFlow' =>
+        $readability->readingFlow,
+
+    'difficulty' =>
+        $readability->difficulty,
+
+    'paragraphBalance' =>
+        $readability->paragraphBalance,
 
 ],
 

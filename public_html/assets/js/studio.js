@@ -123,6 +123,59 @@ function pluralize(
 
 /*
 |--------------------------------------------------------------------------
+| Executive Summary
+|--------------------------------------------------------------------------
+*/
+
+function renderExecutiveSummary(
+    summary
+) {
+
+    summary = summary ?? {};
+
+    const title =
+        document.getElementById(
+            "summary-title"
+        );
+
+    const text =
+        document.getElementById(
+            "summary-text"
+        );
+
+    const assessment =
+        document.getElementById(
+            "summary-assessment"
+        );
+
+    if (title) {
+
+        title.textContent =
+            summary.title ??
+            "Waiting for analysis...";
+
+    }
+
+    if (text) {
+
+        text.textContent =
+            summary.summary ??
+            "The Intelligence Engine will summarize your writing after analysis.";
+
+    }
+
+    if (assessment) {
+
+        assessment.textContent =
+            summary.overallAssessment ??
+            "";
+
+    }
+
+}
+
+/*
+|--------------------------------------------------------------------------
 | Signal Description
 |--------------------------------------------------------------------------
 */
@@ -410,6 +463,355 @@ function renderVocabulary(vocabulary) {
 
 /*
 |--------------------------------------------------------------------------
+| Grammar Intelligence
+|--------------------------------------------------------------------------
+*/
+
+function renderGrammar(
+    grammar
+) {
+
+    grammar = grammar ?? {};
+
+    const map = {
+
+    score:
+        "grammar-score",
+
+    capitalizedSentences:
+        "grammar-capitalized",
+
+    sentenceEndings:
+        "grammar-endings",
+
+    doubleSpaces:
+        "grammar-double-spaces",
+
+    repeatedPunctuation:
+        "grammar-repeated",
+
+    commas:
+        "grammar-commas",
+
+    semicolons:
+        "grammar-semicolons",
+
+    colons:
+        "grammar-colons",
+
+    quotationMarks:
+        "grammar-quotes",
+
+    parentheses:
+        "grammar-parentheses",
+
+};
+
+    Object.entries(map)
+        .forEach(
+            ([key, id]) => {
+
+                const node =
+                    document.getElementById(id);
+
+                if (!node) {
+                    return;
+                }
+
+                const value =
+                    grammar[key];
+
+                node.textContent =
+                    value ?? "--";
+
+            }
+        );
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Readability Intelligence
+|--------------------------------------------------------------------------
+*/
+
+function renderReadability(
+    readability
+) {
+
+    readability = readability ?? {};
+
+    const map = {
+
+        score:
+            "readability-score",
+
+        shortSentences:
+            "readability-short",
+
+        longSentences:
+            "readability-long",
+
+        averageSentenceLength:
+            "readability-average-sentence",
+
+        averageParagraphLength:
+            "readability-average-paragraph",
+
+        readingFlow:
+            "readability-flow",
+
+        difficulty:
+            "readability-difficulty",
+
+        paragraphBalance:
+            "readability-paragraphs",
+
+    };
+
+    Object.entries(map)
+        .forEach(
+            ([key, id]) => {
+
+                const node =
+                    document.getElementById(id);
+
+                if (!node) {
+                    return;
+                }
+
+                let value =
+                    readability[key];
+
+                switch (key) {
+
+                    case "averageSentenceLength":
+
+                    case "averageParagraphLength":
+
+                        value =
+                            value !== undefined
+                                ? `${Number(value).toFixed(1)} words`
+                                : "--";
+
+                        break;
+
+                    default:
+
+                        value =
+                            value ?? "--";
+
+                }
+
+                node.textContent = value;
+
+            }
+        );
+
+}
+
+/*
+|--------------------------------------------------------------------------
+| Grammar Feedback
+|--------------------------------------------------------------------------
+*/
+
+function renderGrammarFeedback(
+    feedback
+) {
+
+    feedback = feedback ?? {
+        strengths: [],
+        warnings: [],
+        suggestions: [],
+    };
+
+    const container =
+        document.getElementById(
+            "grammar-feedback"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    let html = "";
+
+    if (feedback.strengths.length > 0) {
+
+        html += `
+            <h5>
+                <i class="fa-solid fa-circle-check"></i>
+                Strengths
+            </h5>
+
+            <ul class="studio-suggestions">
+        `;
+
+        feedback.strengths.forEach(
+            item => {
+
+                html += `
+                    <li>${item}</li>
+                `;
+
+            }
+        );
+
+        html += `
+            </ul>
+        `;
+    }
+
+    if (feedback.warnings.length > 0) {
+
+        html += `
+            <h5>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Warnings
+            </h5>
+
+            <ul class="studio-suggestions">
+        `;
+
+        feedback.warnings.forEach(
+            item => {
+
+                html += `
+                    <li>${item}</li>
+                `;
+
+            }
+        );
+
+        html += `
+            </ul>
+        `;
+    }
+
+    if (feedback.suggestions.length > 0) {
+
+        html += `
+            <h5>
+                <i class="fa-solid fa-lightbulb"></i>
+                Suggestions
+            </h5>
+
+            <ul class="studio-suggestions">
+        `;
+
+        feedback.suggestions.forEach(
+            item => {
+
+                html += `
+                    <li>${item}</li>
+                `;
+
+            }
+        );
+
+        html += `
+            </ul>
+        `;
+    }
+
+    if (html === "") {
+
+        html = `
+            <p class="muted">
+                No grammar feedback available.
+            </p>
+        `;
+    }
+
+    container.innerHTML = html;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Grammar Diagnostics
+|--------------------------------------------------------------------------
+*/
+
+function renderGrammarDiagnostics(
+    diagnostics
+) {
+
+    diagnostics = diagnostics ?? {};
+
+    const container =
+        document.getElementById(
+            "grammar-diagnostics"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    const messages = [];
+
+    messages.push(
+        diagnostics.capitalizationConsistent
+            ? "✓ Sentence capitalization is consistent."
+            : "⚠ Sentence capitalization may be inconsistent."
+    );
+
+    messages.push(
+        diagnostics.sentenceEndingsConsistent
+            ? "✓ Sentence endings are properly detected."
+            : "⚠ Sentence endings require attention."
+    );
+
+    messages.push(
+        diagnostics.balancedQuotationMarks
+            ? "✓ Quotation marks are balanced."
+            : "⚠ Unbalanced quotation marks detected."
+    );
+
+    messages.push(
+        diagnostics.balancedParentheses
+            ? "✓ Parentheses are balanced."
+            : "⚠ Unbalanced parentheses detected."
+    );
+
+    messages.push(
+        diagnostics.doubleSpacesDetected
+            ? "⚠ Double spaces detected."
+            : "✓ No unnecessary double spaces detected."
+    );
+
+    messages.push(
+        diagnostics.repeatedPunctuationDetected
+            ? "⚠ Repeated punctuation detected."
+            : "✓ No repeated punctuation detected."
+    );
+
+    messages.push(
+        diagnostics.heavyCommaUsage
+            ? "⚠ Heavy comma usage detected."
+            : "✓ Comma usage appears balanced."
+    );
+
+    messages.push(
+        diagnostics.longSentencesDetected
+            ? "⚠ Long sentences detected."
+            : "✓ Sentence length appears balanced."
+    );
+
+    container.innerHTML = `
+        <ul class="studio-suggestions">
+            ${messages
+                .map(
+                    message =>
+                        `<li>${message}</li>`
+                )
+                .join("")}
+        </ul>
+    `;
+}
+
+/*
+|--------------------------------------------------------------------------
 | Suggestions
 |--------------------------------------------------------------------------
 */
@@ -681,6 +1083,16 @@ renderSuggestions();
 
 renderVocabulary({});
 
+renderGrammar({});
+
+renderReadability({});
+
+renderGrammarFeedback();
+
+renderGrammarDiagnostics();
+
+renderExecutiveSummary();
+
 resetSignalDescription();
 
 setStatus(
@@ -715,11 +1127,27 @@ setStatus(
                 }
             );
 
-        const data = await response.json();
+const data = await response.json();
+
+if (!data.success) {
+
+    setStatus(
+
+        data.message ??
+
+        "Analysis failed."
+
+    );
+
+    return;
+
+}
 
 renderScore(data.score);
 
 renderSignalDescription(data.score);
+
+renderExecutiveSummary(data.executiveSummary);
 
 renderMetrics(data.metrics);
 
@@ -732,6 +1160,14 @@ renderSentences(data.sentences);
 renderSuggestions(data.quality);
 
 renderVocabulary(data.vocabulary);
+
+renderGrammar(data.grammar);
+
+renderReadability(data.readability);
+
+renderGrammarFeedback(data.grammarFeedback);
+
+renderGrammarDiagnostics(data.grammarDiagnostics);
 
 setStatus("Analysis Complete");
     }
@@ -822,6 +1258,16 @@ renderSentences({});
 renderSuggestions();
 
 renderVocabulary({});
+
+renderGrammar({});
+
+renderReadability({});
+
+renderGrammarFeedback();
+
+renderGrammarDiagnostics();
+
+renderExecutiveSummary();
 
 resetSignalDescription();
 

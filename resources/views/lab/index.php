@@ -11,8 +11,12 @@
 
 $metrics = $result?->metrics();
 $quality = $result?->quality();
+$grammar = $result?->grammar();
 $sentenceReport = $result
     ? $result->sentences()
+    : null;
+$executiveSummary = $result
+    ? $result->executiveSummary()
     : null;
 ?>
 
@@ -99,6 +103,55 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
         </div>
 
     </div>
+    
+    <div class="card">
+
+    <h3>
+        <i class="fa-solid fa-brain"></i>
+        <span>Executive Summary</span>
+    </h3>
+
+    <div id="executive-summary">
+
+    <h4
+    id="summary-title"
+    class="studio-summary-title">
+
+            <?= $executiveSummary
+                ? htmlspecialchars(
+                    $executiveSummary->title
+                )
+                : 'Waiting for analysis...' ?>
+
+    </h4>
+
+    <p
+    id="summary-text"
+    class="studio-summary-text">
+
+            <?= $executiveSummary
+                ? htmlspecialchars(
+                    $executiveSummary->summary
+                )
+                : 'The Intelligence Engine will summarize your writing after analysis.' ?>
+
+    </p>
+
+    <p
+    id="summary-assessment"
+    class="studio-summary-assessment muted">
+
+            <?= $executiveSummary
+                ? htmlspecialchars(
+                    $executiveSummary->overallAssessment
+                )
+                : '' ?>
+
+        </p>
+
+    </div>
+
+</div>
 
     <div class="card">
 
@@ -150,6 +203,243 @@ The Intelligence Engine will analyze your writing, measure its structure, evalua
         : '--' ?>
 </strong>
 
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h3>
+        <i class="fa-solid fa-spell-check"></i>
+        <span>Grammar Intelligence</span>
+    </h3>
+
+    <div class="studio-metric">
+        <span>Grammar Score</span>
+        <strong id="grammar-score">
+            <?= isset($grammar)
+                ? number_format($grammar->score, 0)
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Capitalized Sentences</span>
+        <strong id="grammar-capitalized">
+            <?= isset($grammar)
+                ? $grammar->capitalizedSentences
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Sentence Endings</span>
+        <strong id="grammar-endings">
+            <?= isset($grammar)
+                ? $grammar->sentenceEndings
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Double Spaces</span>
+        <strong id="grammar-double-spaces">
+            <?= isset($grammar)
+                ? $grammar->doubleSpaces
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Repeated Punctuation</span>
+        <strong id="grammar-repeated">
+            <?= isset($grammar)
+                ? $grammar->repeatedPunctuation
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Commas</span>
+        <strong id="grammar-commas">
+            <?= isset($grammar)
+                ? $grammar->commas
+                : '--' ?>
+        </strong>
+    </div>
+    
+    <div class="studio-metric">
+    <span>Semicolons</span>
+
+    <strong id="grammar-semicolons">
+        <?= isset($grammar)
+            ? $grammar->semicolons
+            : '--' ?>
+    </strong>
+</div>
+
+<div class="studio-metric">
+    <span>Colons</span>
+
+    <strong id="grammar-colons">
+        <?= isset($grammar)
+            ? $grammar->colons
+            : '--' ?>
+    </strong>
+</div>
+
+<div class="studio-metric">
+    <span>Quotation Marks</span>
+
+    <strong id="grammar-quotes">
+        <?= isset($grammar)
+            ? $grammar->quotationMarks
+            : '--' ?>
+    </strong>
+</div>
+
+<div class="studio-metric">
+    <span>Parentheses</span>
+
+    <strong id="grammar-parentheses">
+        <?= isset($grammar)
+            ? $grammar->parentheses
+            : '--' ?>
+    </strong>
+</div>
+
+</div>
+
+<div class="studio-section">
+
+    <h4 class="studio-section-title">
+        <i class="fa-solid fa-comments"></i>
+        <span>Grammar Coach</span>
+    </h4>
+
+    <div id="grammar-feedback">
+
+        <p class="muted">
+            Grammar feedback will appear after analysis.
+        </p>
+
+    </div>
+    
+    <div class="studio-section">
+
+    <h4 class="studio-section-title">
+        <i class="fa-solid fa-stethoscope"></i>
+        <span>Grammar Diagnostics</span>
+    </h4>
+
+    <div id="grammar-diagnostics">
+
+        <p class="muted">
+            Grammar diagnostics will appear after analysis.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+</div>
+
+<div class="card">
+
+    <h3>
+        <i class="fa-solid fa-book-open-reader"></i>
+        <span>Readability Intelligence</span>
+    </h3>
+
+    <div class="studio-metric">
+        <span>Readability Score</span>
+
+        <strong id="readability-score">
+            <?= $result
+                ? number_format(
+                    $result->readability()->score,
+                    0
+                )
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Reading Flow</span>
+
+        <strong id="readability-flow">
+            <?= $result
+                ? $result->readability()->readingFlow
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Reading Difficulty</span>
+
+        <strong id="readability-difficulty">
+            <?= $result
+                ? $result->readability()->difficulty
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Paragraph Balance</span>
+
+        <strong id="readability-paragraphs">
+            <?= $result
+                ? $result->readability()->paragraphBalance
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Short Sentences</span>
+
+        <strong id="readability-short">
+            <?= $result
+                ? $result->readability()->shortSentences
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Long Sentences</span>
+
+        <strong id="readability-long">
+            <?= $result
+                ? $result->readability()->longSentences
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Average Sentence Length</span>
+
+        <strong id="readability-average-sentence">
+            <?= $result
+                ? number_format(
+                    $result->readability()->averageSentenceLength,
+                    1
+                ) . ' words'
+                : '--' ?>
+        </strong>
+    </div>
+
+    <div class="studio-metric">
+        <span>Average Paragraph Length</span>
+
+        <strong id="readability-average-paragraph">
+            <?= $result
+                ? number_format(
+                    $result->readability()->averageParagraphLength,
+                    1
+                ) . ' words'
+                : '--' ?>
+        </strong>
     </div>
 
 </div>

@@ -5,36 +5,34 @@ declare(strict_types=1);
 namespace App\Intelligence\Contracts;
 
 use App\Intelligence\Analysis\ContentMetrics;
+use App\Intelligence\Analysis\ReadabilityReport;
+use App\Intelligence\Analysis\VocabularyReport;
 
 interface Evaluator
 {
-    /**
-     * Unique evaluator name.
-     */
     public function name(): string;
 
-    /**
-     * Evaluate one aspect of the content.
-     */
     public function evaluate(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): float;
 
     /**
-     * Positive observations.
-     *
      * @return string[]
      */
     public function strengths(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): array;
 
     /**
-     * Coaching suggestions.
-     *
      * @return string[]
      */
     public function suggestions(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): array;
 }

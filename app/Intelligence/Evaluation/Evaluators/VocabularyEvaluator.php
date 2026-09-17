@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Intelligence\Evaluation\Evaluators;
 
 use App\Intelligence\Analysis\ContentMetrics;
+use App\Intelligence\Analysis\ReadabilityReport;
+use App\Intelligence\Analysis\VocabularyReport;
 use App\Intelligence\Contracts\Evaluator;
 
 final class VocabularyEvaluator implements Evaluator
@@ -15,62 +17,106 @@ final class VocabularyEvaluator implements Evaluator
     }
 
     public function evaluate(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): float {
 
-        $score = 0;
-
-        if ($metrics->words >= 50) {
-            $score += 25;
+        if ($vocabulary === null) {
+            return 0.0;
         }
 
-        if ($metrics->words >= 100) {
-            $score += 35;
+        $score = $vocabulary->lexicalDiversity;
+
+        if ($vocabulary->fillerWords > 0) {
+            $score -= min(
+                15,
+                $vocabulary->fillerWords * 2
+            );
         }
 
-        if ($metrics->words >= 250) {
-            $score += 40;
+        if ($vocabulary->totalWords > 0) {
+            $repetitionRate =
+                (
+                    $vocabulary->repeatedWords
+                    / $vocabulary->totalWords
+                ) * 100;
+
+            if ($repetitionRate > 25) {
+                $score -= min(
+                    15,
+                    $repetitionRate - 25
+                );
+            }
         }
 
-        return min(
-            $score,
-            100
+        return max(
+            0.0,
+            min(
+                100.0,
+                $score
+            )
         );
     }
 
     public function strengths(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): array {
+
+        if ($vocabulary === null) {
+            return [];
+        }
 
         $strengths = [];
 
-        if ($metrics->words >= 100) {
+        if ($vocabulary->lexicalDiversity >= 70) {
             $strengths[] =
-                'Good amount of written content.';
+                'Vocabulary shows good lexical diversity.';
         }
 
-        if ($metrics->words >= 250) {
+        if ($vocabulary->fillerWords === 0) {
             $strengths[] =
-                'Content provides room for vocabulary diversity.';
+                'No common filler words were detected.';
+        }
+
+        if ($vocabulary->transitionWords > 0) {
+            $strengths[] =
+                'Transition words are being used to connect ideas.';
         }
 
         return $strengths;
     }
 
     public function suggestions(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): array {
+
+        if ($vocabulary === null) {
+            return [];
+        }
 
         $suggestions = [];
 
-        if ($metrics->words < 50) {
+        if ($vocabulary->lexicalDiversity < 50) {
             $suggestions[] =
-                'Expand the content using more descriptive language.';
+                'Consider using a wider range of vocabulary.';
         }
 
-        if ($metrics->words < 100) {
+        if ($vocabulary->fillerWords > 0) {
             $suggestions[] =
-                'Introduce more varied vocabulary.';
+                'Reduce unnecessary filler words where possible.';
+        }
+
+        if (
+            $vocabulary->totalWords >= 50 &&
+            $vocabulary->transitionWords === 0
+        ) {
+            $suggestions[] =
+                'Consider using transition words where they improve the connection between ideas.';
         }
 
         return $suggestions;

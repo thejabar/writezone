@@ -90,7 +90,9 @@ final class IntelligenceLab
 
         $quality = (new QualityEngine())
             ->evaluate(
-                $metrics
+                metrics: $metrics,
+                vocabulary: $vocabulary,
+                readability: $readability
             );
 
         /*

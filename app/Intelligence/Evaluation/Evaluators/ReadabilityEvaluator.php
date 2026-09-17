@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Intelligence\Evaluation\Evaluators;
 
 use App\Intelligence\Analysis\ContentMetrics;
+use App\Intelligence\Analysis\ReadabilityReport;
+use App\Intelligence\Analysis\VocabularyReport;
 use App\Intelligence\Contracts\Evaluator;
 
 final class ReadabilityEvaluator implements Evaluator
@@ -15,73 +17,79 @@ final class ReadabilityEvaluator implements Evaluator
     }
 
     public function evaluate(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): float {
 
-        $score = 0;
-
-        if ($metrics->sentences >= 5) {
-            $score += 30;
+        if ($readability !== null) {
+            return max(
+                0.0,
+                min(
+                    100.0,
+                    $readability->score
+                )
+            );
         }
 
-        if (
-            $metrics->paragraphs >= 2 &&
-            $metrics->paragraphs <= 8
-        ) {
-            $score += 30;
-        }
-
-        if (
-            $metrics->words >= 100 &&
-            $metrics->words <= 800
-        ) {
-            $score += 40;
-        }
-
-        return min(
-            $score,
-            100
-        );
+        return 0.0;
     }
 
     public function strengths(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): array {
+
+        if ($readability === null) {
+            return [];
+        }
 
         $strengths = [];
 
-        if ($metrics->paragraphs >= 2) {
+        if ($readability->readingFlow === 'Smooth') {
             $strengths[] =
-                'Paragraphs improve readability.';
+                'The writing has a smooth reading flow.';
         }
 
-        if ($metrics->sentences >= 5) {
+        if ($readability->difficulty === 'Easy') {
             $strengths[] =
-                'Content contains sufficient sentence structure.';
+                'The writing is easy to read.';
+        }
+
+        if ($readability->paragraphBalance === 'Excellent') {
+            $strengths[] =
+                'Paragraph balance is strong.';
         }
 
         return $strengths;
     }
 
     public function suggestions(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): array {
+
+        if ($readability === null) {
+            return [];
+        }
 
         $suggestions = [];
 
-        if ($metrics->paragraphs < 2) {
+        if ($readability->longSentences > 0) {
             $suggestions[] =
-                'Split the content into additional paragraphs.';
+                'Consider shortening some long sentences to improve readability.';
         }
 
-        if ($metrics->sentences < 5) {
+        if ($readability->readingFlow !== 'Smooth') {
             $suggestions[] =
-                'Expand the content using more complete sentences.';
+                'Review sentence and paragraph flow for smoother reading.';
         }
 
-        if ($metrics->words < 100) {
+        if ($readability->paragraphBalance === 'Fair') {
             $suggestions[] =
-                'Add more detail to improve readability.';
+                'Consider balancing paragraph lengths.';
         }
 
         return $suggestions;

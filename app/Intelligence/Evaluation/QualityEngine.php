@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Intelligence\Evaluation;
 
 use App\Intelligence\Analysis\ContentMetrics;
+use App\Intelligence\Analysis\ReadabilityReport;
+use App\Intelligence\Analysis\VocabularyReport;
 use App\Intelligence\Contracts\Evaluator;
 use App\Intelligence\Evaluation\Evaluators\ReadabilityEvaluator;
 use App\Intelligence\Evaluation\Evaluators\StructureEvaluator;
@@ -27,7 +29,9 @@ final class QualityEngine
     }
 
     public function evaluate(
-        ContentMetrics $metrics
+        ContentMetrics $metrics,
+        ?VocabularyReport $vocabulary = null,
+        ?ReadabilityReport $readability = null
     ): QualityResult {
 
         $breakdown = new QualityBreakdown();
@@ -38,7 +42,11 @@ final class QualityEngine
 
         foreach ($this->evaluators as $evaluator) {
 
-            $score = $evaluator->evaluate($metrics);
+            $score = $evaluator->evaluate(
+                $metrics,
+                $vocabulary,
+                $readability
+            );
 
             $breakdown->add(
                 $evaluator->name(),
@@ -47,23 +55,42 @@ final class QualityEngine
 
             $strengths = array_merge(
                 $strengths,
-                $evaluator->strengths($metrics)
+                $evaluator->strengths(
+                    $metrics,
+                    $vocabulary,
+                    $readability
+                )
             );
 
             $suggestions = array_merge(
                 $suggestions,
-                $evaluator->suggestions($metrics)
+                $evaluator->suggestions(
+                    $metrics,
+                    $vocabulary,
+                    $readability
+                )
             );
         }
 
+        $scores = $breakdown->all();
+
+        $score =
+            $scores === []
+                ? 0.0
+                : array_sum($scores) / count($scores);
+
         return new QualityResult(
-            score: min(
-                100,
-                $breakdown->total()
+            score: round(
+                max(0.0, min(100.0, $score)),
+                2
             ),
             breakdown: $breakdown->toArray(),
-            strengths: $strengths,
-            suggestions: $suggestions
+            strengths: array_values(
+                array_unique($strengths)
+            ),
+            suggestions: array_values(
+                array_unique($suggestions)
+            )
         );
     }
 }

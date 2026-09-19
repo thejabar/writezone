@@ -96,11 +96,34 @@ final class LabController
         
         $executiveSummary = $result->executiveSummary();
 
+        $metadata = $result->metadata();
+
         Response::json([
 
             'success' => true,
 
             'score' => $result->score(),
+
+            'metadata' => [
+
+                'engineVersion' =>
+                    $metadata->engineVersion(),
+
+                'evaluatorCount' =>
+                    $metadata->evaluatorCount(),
+
+                'metricCount' =>
+                    $metadata->metricCount(),
+
+                'executionTime' =>
+                    $metadata->executionTime(),
+
+                'generatedAt' =>
+                    $metadata->generatedAt()->format(
+                        DATE_ATOM
+                    ),
+
+            ],
 
             'metrics' => [
 

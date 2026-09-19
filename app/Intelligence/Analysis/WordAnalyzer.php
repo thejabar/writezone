@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Analysis;
 
+use App\Intelligence\Language\LanguageDefinition;
+use App\Intelligence\Language\Text\LanguageTextProcessor;
+
 final class WordAnalyzer
 {
     public function analyze(
-        string $content
+        string $content,
+        ?LanguageDefinition $language = null
     ): WordReport {
 
-        preg_match_all(
-            '/\p{L}+(?:[\'’-]\p{L}+)?/u',
-            $content,
-            $matches
-        );
+        $language = $language
+            ?? \App\Intelligence\Language\LanguageRegistry::default();
 
-        $words = array_map(
-            static fn (string $word): string => mb_strtolower($word),
-            $matches[0]
-        );
+        $words = (new LanguageTextProcessor())
+            ->words(
+                $content,
+                $language
+            );
 
         $totalWords = count(
             $words

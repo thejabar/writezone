@@ -4,20 +4,30 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Analysis;
 
+use App\Intelligence\Language\LanguageDefinition;
+use App\Intelligence\Language\Text\LanguageTextProcessor;
 use App\Intelligence\Support\SentenceParser;
 
 final class ContentAnalyzer
 {
     public function analyze(
-        string $content
+        string $content,
+        ?LanguageDefinition $language = null
     ): ContentMetrics {
+
+        $language = $language
+            ?? \App\Intelligence\Language\LanguageRegistry::default();
 
         $characters = mb_strlen(
             $content
         );
 
-        $words = str_word_count(
-            strip_tags($content)
+        $words = count(
+            (new LanguageTextProcessor())
+                ->words(
+                    $content,
+                    $language
+                )
         );
 
         $paragraphs = preg_split(
@@ -36,19 +46,19 @@ final class ContentAnalyzer
         );
 
         preg_match_all(
-            '/@\w+/',
+            '/@\w+/u',
             $content,
             $mentions
         );
 
         preg_match_all(
-            '/#\w+/',
+            '/#\w+/u',
             $content,
             $hashtags
         );
 
         preg_match_all(
-            '/https?:\/\/\S+/',
+            '/https?:\/\/\S+/u',
             $content,
             $links
         );

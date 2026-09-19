@@ -9,6 +9,7 @@ use App\Intelligence\Analysis\PunctuationAnalyzer;
 use App\Intelligence\Analysis\SentenceAnalyzer;
 use App\Intelligence\Analysis\WordAnalyzer;
 use App\Intelligence\Language\LanguageDefinition;
+use App\Intelligence\Language\LanguageRegistry;
 
 final class AnalysisContextBuilder
 {
@@ -16,6 +17,9 @@ final class AnalysisContextBuilder
         string $content,
         ?LanguageDefinition $language = null
     ): AnalysisContext {
+
+        $language = $language
+            ?? LanguageRegistry::default();
 
         /*
         |--------------------------------------------------------------------------
@@ -25,7 +29,8 @@ final class AnalysisContextBuilder
 
         $metrics = (new ContentAnalyzer())
             ->analyze(
-                $content
+                $content,
+                $language
             );
 
         $sentences = (new SentenceAnalyzer())
@@ -35,7 +40,8 @@ final class AnalysisContextBuilder
 
         $words = (new WordAnalyzer())
             ->analyze(
-                $content
+                $content,
+                $language
             );
 
         $punctuation = (new PunctuationAnalyzer())
@@ -53,9 +59,7 @@ final class AnalysisContextBuilder
 
             content: $content,
 
-            language:
-                $language
-                ?? \App\Intelligence\Language\LanguageRegistry::default(),
+            language: $language,
 
             metrics: $metrics,
 

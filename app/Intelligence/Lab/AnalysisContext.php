@@ -8,12 +8,15 @@ use App\Intelligence\Analysis\ContentMetrics;
 use App\Intelligence\Analysis\PunctuationReport;
 use App\Intelligence\Analysis\SentenceReport;
 use App\Intelligence\Analysis\WordReport;
+use App\Intelligence\Language\LanguageDefinition;
 
 final class AnalysisContext
 {
     public function __construct(
 
         private readonly string $content,
+
+        private readonly LanguageDefinition $language,
 
         private readonly ContentMetrics $metrics,
 
@@ -29,6 +32,11 @@ final class AnalysisContext
     public function content(): string
     {
         return $this->content;
+    }
+
+    public function language(): LanguageDefinition
+    {
+        return $this->language;
     }
 
     public function metrics(): ContentMetrics

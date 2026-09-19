@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\Intelligence\Lab\IntelligenceLab;
 use App\Intelligence\Lab\LabRequest;
+use App\Intelligence\Language\LanguageRegistry;
 use Core\Http\Request;
 use Core\Http\Response;
 
@@ -63,6 +64,10 @@ final class LabController
             $request->input('content')
         );
 
+        $language = trim(
+            $request->input('language', 'en')
+        );
+
         if ($content === '') {
 
             Response::json([
@@ -74,8 +79,24 @@ final class LabController
 
         $lab = new IntelligenceLab();
 
+        try {
+            $languageDefinition = LanguageRegistry::resolve(
+                $language === ''
+                    ? 'en'
+                    : $language
+            );
+        } catch (\InvalidArgumentException) {
+            Response::json([
+                'success' => false,
+                'message' => 'Unsupported language.',
+            ]);
+        }
+
         $result = $lab->analyze(
-            new LabRequest($content)
+            new LabRequest(
+                content: $content,
+                language: $languageDefinition->code()
+            )
         );
 
         $metrics = $result->metrics();

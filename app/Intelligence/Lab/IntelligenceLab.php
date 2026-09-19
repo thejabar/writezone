@@ -22,6 +22,8 @@ final class IntelligenceLab
 
         $content = $request->content();
 
+        $language = $request->resolvedLanguage();
+
         /*
         |--------------------------------------------------------------------------
         | Build Shared Intelligence
@@ -30,7 +32,8 @@ final class IntelligenceLab
 
         $context = (new AnalysisContextBuilder())
             ->build(
-                $content
+                content: $content,
+                language: $language
             );
 
         /*

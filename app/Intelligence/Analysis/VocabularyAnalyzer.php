@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Intelligence\Analysis;
 
 use App\Intelligence\Lab\AnalysisContext;
+use App\Intelligence\Language\LanguageRegistry;
 
 final class VocabularyAnalyzer
 {
@@ -45,18 +46,11 @@ final class VocabularyAnalyzer
 
         $fillerWords = 0;
 
-        $fillerList = [
+        $resources = LanguageRegistry::resources(
+            $context->language()
+        );
 
-            'actually',
-            'basically',
-            'literally',
-            'really',
-            'very',
-            'just',
-            'quite',
-            'simply',
-
-        ];
+        $fillerList = $resources->fillerWords();
 
         foreach (
             $words->wordFrequency as $word => $count
@@ -84,20 +78,7 @@ final class VocabularyAnalyzer
 
         $transitionWords = 0;
 
-        $transitionList = [
-
-            'however',
-            'therefore',
-            'moreover',
-            'furthermore',
-            'consequently',
-            'meanwhile',
-            'finally',
-            'additionally',
-            'instead',
-            'otherwise',
-
-        ];
+        $transitionList = $resources->transitionWords();
 
         foreach (
             $words->wordFrequency as $word => $count

@@ -16,6 +16,11 @@ document.addEventListener(
                 "studio-editor"
             );
 
+        const language =
+            document.getElementById(
+                "studio-language"
+            );
+
         const clear =
             document.getElementById(
                 "studio-clear"
@@ -1122,6 +1127,9 @@ setStatus(
                     body:
                         new URLSearchParams({
                             content,
+                            language:
+                                language?.value ||
+                                "en",
                         }),
 
                 }

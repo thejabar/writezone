@@ -35,6 +35,36 @@ $executiveSummary = $result
             method="post"
         >
 
+            <div class="studio-language-selector">
+                <label for="studio-language">
+                    <i class="fa-solid fa-language"></i>
+                    <span>Analysis Language</span>
+                </label>
+
+                <select
+                    id="studio-language"
+                    name="language"
+                >
+                    <?php foreach (\App\Intelligence\Language\LanguageRegistry::all() as $language): ?>
+
+                        <option
+                            value="<?= htmlspecialchars($language->code()) ?>"
+                            <?= $language->code() === 'en' ? 'selected' : '' ?>
+                        >
+                            <?= htmlspecialchars($language->name()) ?>
+                            — <?= htmlspecialchars($language->nativeName()) ?>
+                            <?= $language->isPlaceholder() ? ' (Reserved)' : ' (Active)' ?>
+                        </option>
+
+                    <?php endforeach; ?>
+                </select>
+
+                <small class="muted">
+                    English is currently the active language resource.
+                    Other languages are reserved for multilingual expansion.
+                </small>
+            </div>
+
             <textarea
                 id="studio-editor"
                 class="studio-textarea"

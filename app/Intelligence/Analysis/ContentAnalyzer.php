@@ -42,7 +42,8 @@ final class ContentAnalyzer
         */
 
         $sentences = SentenceParser::parse(
-            $content
+            $content,
+            $language
         );
 
         preg_match_all(
@@ -109,13 +110,13 @@ final class ContentAnalyzer
                 : 0.0;
 
         preg_match_all(
-            '/\?/',
+            '/[?؟？]/u',
             $content,
             $questions
         );
 
         preg_match_all(
-            '/!/',
+            '/[!！]/u',
             $content,
             $exclamations
         );

@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Analysis;
 
+use App\Intelligence\Language\LanguageDefinition;
+use App\Intelligence\Language\LanguageRegistry;
+use App\Intelligence\Language\Text\LanguageTextProcessor;
 use App\Intelligence\Support\SentenceParser;
 
 final class SentenceAnalyzer
 {
     public function analyze(
-        string $content
+        string $content,
+        ?LanguageDefinition $language = null
     ): SentenceReport {
 
         $content = trim($content);
 
         if ($content === '') {
-
             return new SentenceReport(
                 total: 0,
                 shortest: 0,
@@ -23,25 +26,18 @@ final class SentenceAnalyzer
                 average: 0,
                 variety: 0,
             );
-
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Parse Sentences
-        |--------------------------------------------------------------------------
-        */
+        $language = $language ?? LanguageRegistry::default();
 
         $sentences = SentenceParser::parse(
-            $content
+            $content,
+            $language
         );
 
-        $total = count(
-            $sentences
-        );
+        $total = count($sentences);
 
         if ($total === 0) {
-
             return new SentenceReport(
                 total: 0,
                 shortest: 0,
@@ -49,67 +45,43 @@ final class SentenceAnalyzer
                 average: 0,
                 variety: 0,
             );
-
         }
+
+        $processor = new LanguageTextProcessor();
 
         $lengths = [];
 
         foreach ($sentences as $sentence) {
-
-            $words = preg_split(
-                '/\s+/u',
-                trim($sentence),
-                -1,
-                PREG_SPLIT_NO_EMPTY
+            $sentence = preg_replace(
+                '/[.!?؟。！？]+$/u',
+                '',
+                trim($sentence)
             );
 
             $lengths[] = count(
-                $words
+                $processor->words(
+                    $sentence,
+                    $language
+                )
             );
-
         }
 
-        $shortest = min(
-            $lengths
-        );
+        $shortest = min($lengths);
+        $longest = max($lengths);
+        $average = array_sum($lengths) / $total;
 
-        $longest = max(
-            $lengths
-        );
-
-        $average =
-            array_sum($lengths)
-            / $total;
-
-        /*
-        |--------------------------------------------------------------------------
-        | Sentence Variety
-        |--------------------------------------------------------------------------
-        */
-
-        $spread =
-            $longest - $shortest;
-
+        $spread = $longest - $shortest;
         $variety = min(
             100,
-            (int) round(
-                $spread * 5
-            )
+            (int) round($spread * 5)
         );
 
         return new SentenceReport(
-
             total: $total,
-
             shortest: $shortest,
-
             longest: $longest,
-
             average: $average,
-
             variety: $variety,
-
         );
-
     }
 }

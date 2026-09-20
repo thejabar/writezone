@@ -30,7 +30,8 @@ final class GrammarAnalyzer
         */
 
         $sentences = SentenceParser::parse(
-            $content
+            $content,
+            $context->language()
         );
 
         $sentenceEndings = count(

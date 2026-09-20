@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Intelligence\Support;
 
+use App\Intelligence\Language\LanguageDefinition;
+use App\Intelligence\Language\LanguageRegistry;
+
 final class SentenceParser
 {
     /**
@@ -12,22 +15,17 @@ final class SentenceParser
      * @return string[]
      */
     public static function parse(
-        string $content
+        string $content,
+        ?LanguageDefinition $language = null
     ): array {
 
         $content = trim($content);
 
         if ($content === '') {
-
             return [];
-
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Normalize whitespace
-        |--------------------------------------------------------------------------
-        */
+        $language = $language ?? LanguageRegistry::default();
 
         $content = preg_replace(
             '/\s+/u',
@@ -35,14 +33,24 @@ final class SentenceParser
             $content
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Extract sentences
-        |--------------------------------------------------------------------------
-        */
+        $terminators = '.!?';
+
+        if ($language->script() === 'Arabic') {
+            $terminators .= '؟';
+        }
+
+        if (in_array(
+            $language->script(),
+            ['Han', 'Japanese', 'Hangul'],
+            true
+        )) {
+            $terminators .= '。！？';
+        }
+
+        $escaped = preg_quote($terminators, '/');
 
         preg_match_all(
-            '/[^.!?]+(?:[.!?]+|$)/u',
+            '/[^' . $escaped . ']+(?:[' . $escaped . ']+|$)/u',
             $content,
             $matches
         );
@@ -55,6 +63,5 @@ final class SentenceParser
                 )
             )
         );
-
     }
 }

@@ -35,7 +35,8 @@ final class AnalysisContextBuilder
 
         $sentences = (new SentenceAnalyzer())
             ->analyze(
-                $content
+                $content,
+                $language
             );
 
         $words = (new WordAnalyzer())

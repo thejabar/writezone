@@ -5289,3 +5289,200 @@ Result
 
 The platform has transitioned from a traditional social feed
 to an AI-native explainable intelligence platform.
+---
+
+# R0.6 Implementation Reconciliation
+
+Date:
+26 September 2026
+
+Status:
+Architecture documentation reconciled against the verified implementation baseline.
+
+## Purpose
+
+This section distinguishes the intended architecture described by this handbook from capabilities established by source-code and runtime evidence.
+
+Architecture documentation is not implementation evidence.
+
+Implementation states used by this handbook are:
+
+- PLANNED
+- DOCUMENTED
+- SCAFFOLDED
+- PARTIALLY IMPLEMENTED
+- IMPLEMENTED
+- TESTED
+- PRODUCTION-VERIFIED
+
+## Current Reconciliation
+
+### Platform Architecture
+
+Status: IMPLEMENTED
+
+The PHP MVC application structure, routing, middleware pipeline, Controllers, Services, Engines, Models, Views, database layer, and Intelligence components exist in the current repository.
+
+The architecture remains subject to continued boundary consolidation.
+
+### Feed
+
+Status: PARTIALLY IMPLEMENTED
+
+The current feed execution path is:
+
+HomeController → FeedService → FeedEngine → Writ::feed() → FeedCandidateFactory → FeedPipeline → RankingEngine → FeedResult
+
+Relationship and freshness scoring are implemented.
+
+The current feed retrieval remains chronological at the persistence layer and does not yet constitute a complete recommendation system.
+
+### Ranking
+
+Status: PARTIALLY IMPLEMENTED
+
+The current Ranking Engine is implemented at app/Ranking/Engines/RankingEngine.php.
+
+Current scoring includes Relationship and Freshness.
+
+Ranking results contain a final score, scorer breakdown, and confidence value.
+
+The current rankAll() implementation calculates ranking results but does not sort returned candidates by score. Therefore ranking calculation is implemented while final score-based feed ordering remains an implementation defect.
+
+### Recommendation
+
+Status: PLANNED
+
+A dedicated Recommendation Engine has not been established as an implemented runtime capability.
+
+Future recommendation capabilities may include behavioural affinity, content similarity, topic relevance, community relevance, language relevance, negative feedback, discovery signals, and personalised recommendations.
+
+Recommendation remains architecturally distinct from the current Ranking Engine.
+
+### Explainability
+
+Status: PARTIALLY IMPLEMENTED
+
+FeedInspector, InspectionResult, RankedCandidate, RankingResult, ScoreBreakdown, and related signal structures provide an internal explainability foundation.
+
+No active runtime route or controller currently exposes FeedInspector as a general feed-inspection interface.
+
+Internal explainability infrastructure therefore exists, but public or developer-facing feed inspection is not currently production-verified.
+
+### Events
+
+Status: SCAFFOLDED
+
+Event contracts, EventDispatcher, and WritPublished exist.
+
+A runtime dispatch path for WritPublished has not been established.
+
+The current notification system creates notification records synchronously from application workflows.
+
+The notification architecture should therefore not be described as fully event-driven in the current implementation.
+
+### Search
+
+Status: PARTIALLY IMPLEMENTED
+
+Current search provides basic writ and user retrieval and keyword matching.
+
+Semantic search, language-aware search, knowledge-graph retrieval, intelligent ranking, and recommendation-aware discovery remain future capabilities.
+
+### Database Access
+
+Status: PARTIALLY IMPLEMENTED
+
+Models are the principal application persistence boundary.
+
+The current implementation nevertheless contains direct PDO access within Models as well as QueryBuilder-based access.
+
+Full persistence abstraction is therefore an architectural target rather than a completed implementation invariant.
+
+### Authentication
+
+Status: IMPLEMENTED
+
+The current system provides login, registration, logout, session-based identity, authentication middleware, guest middleware, protected routes, and password hashing and verification.
+
+The current implementation does not establish the complete future security architecture.
+
+### Session Security
+
+Status: PARTIALLY IMPLEMENTED
+
+The current session stores the authenticated user identifier and provides basic session continuity.
+
+The current implementation does not establish session identifier regeneration after authentication, comprehensive expiration controls, device management, or session revocation.
+
+### Security Controls
+
+Status: PARTIALLY IMPLEMENTED
+
+Authentication middleware and password hashing are implemented.
+
+The current platform does not yet establish CSRF protection, comprehensive request rate limiting, centralized authorization policies, hardened session lifecycle controls, or a centralized application exception boundary.
+
+Security architecture therefore remains incomplete and must not be described as fully implemented.
+
+### Authorization
+
+Status: PARTIALLY IMPLEMENTED
+
+Role information exists in the application architecture, but a comprehensive centralized authorization policy layer is not established across all protected resources.
+
+Authorization rules should be consolidated into explicit policy or authorization services before the platform is treated as having a complete authorization architecture.
+
+### Input and Request Protection
+
+Status: PARTIALLY IMPLEMENTED
+
+Application validation exists in individual workflows, but a platform-wide request-validation, CSRF, and rate-limiting boundary is not established.
+
+Security controls should be enforced consistently at the HTTP/application boundary rather than relying only on individual controllers or workflows.
+
+### Error Handling and Observability
+
+Status: PARTIALLY IMPLEMENTED
+
+The platform does not yet provide a complete centralized exception boundary, structured application logging, request identifiers, health checks, or production monitoring.
+
+Operational observability remains a platform engineering requirement.
+
+### Multilingual Platform
+
+Status: PARTIALLY IMPLEMENTED
+
+The Intelligence Lab provides language foundation, text, and sentence analysis capabilities with regression coverage.
+
+Platform-wide multilingual support is not yet established across search, recommendation, moderation, hashtags, mentions, knowledge relationships, and all user-facing discovery workflows.
+
+Language intelligence therefore exists as a foundation rather than as a complete platform-wide multilingual architecture.
+
+### Testing
+
+Status: TESTED
+
+The repository contains governed regression tests for the Intelligence Lab and language foundation components.
+
+The current regression suite is executed through scripts/test/run.sh and is part of the release gate.
+
+Broad application-level unit, integration, security, database, and end-to-end coverage remains future work.
+
+### Release Governance
+
+Status: IMPLEMENTED
+
+Release governance is established through an executable release gate, exact Git commit identity, dependency validation, PHP syntax validation, regression tests, and migration-state verification.
+
+Deployment remains deliberate and manual; automated CI/CD, deployment locking, automated rollback, health monitoring, and zero-downtime deployment are not currently implemented.
+
+### Documentation Authority
+
+Status: IMPLEMENTED
+
+The architecture handbook is governed by implementation evidence.
+
+Where historical architectural intent conflicts with verified current implementation, the R0.6 reconciliation section is the current-state authority.
+
+Future architectural capabilities must be explicitly marked as planned, documented, scaffolded, partially implemented, implemented, tested, or production-verified.

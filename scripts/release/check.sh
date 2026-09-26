@@ -32,6 +32,9 @@ done
 
 echo "PHP syntax: PASS"
 
+echo "--- Regression tests ---"
+sh scripts/test/run.sh
+
 echo "--- Migration state ---"
 php migrate.php status
 

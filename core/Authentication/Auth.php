@@ -6,16 +6,17 @@ namespace Core\Authentication;
 
 use Core\Session\Session;
 
-class Auth
+final class Auth
 {
     public static function login(int|string $userId): void
     {
+        Session::regenerate(true);
         Session::put('user_id', $userId);
     }
 
     public static function logout(): void
     {
-        Session::forget('user_id');
+        Session::destroy();
     }
 
     public static function check(): bool
@@ -27,15 +28,15 @@ class Auth
     {
         return Session::get('user_id');
     }
-    
-    public static function user(): ?object
-{
-    if (! self::check()) {
-        return null;
-    }
 
-    return \App\Models\User::find(
-        self::id()
-    );
-}
+    public static function user(): ?object
+    {
+        if (! self::check()) {
+            return null;
+        }
+
+        return \App\Models\User::find(
+            self::id()
+        );
+    }
 }

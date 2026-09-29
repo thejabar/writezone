@@ -44,7 +44,7 @@ return static function (Router $router): void {
         ]);
 
     $router
-        ->middleware('guest')
+        ->middleware(['guest','csrf'])
         ->post('/login', [
             AuthController::class,
             'login',
@@ -58,13 +58,15 @@ return static function (Router $router): void {
         ]);
 
     $router
-        ->middleware('guest')
+        ->middleware(['guest','csrf'])
         ->post('/register', [
             AuthController::class,
             'register',
         ]);
 
-    $router->get('/logout', [
+    $router
+        ->middleware(['auth','csrf'])
+        ->post('/logout', [
         AuthController::class,
         'logout',
     ]);
@@ -105,7 +107,7 @@ return static function (Router $router): void {
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/writs', [
             WritController::class,
             'store',
@@ -119,14 +121,14 @@ return static function (Router $router): void {
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/writs/{id}/update', [
             WritController::class,
             'update',
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/writs/{id}/delete', [
             WritController::class,
             'delete',
@@ -166,14 +168,14 @@ return static function (Router $router): void {
     */
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/writs/{id}/comments', [
             CommentController::class,
             'store',
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/comments/{id}/reply', [
             CommentController::class,
             'reply',
@@ -187,14 +189,14 @@ return static function (Router $router): void {
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/comments/{id}/update', [
             CommentController::class,
             'update',
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/comments/{id}/delete', [
             CommentController::class,
             'delete',
@@ -207,14 +209,14 @@ return static function (Router $router): void {
     */
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/comments/{id}/upvote', [
             CommentVoteController::class,
             'upvote',
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/comments/{id}/downvote', [
             CommentVoteController::class,
             'downvote',
@@ -227,7 +229,7 @@ return static function (Router $router): void {
     */
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/follow/{id}', [
             FollowController::class,
             'follow',
@@ -247,7 +249,7 @@ return static function (Router $router): void {
         ]);
 
     $router
-        ->middleware('auth')
+        ->middleware(['auth','csrf'])
         ->post('/bookmarks/{id}', [
             BookmarkController::class,
             'store',
@@ -277,12 +279,16 @@ return static function (Router $router): void {
         'index',
     ]);
 
-    $router->post('/lab', [
+    $router
+        ->middleware('csrf')
+        ->post('/lab', [
         LabController::class,
         'index',
     ]);
     
-    $router->post('/lab/analyze', [
+    $router
+        ->middleware('csrf')
+        ->post('/lab/analyze', [
     LabController::class,
     'analyze',
 ]);

@@ -1122,6 +1122,8 @@ setStatus(
                     headers: {
                         "Content-Type":
                             "application/x-www-form-urlencoded",
+                        "X-CSRF-TOKEN":
+                            document.querySelector("input[name=_token]")?.value || "",
                     },
 
                     body:

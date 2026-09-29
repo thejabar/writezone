@@ -58,10 +58,13 @@ if (Auth::check()) {
         <i class="fa-solid fa-bookmark"></i>
         Bookmarks
     </a>
-    <a href="/logout">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Logout
-    </a>
+    <form method="POST" action="/logout">
+        <?= csrf_field() ?>
+        <button type="submit">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </button>
+    </form>
 <?php else: ?>
     <a href="/login">
         <i class="fa-solid fa-right-to-bracket"></i>

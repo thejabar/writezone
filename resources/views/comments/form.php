@@ -3,6 +3,7 @@
         method="POST"
         action="/writs/<?= htmlspecialchars($writ->public_id) ?>/comments"
         >
+        <?= csrf_field() ?>
         <textarea
             name="content"
             placeholder="Join the discussion..."

@@ -71,6 +71,7 @@
                             'Delete this reply permanently?'
                         );"
                     >
+                <?= csrf_field() ?>
                         <button
                             type="submit"
                             class="icon-button danger"
@@ -92,6 +93,7 @@
                 method="POST"
                 action="/comments/<?= $comment->id ?>/upvote"
             >
+                <?= csrf_field() ?>
                 <button
                     type="submit"
                     class="icon-button <?= $userVote === 1
@@ -110,6 +112,7 @@
                 method="POST"
                 action="/comments/<?= $comment->id ?>/downvote"
             >
+                <?= csrf_field() ?>
                 <button
                     type="submit"
                     class="icon-button downvote <?= $userVote === -1
@@ -150,6 +153,7 @@
                     'Delete this comment permanently?'
                 );"
             >
+                <?= csrf_field() ?>
                 <button
                     type="submit"
                     class="icon-button danger"
@@ -172,6 +176,7 @@
                 method="POST"
                 action="/comments/<?= $comment->id ?>/reply"
             >
+                <?= csrf_field() ?>
                 <textarea
                     name="content"
                     placeholder="Write a reply..."

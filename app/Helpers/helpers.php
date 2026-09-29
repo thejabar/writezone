@@ -14,3 +14,18 @@ function view(
         . '/resources/views/layouts/app.php';
     return ob_get_clean();
 }
+function csrf_token(): string
+{
+    return \Core\Security\Csrf::token();
+}
+
+function csrf_field(): string
+{
+    return '<input type="hidden" name="_token" value="' .
+        htmlspecialchars(
+            csrf_token(),
+            ENT_QUOTES,
+            'UTF-8'
+        ) .
+        '">';
+}

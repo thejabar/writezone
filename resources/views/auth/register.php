@@ -6,6 +6,7 @@
     Create your WriteZone account.
 </p>
 <form method="POST" action="/register">
+    <?= csrf_field() ?>
     <p>
         <label for="username">Username</label>
     </p>

@@ -6,6 +6,7 @@ use Core\Http\Request;
 use Core\Routing\Router;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
+use App\Middleware\CsrfMiddleware;
 return new class {
     public function run(): void
     {
@@ -20,6 +21,10 @@ return new class {
         $router->alias(
             'guest',
             GuestMiddleware::class
+        );
+        $router->alias(
+            'csrf',
+            CsrfMiddleware::class
         );
         $routes = require BASE_PATH . '/routes/web.php';
         $routes($router);

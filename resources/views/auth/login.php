@@ -6,6 +6,7 @@
     Welcome back to WriteZone.
 </p>
 <form method="POST" action="/login">
+    <?= csrf_field() ?>
     <p>
         <label for="email">Email</label>
     </p>

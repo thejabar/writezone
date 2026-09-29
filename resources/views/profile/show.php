@@ -36,6 +36,7 @@ use Core\Authentication\Auth;
             method="POST"
             action="/follow/<?= $user->id ?>"
         >
+            <?= csrf_field() ?>
             <button
                 type="submit"
                 class="btn-primary"

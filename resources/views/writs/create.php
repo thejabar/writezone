@@ -8,6 +8,7 @@
 <h1>New Writ</h1>
 
 <form method="POST" action="/writs">
+    <?= csrf_field() ?>
 
     <textarea
         name="content"

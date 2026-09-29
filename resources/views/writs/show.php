@@ -19,6 +19,7 @@
             $writ->public_id
         ) ?>"
     >
+        <?= csrf_field() ?>
         <button type="submit">
             <i class="fa-solid fa-bookmark"></i>
             Save Bookmark
@@ -83,6 +84,7 @@
                 'Delete this writ permanently?'
             );"
         >
+            <?= csrf_field() ?>
             <button
                 type="submit"
                 class="icon-button danger"

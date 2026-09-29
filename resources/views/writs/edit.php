@@ -4,6 +4,7 @@
 </h1>
 
 <form method="POST" action="/writs/<?= htmlspecialchars($writ->public_id) ?>/update">
+    <?= csrf_field() ?>
 
     <textarea
         name="content"

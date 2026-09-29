@@ -34,6 +34,7 @@ $executiveSummary = $result
             id="studio-form"
             method="post"
         >
+            <?= csrf_field() ?>
 
             <div class="studio-language-selector">
                 <label for="studio-language">

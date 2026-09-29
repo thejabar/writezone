@@ -3,6 +3,7 @@
     method="POST"
     action="/comments/<?= $comment->id ?>/update"
 >
+    <?= csrf_field() ?>
     <textarea
         name="content"
         rows="5"

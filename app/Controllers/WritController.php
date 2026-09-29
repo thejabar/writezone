@@ -9,6 +9,8 @@ use App\Models\Writ;
 use App\Services\FeedService;
 use App\Services\WritPublisher;
 use Core\Authentication\Auth;
+use Core\Authorization\Authorization;
+use App\Policies\WritPolicy;
 use Core\Http\Request;
 use Core\Http\Response;
 
@@ -96,9 +98,11 @@ class WritController
             return 'Writ not found.';
         }
 
-        if (! Writ::belongsToUserByPublicId(
-            $id,
-            (int) Auth::id()
+        if (! Authorization::allows(
+            WritPolicy::class,
+            'update',
+            (int) Auth::id(),
+            $writ
         )) {
             return 'Unauthorized';
         }
@@ -127,9 +131,11 @@ class WritController
             return;
         }
 
-        if (! Writ::belongsToUserByPublicId(
-            $id,
-            (int) Auth::id()
+        if (! Authorization::allows(
+            WritPolicy::class,
+            'update',
+            (int) Auth::id(),
+            $writ
         )) {
 
             flash(
@@ -182,9 +188,11 @@ class WritController
             return;
         }
 
-        if (! Writ::belongsToUserByPublicId(
-            $id,
-            (int) Auth::id()
+        if (! Authorization::allows(
+            WritPolicy::class,
+            'delete',
+            (int) Auth::id(),
+            $writ
         )) {
 
             flash(

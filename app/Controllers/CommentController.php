@@ -6,6 +6,8 @@ use App\Models\Comment;
 use App\Models\Notification;
 use App\Models\Writ;
 use Core\Authentication\Auth;
+use Core\Authorization\Authorization;
+use App\Policies\CommentPolicy;
 use Core\Http\Request;
 use Core\Http\Response;
 class CommentController
@@ -125,9 +127,11 @@ MentionService::notifyMentions(
         if (! $comment) {
             return 'Comment not found.';
         }
-        if (! Comment::belongsToUser(
-            (int) $id,
-            (int) Auth::id()
+        if (! Authorization::allows(
+            CommentPolicy::class,
+            'update',
+            (int) Auth::id(),
+            $comment
         )) {
             return 'Unauthorized';
         }
@@ -153,9 +157,11 @@ MentionService::notifyMentions(
             Response::redirect('/writs');
             return;
         }
-        if (! Comment::belongsToUser(
-            (int) $id,
-            (int) Auth::id()
+        if (! Authorization::allows(
+            CommentPolicy::class,
+            'update',
+            (int) Auth::id(),
+            $comment
         )) {
             flash(
                 'error',
@@ -198,9 +204,11 @@ MentionService::notifyMentions(
             Response::redirect('/writs');
             return;
         }
-        if (! Comment::belongsToUser(
-            (int) $id,
-            (int) Auth::id()
+        if (! Authorization::allows(
+            CommentPolicy::class,
+            'delete',
+            (int) Auth::id(),
+            $comment
         )) {
             flash(
                 'error',

@@ -42,7 +42,7 @@ class Connection
             return self::$pdo;
 
         } catch (PDOException $e) {
-            die('Database connection failed: ' . $e->getMessage());
+            throw new \RuntimeException('Database connection failed.', 0, $e);
         }
     }
 }

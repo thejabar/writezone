@@ -22,6 +22,7 @@ run_test "Rate Limiter Security" tests/RateLimiterRegression.php
 run_test "Rate Limit Middleware Security" tests/RateLimitMiddlewareRegression.php
 run_test "Authorization Security" tests/AuthorizationRegression.php
 run_test "Central Error Boundary" tests/ErrorHandlerRegression.php
+run_test "Database Disclosure Security" tests/DatabaseDisclosureRegression.php
 run_test "Session Security" tests/SessionSecurityRegression.php
 run_test "Security Composition" tests/SecurityCompositionRegression.php
 run_test "A2.5 Language Foundation" tests/Intelligence/A25LanguageFoundationRegression.php

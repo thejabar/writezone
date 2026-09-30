@@ -7,6 +7,7 @@ use Core\Routing\Router;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use App\Middleware\CsrfMiddleware;
+use App\Middleware\RateLimitMiddleware;
 return new class {
     public function run(): void
     {
@@ -26,6 +27,11 @@ return new class {
             'csrf',
             CsrfMiddleware::class
         );
+        $router->alias(
+            'ratelimit',
+            RateLimitMiddleware::class
+        );
+
         $routes = require BASE_PATH . '/routes/web.php';
         $routes($router);
         $router->dispatch(new Request());

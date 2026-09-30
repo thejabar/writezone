@@ -244,9 +244,11 @@ final class Router
 
             );
 
-            Response::send(
-                (string) $response
-            );
+            if ($response !== null) {
+                Response::send(
+                    (string) $response
+                );
+            }
 
             return;
         }

@@ -176,28 +176,28 @@ return static function (Router $router): void {
 
     $router
         ->middleware(['auth','ratelimit','csrf'])
-        ->post('/comments/{id}/reply', [
+        ->post('/comments/{id:[1-9][0-9]*}/reply', [
             CommentController::class,
             'reply',
         ]);
 
     $router
         ->middleware('auth')
-        ->get('/comments/{id}/edit', [
+        ->get('/comments/{id:[1-9][0-9]*}/edit', [
             CommentController::class,
             'edit',
         ]);
 
     $router
         ->middleware(['auth','ratelimit','csrf'])
-        ->post('/comments/{id}/update', [
+        ->post('/comments/{id:[1-9][0-9]*}/update', [
             CommentController::class,
             'update',
         ]);
 
     $router
         ->middleware(['auth','ratelimit','csrf'])
-        ->post('/comments/{id}/delete', [
+        ->post('/comments/{id:[1-9][0-9]*}/delete', [
             CommentController::class,
             'delete',
         ]);
@@ -210,14 +210,14 @@ return static function (Router $router): void {
 
     $router
         ->middleware(['auth','ratelimit','csrf'])
-        ->post('/comments/{id}/upvote', [
+        ->post('/comments/{id:[1-9][0-9]*}/upvote', [
             CommentVoteController::class,
             'upvote',
         ]);
 
     $router
         ->middleware(['auth','ratelimit','csrf'])
-        ->post('/comments/{id}/downvote', [
+        ->post('/comments/{id:[1-9][0-9]*}/downvote', [
             CommentVoteController::class,
             'downvote',
         ]);
@@ -230,7 +230,7 @@ return static function (Router $router): void {
 
     $router
         ->middleware(['auth','ratelimit','csrf'])
-        ->post('/follow/{id}', [
+        ->post('/follow/{id:[1-9][0-9]*}', [
             FollowController::class,
             'follow',
         ]);
@@ -250,7 +250,7 @@ return static function (Router $router): void {
 
     $router
         ->middleware(['auth','ratelimit','csrf'])
-        ->post('/bookmarks/{id}', [
+        ->post('/bookmarks/{id:[1-9][0-9]*}', [
             BookmarkController::class,
             'store',
         ]);

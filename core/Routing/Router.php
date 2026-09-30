@@ -37,6 +37,13 @@ final class Router
      */
     private array $pendingMiddleware = [];
 
+    /**
+     * Middleware applied to every request before route dispatch.
+     *
+     * @var string[]
+     */
+    private array $globalMiddleware = [];
+
     public function __construct(
         private readonly Container $container
     ) {
@@ -63,6 +70,17 @@ final class Router
 
         return $this;
     }
+
+    /**
+     * Register middleware for every dispatched request.
+     */
+    public function globalMiddleware(
+        string|array $middleware
+    ): self {
+        $this->globalMiddleware = (array) $middleware;
+        return $this;
+    }
+
 
     public function get(
         string $path,
@@ -154,10 +172,12 @@ final class Router
 
         foreach ($routes as $route => $config) {
 
-            $pattern = preg_replace(
-                '#\{([a-zA-Z_][a-zA-Z0-9_]*)\}#',
-                '([^/]+)',
-                trim($route, '/')
+            $pattern = preg_replace_callback(
+                "#\{([a-zA-Z_][a-zA-Z0-9_]*)(?::([^}]+))?\}#",
+                static function (array $match): string {
+                    return "(" . ($match[2] ?? "[^/]+") . ")";
+                },
+                trim($route, "/")
             );
 
             $pattern = "#^{$pattern}$#";

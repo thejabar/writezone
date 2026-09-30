@@ -16,6 +16,8 @@ run_test() {
 
 run_test "Intelligence Lab" tests/Intelligence/IntelligenceLabRegression.php
 run_test "CSRF Security" tests/SecurityCsrfRegression.php
+run_test "Request Boundary Security" tests/RequestBoundaryRegression.php
+run_test "Route Constraint Security" tests/RouteConstraintRegression.php
 run_test "Rate Limiter Security" tests/RateLimiterRegression.php
 run_test "Rate Limit Middleware Security" tests/RateLimitMiddlewareRegression.php
 run_test "Authorization Security" tests/AuthorizationRegression.php

@@ -8,6 +8,7 @@ use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
 use App\Middleware\CsrfMiddleware;
 use App\Middleware\RateLimitMiddleware;
+use App\Middleware\RequestBoundaryMiddleware;
 return new class {
     public function run(): void
     {
@@ -15,6 +16,8 @@ return new class {
         $dotenv->load();
         $container = new Container();
         $router = new Router($container);
+        $router->alias('request_boundary', RequestBoundaryMiddleware::class);
+        $router->globalMiddleware('request_boundary');
         $router->alias(
             'auth',
             AuthMiddleware::class

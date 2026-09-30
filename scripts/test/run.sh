@@ -21,6 +21,7 @@ run_test "Route Constraint Security" tests/RouteConstraintRegression.php
 run_test "Rate Limiter Security" tests/RateLimiterRegression.php
 run_test "Rate Limit Middleware Security" tests/RateLimitMiddlewareRegression.php
 run_test "Authorization Security" tests/AuthorizationRegression.php
+run_test "Central Error Boundary" tests/ErrorHandlerRegression.php
 run_test "A2.5 Language Foundation" tests/Intelligence/A25LanguageFoundationRegression.php
 run_test "A2.6 Language Text" tests/Intelligence/A26LanguageTextRegression.php
 run_test "A2.7 Language Sentence" tests/Intelligence/A27LanguageSentenceRegression.php

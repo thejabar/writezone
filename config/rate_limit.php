@@ -19,12 +19,12 @@ return [
     'auth_action' => [
         'max_attempts' => 60,
         'decay_seconds' => 60,
-        'identity' => 'user_ip',
+        'identity' => 'user_and_ip',
     ],
 
     'lab' => [
         'max_attempts' => 20,
         'decay_seconds' => 60,
-        'identity' => 'user_ip',
+        'identity' => 'user_and_ip',
     ],
 ];

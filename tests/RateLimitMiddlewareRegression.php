@@ -57,12 +57,35 @@ function cleanup_key(string $profile, string $identity): void
     }
 }
 
+function middleware_identities(string $type): array
+{
+    $middleware = new RateLimitMiddleware();
+
+    $reflection = new ReflectionClass($middleware);
+
+    $method = $reflection->getMethod('identities');
+    $method->setAccessible(true);
+
+    return $method->invoke($middleware, $type);
+}
+
 $GLOBALS['failures'] = 0;
 $GLOBALS['total'] = 0;
 
 Session::start();
 
 $loginIp = '198.51.100.11';
+$registerIp = '198.51.100.12';
+$labIp = '198.51.100.13';
+$actionIp = '198.51.100.14';
+
+cleanup_key('login', 'ip:' . $loginIp);
+cleanup_key('register', 'ip:' . $registerIp);
+cleanup_key('lab', 'ip:' . $labIp);
+cleanup_key('auth_action', 'ip:' . $actionIp);
+cleanup_key('auth_action', 'user:42');
+
+$_SESSION['user_id'] = null;
 
 $first = run_request('/login', $loginIp, fn () => 'LOGIN_OK');
 
@@ -74,9 +97,11 @@ assert_result(
 
 $blocked = null;
 
-for ($i = 0; $i < 5; $i++) {
+for ($i = 0; $i < 4; $i++) {
     $blocked = run_request('/login', $loginIp, fn () => 'LOGIN_OK');
 }
+
+$blocked = run_request('/login', $loginIp, fn () => 'LOGIN_OK');
 
 assert_result(
     'Login profile blocks after five allowed attempts',
@@ -85,8 +110,6 @@ assert_result(
         && $blocked['body'] === 'Too many requests.'
 );
 
-$registerIp = '198.51.100.12';
-
 $register = run_request('/register', $registerIp, fn () => 'REGISTER_OK');
 
 assert_result(
@@ -94,8 +117,6 @@ assert_result(
     $register['result'] === 'REGISTER_OK'
         && $register['status'] === 200
 );
-
-$labIp = '198.51.100.13';
 
 $lab = run_request('/lab', $labIp, fn () => 'LAB_OK');
 
@@ -113,8 +134,6 @@ assert_result(
         && $labAnalyze['status'] === 200
 );
 
-$actionIp = '198.51.100.14';
-
 $action = run_request('/writs/123/update', $actionIp, fn () => 'ACTION_OK');
 
 assert_result(
@@ -123,11 +142,44 @@ assert_result(
         && $action['status'] === 200
 );
 
+$_SERVER['REQUEST_URI'] = '/login/';
+$trailingSlash = middleware_identities('ip');
+
+assert_result(
+    'Trailing slash does not alter IP identity',
+    $trailingSlash === ['ip:' . $actionIp]
+);
+
+$_SERVER['REMOTE_ADDR'] = $actionIp;
+$_SERVER['HTTP_X_FORWARDED_FOR'] = '203.0.113.99';
+$_SERVER['HTTP_X_REAL_IP'] = '203.0.113.98';
+
+$anonymousIdentities = middleware_identities('user_and_ip');
+
+assert_result(
+    'Anonymous user_and_ip uses only REMOTE_ADDR',
+    $anonymousIdentities === ['ip:' . $actionIp]
+);
+
+$_SESSION['user_id'] = 42;
+
+$authenticatedIdentities = middleware_identities('user_and_ip');
+
+assert_result(
+    'Authenticated user_and_ip creates independent IP and user identities',
+    $authenticatedIdentities === [
+        'ip:' . $actionIp,
+        'user:42',
+    ]
+);
 
 cleanup_key('login', 'ip:' . $loginIp);
 cleanup_key('register', 'ip:' . $registerIp);
-cleanup_key('lab', 'user:0:ip:' . $labIp);
-cleanup_key('auth_action', 'user:0:ip:' . $actionIp);
+cleanup_key('lab', 'ip:' . $labIp);
+cleanup_key('auth_action', 'ip:' . $actionIp);
+cleanup_key('auth_action', 'user:42');
+
+$_SESSION['user_id'] = null;
 
 echo PHP_EOL;
 echo "RateLimitMiddleware: {$GLOBALS['total']} assertions, "

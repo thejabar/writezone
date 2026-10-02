@@ -20,6 +20,8 @@ run_test "Request Boundary Security" tests/RequestBoundaryRegression.php
 run_test "Route Constraint Security" tests/RouteConstraintRegression.php
 run_test "Rate Limiter Security" tests/RateLimiterRegression.php
 run_test "Rate Limit Middleware Security" tests/RateLimitMiddlewareRegression.php
+run_test "Rate Limit H4 Profile Security" tests/RateLimitH4Regression.php
+run_test "Request Boundary Router Security" tests/RequestBoundaryRouterRegression.php
 run_test "Authorization Security" tests/AuthorizationRegression.php
 run_test "Central Error Boundary" tests/ErrorHandlerRegression.php
 run_test "Database Disclosure Security" tests/DatabaseDisclosureRegression.php

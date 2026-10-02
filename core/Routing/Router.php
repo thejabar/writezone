@@ -196,6 +196,16 @@ final class Router
 
             $handler = $config['handler'];
 
+            $globalMiddlewares = array_map(
+                function (string $name) {
+                    if (! isset($this->middlewareAliases[$name])) {
+                        throw new Exception("Middleware alias '{$name}' is not registered.");
+                    }
+                    return $this->container->resolve($this->middlewareAliases[$name]);
+                },
+                $this->globalMiddleware
+            );
+
             $middlewares = array_map(
 
                 function (
@@ -223,6 +233,8 @@ final class Router
                 $config['middleware']
 
             );
+
+            $middlewares = array_merge($globalMiddlewares, $middlewares);
 
             $pipeline = new MiddlewarePipeline(
                 $middlewares
@@ -265,8 +277,10 @@ final class Router
             );
 
             if ($response !== null) {
+                $status = http_response_code();
                 Response::send(
-                    (string) $response
+                    (string) $response,
+                    $status > 0 ? $status : 200
                 );
             }
 

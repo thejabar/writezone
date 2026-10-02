@@ -94,17 +94,18 @@ return static function (Router $router): void {
         'index',
     ]);
 
-    $router->get('/writs/{id}', [
-        WritController::class,
-        'show',
-    ]);
-
     $router
         ->middleware('auth')
         ->get('/writs/create', [
             WritController::class,
             'create',
         ]);
+
+    $router->get('/writs/{id}', [
+        WritController::class,
+        'show',
+    ]);
+
 
     $router
         ->middleware(['auth','ratelimit','csrf'])

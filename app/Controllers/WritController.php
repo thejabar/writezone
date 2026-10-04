@@ -16,6 +16,11 @@ use Core\Http\Response;
 
 class WritController
 {
+    public function __construct(
+        private readonly WritPublisher $publisher
+    ) {
+    }
+
     public function index(
     Request $request
 ): string {
@@ -49,9 +54,7 @@ class WritController
             $request->input('content')
         );
 
-        $publisher = new WritPublisher();
-
-        $result = $publisher->publish(
+        $result = $this->publisher->publish(
             (int) Auth::id(),
             $content
         );

@@ -15,6 +15,7 @@ run_test() {
 }
 
 run_test "Intelligence Lab" tests/Intelligence/IntelligenceLabRegression.php
+run_test "Writ Publication Event" tests/WritPublicationEventRegression.php
 run_test "CSRF Security" tests/SecurityCsrfRegression.php
 run_test "Request Boundary Security" tests/RequestBoundaryRegression.php
 run_test "Route Constraint Security" tests/RouteConstraintRegression.php

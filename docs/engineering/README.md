@@ -124,3 +124,9 @@ Every significant feature follows the same lifecycle:
 This handbook is intentionally maintained as a living document.
 
 It evolves together with WriteZone while preserving the engineering philosophy that guides the platform.
+
+## Repository Readiness Assessment
+
+The following documents record a local, evidence-based engineering baseline. They supplement the handbook and do not replace the canonical architecture authority or WZ-MASTER-ROADMAP-2027.2. They do not authorize implementation or release.
+
+See the [readiness document index](../Engineering/INDEX.md) for the assessment reports.

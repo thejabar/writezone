@@ -1,3 +1,5 @@
+Authority notice: this is a strategic product narrative, not the current delivery schedule or implementation evidence. Use the [canonical programme baseline](../Roadmap/README.md); historical checkmarks here do not establish current completion.
+
 Version 1.0 Roadmap
 
 

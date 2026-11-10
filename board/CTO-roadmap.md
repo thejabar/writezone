@@ -1,3 +1,5 @@
+Authority notice: this is a strategic engineering narrative, not the current delivery schedule or implementation evidence. Use the [canonical programme baseline](../docs/Roadmap/README.md); status labels here do not establish current completion.
+
 R-2.1  Signal Foundation                 ✅ Complete
 
 R-2.2  FeedCandidate Foundation          🚧 Current

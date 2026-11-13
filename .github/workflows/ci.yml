@@ -51,7 +51,7 @@ jobs:
           mapfile -t files < <(
             find app bootstrap config core database public_html resources routes \
               -type f -name '*.php'
-            printf '%s\n' migrate.php server.php
+            printf '%s\n' migrate.php
           )
 
           printf 'Linting %d files with PHP %s\n' "${#files[@]}" "$(php -r 'echo PHP_VERSION;')"
@@ -89,13 +89,6 @@ jobs:
           --health-timeout=5s
           --health-retries=12
 
-    env:
-      DB_HOST: 127.0.0.1
-      DB_PORT: '3306'
-      DB_DATABASE: writezone
-      DB_USERNAME: writezone
-      DB_PASSWORD: writezone
-
     steps:
       - name: Check out the repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
@@ -116,8 +109,13 @@ jobs:
       # inside the temporary GitHub Actions workspace.
       - name: Create .env for the migrator
         run: |
-          printf 'DB_HOST=%s\nDB_PORT=%s\nDB_DATABASE=%s\nDB_USERNAME=%s\nDB_PASSWORD=%s\n' \
-            "$DB_HOST" "$DB_PORT" "$DB_DATABASE" "$DB_USERNAME" "$DB_PASSWORD" > .env
+          cat > .env <<'ENV'
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_DATABASE=writezone
+          DB_USERNAME=writezone
+          DB_PASSWORD=writezone
+          ENV
 
       # Connection.php uses die() on connection failure, which can exit 0.
       # Require the migrator's explicit completion message as an extra guard.
@@ -125,11 +123,11 @@ jobs:
         run: |
           set -euo pipefail
 
-          output=$(php migrate.php)
+          output=$(php migrate.php migrate)
           printf '%s\n' "$output"
 
-          if ! grep -q 'Migrations completed.' <<< "$output"; then
-            echo '::error::php migrate.php did not report completion'
+          if ! grep -q 'Migration run completed\.' <<< "$output"; then
+            echo '::error::php migrate.php migrate did not report completion'
             exit 1
           fi
 

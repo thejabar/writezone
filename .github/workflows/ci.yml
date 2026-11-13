@@ -126,8 +126,8 @@ jobs:
           output=$(php migrate.php migrate)
           printf '%s\n' "$output"
 
-          if ! grep -q 'Migration run completed\.' <<< "$output"; then
-            echo '::error::php migrate.php migrate did not report completion'
+          if ! grep -Eq '^(Fresh database baseline applied|Migration run completed)\.$' <<< "$output"; then
+            echo '::error::php migrate.php migrate did not report a recognised success state'
             exit 1
           fi
 
